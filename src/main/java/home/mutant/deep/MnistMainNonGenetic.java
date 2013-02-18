@@ -34,7 +34,7 @@ public class MnistMainNonGenetic
 		for (int i=0; i<NO_GENERATIONS;i++)
 		{
 			//model.learnStepNonGenerative(images);
-			model.learnStepMaxGenerative(images);
+			model.learnStepMaxGenerativeMultipleSoftMax(images);
 		}
 		frame.showModel(model,28);
 		model.printGeneratives();

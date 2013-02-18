@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class WeightsModel 
 {
 	public List<double[][]> weights = null;
@@ -78,7 +77,7 @@ public class WeightsModel
 			return generateSampleBias();
 		else
 		{
-			return generateSampleNoBias((int) (Math.random()*weights.get(0).length));
+			return generateSampleNoBias();
 		}
 	}
 	private double[] generateSampleBias()
@@ -106,17 +105,49 @@ public class WeightsModel
 		return input;
 	}
 	
+	private double[] generateSampleNoBias()
+	{
+		return generateSampleNoBias((int) (Math.random()*weights.get(0).length), weights.size()-1);
+	}
+
 	private double[] generateSampleNoBias(int softMaxIndex)
 	{
+		return generateSampleNoBias(softMaxIndex, weights.size()-1);
+	}
+
+	private double[] generateSampleNoBias(int softMaxIndexes[])
+	{
+		return generateSampleNoBias(softMaxIndexes, weights.size()-1);
+	}
+	
+	private double[] generateSampleNoBias(int softMaxIndexes[], int lastLevel)
+	{
+		
 		double[] input = new double[weights.get(0).length]; // all are zeros
-		input[softMaxIndex] = 1.;
-		for (int l = 0; l<weights.size();l++)
+		for (int index : softMaxIndexes) 
+		{
+			input[index] = 1.;
+		}
+		
+		for (int l = 0; l<=lastLevel;l++)
 		{
 			input = generateOneLevelSample(input, l);
 		}
 		return input;
 	}
-
+	
+	private double[] generateSampleNoBias(int softMaxIndex, int lastLevel)
+	{
+		
+		double[] input = new double[weights.get(0).length]; // all are zeros
+		input[softMaxIndex] = 1.;
+		for (int l = 0; l<=lastLevel;l++)
+		{
+			input = generateOneLevelSample(input, l);
+		}
+		return input;
+	}
+	
 	private double[] generateOneLevelSample(double[] input, int l)
 	{
 		double[] output;
@@ -177,6 +208,11 @@ public class WeightsModel
 		{
 			throw new IllegalArgumentException("No such weights level exists");
 		}
+		
+		for (int i =0 ; i<=level; i++)
+		{
+			
+		}
 	}
 	public void learnStepMaxGenerative(List<byte[]> images)
 	{
@@ -217,10 +253,60 @@ public class WeightsModel
 		//System.out.println("The neuron "+softMaxIndex+" generated the image "+indexMax);
 	}
 
+	public void learnStepMaxGenerativeMultipleSoftMax(List<byte[]> images)
+	{
+		int softMaxIndexes[] = new int[weights.get(0).length/2];
+		int index=0;
+		for (int i =0;i<weights.get(0).length;i++) 
+		{
+			if (MathUtils.sigmoid(0).intValue()==1)
+			{
+				softMaxIndexes[index++] = i;
+				if (index>=softMaxIndexes.length)
+				{
+					break;
+				}
+			}
+		}
+		double[] output = generateSampleNoBias(softMaxIndexes);
+		
+		int max=Integer.MIN_VALUE;
+		int indexMax = 0;
+		for (int img = 0;img<images.size();img++)
+		{
+			int tmpCoincidence = MathUtils.coincidence(images.get(img), output);
+			if (tmpCoincidence>max)
+			{
+				max = tmpCoincidence;
+				indexMax = img;
+			}
+		}
+		for (int indexSoft =0;indexSoft<softMaxIndexes.length;indexSoft++)
+		{
+			for (int i = 0; i < output.length; i++)
+			{
+				if ((Double.valueOf(output[i]).byteValue())!=images.get(indexMax)[i])
+				{
+					if (output[i]==1)
+					{
+						weights.get(0)[softMaxIndexes[indexSoft]][i]-=LEARNING_RATE ;
+					}
+					else
+					{
+						weights.get(0)[softMaxIndexes[indexSoft]][i]+=LEARNING_RATE ;
+					}
+				}
+			}
+			String code = generatives.get(softMaxIndexes[indexSoft]);
+			if (code == null) code="";
+			generatives.put(softMaxIndexes[indexSoft], code+" "+indexMax);
+		}
+	}
+	
 	public void learnStepRandomGenerative(List<byte[]> images)
 	{
 		int softMaxIndex = (int) (Math.random()*weights.get(0).length);
-		double[] output = generateSampleNoBias(softMaxIndex);
+		double[] output = generateSampleNoBias();
 		
 		int indexMax = (int) (Math.random()*images.size());;
 
@@ -240,7 +326,6 @@ public class WeightsModel
 		}
 		//System.out.println(softMaxIndex+" "+indexMax);
 	}
-
 
 	public int test(byte[] bs)
 	{
@@ -290,7 +375,5 @@ public class WeightsModel
 		{
 			System.out.println("The neuron "+neuron+" generated the image " + generatives.get(neuron));
 		}
-		
 	}
-
 }
