@@ -1,7 +1,7 @@
 package home.mutant.deep;
 
 
-import home.mutant.deep.model.WeightsModel;
+import home.mutant.deep.model.FullIterconnectedWeightsModel;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.ImageUtils;
 
@@ -29,12 +29,13 @@ public class MnistMainNonGenetic
 	private void run()
 	{
 		ResultFrame frame = new ResultFrame(1600, 600);
-		WeightsModel model = new WeightsModel(numberNeuronsPerLayer, false);
+		FullIterconnectedWeightsModel model = new FullIterconnectedWeightsModel(numberNeuronsPerLayer, false);
 		
 		for (int i=0; i<NO_GENERATIONS;i++)
 		{
 			//model.learnStepNonGenerative(images);
-			model.learnStepMaxGenerativeMultipleSoftMax(images);
+			//model.learnStepMaxGenerativeMultipleSoftMax(images);
+			model.learnStepMaxGenerative(images);
 		}
 		frame.showModel(model,28);
 		model.printGeneratives();
