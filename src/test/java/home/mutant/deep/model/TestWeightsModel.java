@@ -15,7 +15,7 @@ public class TestWeightsModel
 		List<Integer> neurons = new ArrayList<Integer>();
 		neurons.add(2);
 		neurons.add(4);
-		FullIterconnectedWeightsModel wm = new FullIterconnectedWeightsModel(neurons,true);
+		FullConnected wm = new FullConnected(neurons,true);
 		Assert.assertEquals(2, wm.weights.size());
 		Assert.assertEquals(1,wm.weights.get(0).length);
 		Assert.assertEquals(2,wm.weights.get(0)[0].length);
@@ -29,7 +29,7 @@ public class TestWeightsModel
 		List<Integer> neurons = new ArrayList<Integer>();
 		neurons.add(2);
 		neurons.add(2);
-		FullIterconnectedWeightsModel wm = new FullIterconnectedWeightsModel(neurons,true);
+		FullConnected wm = new FullConnected(neurons,true);
 		wm.weights.get(0)[0][0] = 2.;
 		wm.weights.get(0)[0][1] = 2.;
 		
@@ -49,7 +49,7 @@ public class TestWeightsModel
 		List<Integer> neurons = new ArrayList<Integer>();
 		neurons.add(2);
 		neurons.add(4);
-		FullIterconnectedWeightsModel wm = new FullIterconnectedWeightsModel(neurons,false);
+		FullConnected wm = new FullConnected(neurons,false);
 		Assert.assertEquals(1, wm.weights.size());
 		Assert.assertEquals(2,wm.weights.get(0).length);
 		Assert.assertEquals(4,wm.weights.get(0)[0].length);
@@ -61,7 +61,7 @@ public class TestWeightsModel
 		List<Integer> neurons = new ArrayList<Integer>();
 		neurons.add(2);
 		neurons.add(2);
-		FullIterconnectedWeightsModel wm = new FullIterconnectedWeightsModel(neurons,false);
+		FullConnected wm = new FullConnected(neurons,false);
 		wm.weights.get(0)[0][0] = 2.;
 		wm.weights.get(0)[0][1] = 2.;
 		wm.weights.get(0)[1][0] = 2.;

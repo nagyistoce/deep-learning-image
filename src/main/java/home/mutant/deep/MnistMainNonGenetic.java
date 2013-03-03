@@ -1,7 +1,7 @@
 package home.mutant.deep;
 
 
-import home.mutant.deep.model.FullIterconnectedWeightsModel;
+import home.mutant.deep.model.FullConnected;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.ImageUtils;
 
@@ -29,7 +29,7 @@ public class MnistMainNonGenetic
 	private void run()
 	{
 		ResultFrame frame = new ResultFrame(1600, 600);
-		FullIterconnectedWeightsModel model = new FullIterconnectedWeightsModel(numberNeuronsPerLayer, false);
+		FullConnected model = new FullConnected(numberNeuronsPerLayer, false);
 		
 		for (int i=0; i<NO_GENERATIONS;i++)
 		{
