@@ -1,6 +1,6 @@
 package home.mutant.deep.ui;
 
-import home.mutant.deep.model.FullConnected;
+import home.mutant.deep.model.TwoFullConnectedLayers;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class ResultFrame extends JFrame
 		repaint();
 	}
 
-	public void showModel2by2(FullConnected model, int width)
+	public void showModel2by2(TwoFullConnectedLayers model, int width)
 	{
 		drawingPanel.empty();
 		for (int n1=0;n1<20;n1++)
@@ -55,7 +55,7 @@ public class ResultFrame extends JFrame
 		repaint();	
 	}
 	
-	public void showModel(FullConnected model, int width)
+	public void showModel(TwoFullConnectedLayers model, int width)
 	{
 		drawingPanel.empty();
 		for (int n1=0;n1<20;n1++)
