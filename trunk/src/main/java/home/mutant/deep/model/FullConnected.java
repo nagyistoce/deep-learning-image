@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FullIterconnectedWeightsModel 
+public class FullConnected 
 {
 	public List<double[][]> weights = null;
 	private boolean withBias = false;
 	public double LEARNING_RATE = 100.;
 	public Map<Integer, String> generatives = new HashMap<Integer, String>();
 	
-	public FullIterconnectedWeightsModel(List<Integer> numberNeuronsPerLayer, boolean withBias)
+	public FullConnected(List<Integer> numberNeuronsPerLayer, boolean withBias)
 	{
 		this.withBias = withBias;
 		if (withBias)
