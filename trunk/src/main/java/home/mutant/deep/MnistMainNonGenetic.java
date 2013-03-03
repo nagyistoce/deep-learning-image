@@ -1,7 +1,7 @@
 package home.mutant.deep;
 
 
-import home.mutant.deep.model.FullConnected;
+import home.mutant.deep.model.TwoFullConnectedLayers;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.ImageUtils;
 
@@ -13,28 +13,23 @@ public class MnistMainNonGenetic
 {
 	private static final int NO_GENERATIONS = 1000;
 	List<byte[]> images = new ArrayList<byte[]>();
-	List<Integer> numberNeuronsPerLayer;
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
+
 	public static void main(String[] args) throws IOException
 	{
 		List<Integer> neurons = new ArrayList<Integer>();
 		neurons.add(50);
 		neurons.add(28*28);
-		new MnistMainNonGenetic(neurons).run();
+		new MnistMainNonGenetic().run();
 	}
 
 	private void run()
 	{
 		ResultFrame frame = new ResultFrame(1600, 600);
-		FullConnected model = new FullConnected(numberNeuronsPerLayer, false);
+		TwoFullConnectedLayers model = new TwoFullConnectedLayers(50, 28*28);
 		
 		for (int i=0; i<NO_GENERATIONS;i++)
 		{
 			//model.learnStepNonGenerative(images);
-			//model.learnStepMaxGenerativeMultipleSoftMax(images);
 			model.learnStepMaxGenerative(images);
 		}
 		frame.showModel(model,28);
@@ -47,9 +42,8 @@ public class MnistMainNonGenetic
 		}
 	}
 
-	public MnistMainNonGenetic(List<Integer> numberNeuronsPerLayer) throws IOException
+	public MnistMainNonGenetic() throws IOException
 	{
-		this.numberNeuronsPerLayer = new ArrayList<Integer>(numberNeuronsPerLayer);
 		loadImages();
 	}
 	private void loadImages() throws IOException
