@@ -1,6 +1,6 @@
 package home.mutant.deep.ui;
 
-import home.mutant.deep.model.WeightsModel;
+import home.mutant.deep.model.FullIterconnectedWeightsModel;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class ResultFrame extends JFrame
 		repaint();
 	}
 
-	public void showModel2by2(WeightsModel model, int width)
+	public void showModel2by2(FullIterconnectedWeightsModel model, int width)
 	{
 		drawingPanel.empty();
 		for (int n1=0;n1<20;n1++)
@@ -55,7 +55,7 @@ public class ResultFrame extends JFrame
 		repaint();	
 	}
 	
-	public void showModel(WeightsModel model, int width)
+	public void showModel(FullIterconnectedWeightsModel model, int width)
 	{
 		drawingPanel.empty();
 		for (int n1=0;n1<20;n1++)
