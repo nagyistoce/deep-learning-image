@@ -1,6 +1,7 @@
 package home.mutant.deep;
 
 
+import home.mutant.deep.model.Image;
 import home.mutant.deep.model.TwoFullConnectedLayers;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.ImageUtils;
@@ -12,7 +13,7 @@ import java.util.List;
 public class MnistMainNonGenetic
 {
 	private static final int NO_GENERATIONS = 1000;
-	List<byte[]> images = new ArrayList<byte[]>();
+	List<Image> images = new ArrayList<Image>();
 
 	public static void main(String[] args) throws IOException
 	{
@@ -27,11 +28,8 @@ public class MnistMainNonGenetic
 		ResultFrame frame = new ResultFrame(1600, 600);
 		TwoFullConnectedLayers model = new TwoFullConnectedLayers(50, 28*28);
 		
-		for (int i=0; i<NO_GENERATIONS;i++)
-		{
-			//model.learnStepNonGenerative(images);
-			model.learnStepMaxGenerative(images);
-		}
+		model.learnMaxGenerative(NO_GENERATIONS, images);
+		
 		frame.showModel(model,28);
 		model.printGeneratives();
 		System.out.println("Testing...");
@@ -48,7 +46,11 @@ public class MnistMainNonGenetic
 	}
 	private void loadImages() throws IOException
 	{
-		images = ImageUtils.convertToBW(ImageUtils.readMnist("/mnist/train-images.idx3-ubyte"));
+		List<byte[]> imagesByte = ImageUtils.convertToBW(ImageUtils.readMnist("/mnist/train-images.idx3-ubyte"));
+		for (byte[] bs : imagesByte) 
+		{
+			images.add(new Image(bs));
+		}
 		images = images.subList(0, 20);
 	}
 }

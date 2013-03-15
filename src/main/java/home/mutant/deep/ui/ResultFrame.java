@@ -1,5 +1,6 @@
 package home.mutant.deep.ui;
 
+import home.mutant.deep.model.Image;
 import home.mutant.deep.model.TwoFullConnectedLayers;
 
 import java.util.List;
@@ -38,13 +39,13 @@ public class ResultFrame extends JFrame
 		{
 			for (int n=0;n<50;n++)
 			{
-				double[] sample = model.generateSample();
+				Image sample = model.generateSample();
 				int indexGene=0;
 				for (int y = n1*(width+1);y<n1*(width+1)+width;y++)
 				{
 					for (int x = n*(width+1) ;x<n*(width+1)+width;x++)
 					{
-						if (sample[indexGene++]>0)
+						if (sample.getDataOneDimensional()[indexGene++]>0)
 						{
 							drawingPanel.set4Pixels(2*x, 2*y);
 						}
@@ -62,13 +63,13 @@ public class ResultFrame extends JFrame
 		{
 			for (int n=0;n<50;n++)
 			{
-				double[] sample = model.generateSample();
+				Image sample = model.generateSample();
 				int indexGene=0;
 				for (int y = n1*(width+1);y<n1*(width+1)+width;y++)
 				{
 					for (int x = n*(width+1) ;x<n*(width+1)+width;x++)
 					{
-						if (sample[indexGene++]>0)
+						if (sample.getDataOneDimensional()[indexGene++]>0)
 						{
 							drawingPanel.setPixel(x, y);
 						}
