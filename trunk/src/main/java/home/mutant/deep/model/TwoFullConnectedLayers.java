@@ -7,15 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TwoFullConnectedLayers 
+public class TwoFullConnectedLayers implements RecognizerGenerator
 {
 	public double[][] weights = null;
 	public double LEARNING_RATE = 100.;
 	public Map<Integer, String> generatives = new HashMap<Integer, String>();
 	
-	public TwoFullConnectedLayers(int inputLayerNeurons, int outputLayerNeuron)
+	public TwoFullConnectedLayers(int topLayerNeurons, int bottomLayerNeuron)
 	{
-		weights = new double[inputLayerNeurons][outputLayerNeuron];
+		weights = new double[topLayerNeurons][bottomLayerNeuron];
 		randomize();
 	}
 	private void randomize()
@@ -28,41 +28,53 @@ public class TwoFullConnectedLayers
 			}
 		}
 	}
-	public double[] generateSample()
+	
+	public Image generateSampleFromInput(Image input) 
 	{
-		return generateSampleNoBias((int) (Math.random()*weights.length));
-	}
-
-	private double[] generateSampleNoBias(int softMaxIndex)
-	{
-		double[] input = new double[weights.length]; // all are zeros
-		input[softMaxIndex] = 1.;
-		
 		double[] output;
 		output = new double[weights[0].length];
 		for (int out=0;out<output.length;out++)
 		{
 			output[out]=0.;
-			for (int in=0;in<input.length;in++)
+			for (int in=0;in<input.getDataOneDimensional().length;in++)
 			{
-				output[out]+=input[in]*weights[in][out];
+				output[out]+=input.getDataOneDimensional()[in]*weights[in][out];
 			}
 			output[out] = MathUtils.sigmoid(output[out]);
 		}
-		return output;
+		return new Image(output);
 	}
 	
-	public void learnStepMaxGenerative(List<byte[]> images)
+	public Image generateSample()
+	{
+		return generateSampleNoBias((int) (Math.random()*weights.length));
+	}
+
+	private Image generateSampleNoBias(int softMaxIndex)
+	{
+		double[] input = new double[weights.length]; // all are zeros
+		input[softMaxIndex] = 1.;
+		return generateSampleFromInput(new Image(input,weights.length,1));
+	}
+	
+	public void learnMaxGenerative(int generations, List<Image> images)
+	{
+		for (int i=0; i<generations;i++)
+		{
+			learnStepMaxGenerative(images);
+		}
+	}
+	public void learnStepMaxGenerative(List<Image> images)
 	{
 		int softMaxIndex = (int) (Math.random()*weights.length);
-		double[] output = generateSampleNoBias(softMaxIndex);
+		byte[] output = generateSampleNoBias(softMaxIndex).getDataOneDimensional();
 		
 		int max=Integer.MIN_VALUE;
 		int indexMax = 0;
 		//System.out.println("Values");
 		for (int img = 0;img<images.size();img++)
 		{
-			int tmpCoincidence = MathUtils.coincidence(images.get(img), output);
+			int tmpCoincidence = MathUtils.coincidence(images.get(img).getDataOneDimensional(), output);
 			//System.out.print(tmpCoincidence + " ");
 			if (tmpCoincidence>max)
 			{
@@ -73,7 +85,7 @@ public class TwoFullConnectedLayers
 		//System.out.println("");
 		for (int i = 0; i < output.length; i++)
 		{
-			if ((Double.valueOf(output[i]).byteValue())!=images.get(indexMax)[i])
+			if (output[i]!=images.get(indexMax).getDataOneDimensional()[i])
 			{
 				if (output[i]==1)
 				{
@@ -91,9 +103,9 @@ public class TwoFullConnectedLayers
 		//System.out.println("The neuron "+softMaxIndex+" generated the image "+indexMax);
 	}
 
-	public int test(byte[] bs)
+	public int test(Image bs)
 	{
-		double[] output = forwardStep(bs, false);
+		double[] output = forwardStep(bs.getDataOneDimensional(), false);
 		return MathUtils.indexMax(output);
 	}
 
@@ -114,6 +126,15 @@ public class TwoFullConnectedLayers
 		return output;
 	}
 
+	public  byte[] forwardStep(byte[] bs)
+	{
+		double[] output = forwardStep(bs, false);
+		int indexMax = MathUtils.indexMax(output);
+		byte[] outByte = new byte[output.length]; 
+		outByte[indexMax] = 1;
+		return outByte;
+	}
+	
 	private double[] forwardStepLevel(double[] input)
 	{
 		double[] output;

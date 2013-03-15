@@ -103,4 +103,31 @@ public class ImageUtils
 		}
 		return newImages;
 	}
+	
+	public static List<byte[]> divideImage(byte[] image, int newX, int newY, int actualX, int actualY)
+	{
+		return divideImage(image, newX, newY, actualX, actualY, newX, newY);
+	}
+	
+	public static List<byte[]> divideImage(byte[] image, int newX, int newY, int actualX, int actualY, int stepX, int stepY)
+	{
+		List<byte[]> dividedImages = new ArrayList<byte[]>();
+		for (int y=0; y<actualY; y+=stepY)
+		{
+			for (int x=0; x<actualX; x+=stepX)
+			{
+				byte[] newImage = new byte[newX*newY];
+				int offsetImage = 0;
+				for (int imageY = y; imageY<y+newY; imageY++)
+				{
+					for (int imageX = x; imageX<x+newX; imageX++)
+					{
+						newImage[offsetImage++] = image[imageY*actualX+imageX];
+					}
+				}
+				dividedImages.add(newImage);
+			}		
+		}
+		return dividedImages;
+	}
 }

@@ -87,5 +87,20 @@ public class MathUtils
 		}
 		return coincidence;
 	}
-
+	public static int coincidence(byte[] test, byte[] sample)
+	{
+		int coincidence=0;
+		for (int i = 0; i < sample.length; i++)
+		{
+			if (test[i]==sample[i])
+			{
+				coincidence+=1;
+			}
+			else
+			{
+				coincidence-=1;
+			}
+		}
+		return coincidence;
+	}
 }
