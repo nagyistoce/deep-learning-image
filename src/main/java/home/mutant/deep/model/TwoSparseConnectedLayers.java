@@ -1,7 +1,5 @@
 package home.mutant.deep.model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class TwoSparseConnectedLayers implements RecognizerGenerator 
 {
 	private TwoFullConnectedLayers[][] columns;
@@ -56,9 +54,21 @@ public class TwoSparseConnectedLayers implements RecognizerGenerator
 		}
 		return sample;
 	}
-	public int test(Image data) 
-	{
-		throw new NotImplementedException();
-	}
 
+	public Image forwardStep(Image bs) 
+	{
+		int columnsPerDimension = columns.length;
+		int bottomNeuronsColumnPerDimension = bottomSizePerDimension/columnsPerDimension;
+		int topNeuronsColumnPerDimension = topSizePerDimension/columnsPerDimension;
+		
+		Image result = new Image (topSizePerDimension,topSizePerDimension);
+		for (int cx= 0;cx<columns.length;cx++)
+		{
+			for (int cy= 0;cy<columns.length;cy++)
+			{
+				Image columnForward = columns[cx][cy].forwardStep(bs.extractImage(cx*topNeuronsColumnPerDimension, cy*topNeuronsColumnPerDimension, topNeuronsColumnPerDimension, topNeuronsColumnPerDimension));
+			}
+		}
+		return result;
+	}
 }
