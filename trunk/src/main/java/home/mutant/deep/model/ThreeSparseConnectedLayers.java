@@ -22,5 +22,11 @@ public class ThreeSparseConnectedLayers implements RecognizerGenerator
 	{
 		return 0;
 	}
+
+	@Override
+	public Image forwardStep(Image bs) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

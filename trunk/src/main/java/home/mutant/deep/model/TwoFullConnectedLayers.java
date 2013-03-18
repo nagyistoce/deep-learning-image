@@ -126,15 +126,15 @@ public class TwoFullConnectedLayers implements RecognizerGenerator
 		return output;
 	}
 
-	public  byte[] forwardStep(byte[] bs)
+	public Image forwardStep(Image bs)
 	{
-		double[] output = forwardStep(bs, false);
+		double[] output = forwardStep(bs.getDataOneDimensional(), false);
 		int indexMax = MathUtils.indexMax(output);
 		byte[] outByte = new byte[output.length]; 
 		outByte[indexMax] = 1;
-		return outByte;
+		return new Image(outByte);
 	}
-	
+
 	private double[] forwardStepLevel(double[] input)
 	{
 		double[] output;
