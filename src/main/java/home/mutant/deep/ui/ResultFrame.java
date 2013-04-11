@@ -59,11 +59,12 @@ public class ResultFrame extends JFrame
 	public void showModel(TwoFullConnectedLayers model, int width)
 	{
 		drawingPanel.empty();
+		int index=0;
 		for (int n1=0;n1<20;n1++)
 		{
 			for (int n=0;n<50;n++)
 			{
-				Image sample = model.generateSample();
+				Image sample = model.generateSample(index++);
 				int indexGene=0;
 				for (int y = n1*(width+1);y<n1*(width+1)+width;y++)
 				{
