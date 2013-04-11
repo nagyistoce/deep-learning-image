@@ -26,13 +26,14 @@ public class TwoSparseConnectedLayers implements RecognizerGenerator
 	{
 		Image sample = new Image(bottomSizePerDimension, bottomSizePerDimension);
 		int columnsPerDimension = columns.length;
-		int neuronsColumnPerDimension = bottomSizePerDimension/columnsPerDimension;
+		int bottomNeuronsColumnPerDimension = bottomSizePerDimension/columnsPerDimension;
+		
 		for (int cx= 0;cx<columnsPerDimension;cx++)
 		{
 			for (int cy= 0;cy<columnsPerDimension;cy++)
 			{
 				Image columnImage = columns[cx][cy].generateSample();
-				sample.pasteImage(columnImage, cx*neuronsColumnPerDimension, cy*neuronsColumnPerDimension);
+				sample.pasteImage(columnImage, cx*bottomNeuronsColumnPerDimension, cy*bottomNeuronsColumnPerDimension);
 			}
 		}
 		return sample;
@@ -66,7 +67,8 @@ public class TwoSparseConnectedLayers implements RecognizerGenerator
 		{
 			for (int cy= 0;cy<columns.length;cy++)
 			{
-				Image columnForward = columns[cx][cy].forwardStep(bs.extractImage(cx*topNeuronsColumnPerDimension, cy*topNeuronsColumnPerDimension, topNeuronsColumnPerDimension, topNeuronsColumnPerDimension));
+				Image columnForward = columns[cx][cy].forwardStep(bs.extractImage(cx*bottomNeuronsColumnPerDimension, cy*bottomNeuronsColumnPerDimension, bottomNeuronsColumnPerDimension, bottomNeuronsColumnPerDimension));
+				result.pasteImage(columnForward, cx*topNeuronsColumnPerDimension, cy*topNeuronsColumnPerDimension);
 			}
 		}
 		return result;

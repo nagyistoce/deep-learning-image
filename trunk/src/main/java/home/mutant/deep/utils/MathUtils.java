@@ -64,6 +64,11 @@ public class MathUtils
 	{
 		return (Math.random()<= 1./(1+Math.exp(-totalInput)))?1.:0;
 	}
+	
+	public static Double asymptoticToZero(double x)
+	{
+		return 10000*Math.exp(-1*x/1000.);
+	}
 	public static void sigmoid(double[] input)
 	{
 		for (int i=0; i<input.length; i++)
