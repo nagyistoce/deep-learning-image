@@ -15,6 +15,7 @@ public class TwoFullConnectedLayers implements RecognizerGenerator
 	public double LEARNING_RATE = 100;
 	public Map<Integer, String> generatives = new HashMap<Integer, String>();
 	private Set<Integer> doneNeurons = new HashSet<Integer>();
+	public static final int THRESHOLD = 100;
 	int rate = 100000;
 	public TwoFullConnectedLayers(int topLayerNeurons, int bottomLayerNeuron)
 	{
@@ -41,9 +42,9 @@ public class TwoFullConnectedLayers implements RecognizerGenerator
 			output[out]=0.;
 			for (int in=0;in<input.getDataOneDimensional().length;in++)
 			{
-				output[out]+=input.getDataOneDimensional()[in]*weights[in][out];
+				output[out]+=THRESHOLD*input.getDataOneDimensional()[in]*weights[in][out];
 			}
-			output[out] = MathUtils.sigmoid(output[out]);
+			output[out] = MathUtils.sigmoid(output[out]-THRESHOLD/2);
 		}
 		return new Image(output);
 	}
@@ -63,7 +64,7 @@ public class TwoFullConnectedLayers implements RecognizerGenerator
 			}
 			for (int indexNeuronBottom=0;indexNeuronBottom<weights[indexNeuron].length; indexNeuronBottom++)
 			{
-				weights[indexNeuron][indexNeuronBottom] = images.get(indexNeuron).getDataOneDimensional()[indexNeuronBottom]==1?10000:0;
+				weights[indexNeuron][indexNeuronBottom] = images.get(indexNeuron).getDataOneDimensional()[indexNeuronBottom]==1?1:0;
 			}
 		}
 	}

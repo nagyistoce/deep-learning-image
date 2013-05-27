@@ -1,9 +1,13 @@
 package home.mutant.deep.ui;
 
 import home.mutant.deep.model.Image;
+import home.mutant.deep.model.ModelTestResult;
 import home.mutant.deep.model.TwoFullConnectedLayers;
+import home.mutant.deep.model.TwoFullConnectedLayersBinary;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
@@ -81,6 +85,61 @@ public class ResultFrame extends JFrame
 		repaint();	
 	}
 	
+	public ModelTestResult showOutput(TwoFullConnectedLayersBinary model, Image image, List<Integer> labels)
+	{
+		return showImage(new Image(model.forwardStep(image,true), 300, 300), labels);
+	}
+	
+	public ModelTestResult showImage(Image image, List<Integer> labels)
+	{
+		Map<Integer,Integer> maps = new HashMap<Integer, Integer>();
+		//drawingPanel.empty();
+		int indexLabel=0;
+		for (int y=0;y<image.imageY;y++)
+		{
+			for (int x=0;x<image.imageX;x++)
+			{
+				if (image.getPixel(x, y)!=0)
+				{
+					//drawingPanel.setPixel(x, y);
+					if(indexLabel<labels.size())
+					{
+						Integer count = maps.get(labels.get(indexLabel));
+						if (count==null)
+						{
+							count=0;
+						}
+						count++;
+						maps.put(labels.get(indexLabel),count);
+					}
+				}
+				indexLabel++;
+			}
+		}
+		//repaint();
+		int max = 0;
+		int maxKey=-1;
+		int total=0;
+		for (Integer key : maps.keySet()) 
+		{
+			Integer value = maps.get(key);
+			if (value>max)
+			{
+				max = value;
+				maxKey = key;
+			}
+			total+=value;
+			//System.out.println("     " +key+ " :"+maps.get(key) );
+		}
+		return new ModelTestResult(maxKey, max, max*100./total);
+	}
+	
+	public void showImage(Image image)
+	{
+		drawingPanel.empty();
+		putImage(image, 0, 0);
+		repaint();
+	}
 	public void showMnist(List<byte[][]> images, int index)
 	{
 		drawingPanel.empty();
@@ -117,5 +176,29 @@ public class ResultFrame extends JFrame
 			}
 		}
 		repaint();
+	}
+	
+	public void showBinaryColumn(TwoFullConnectedLayersBinary column)
+	{
+		drawingPanel.empty();
+		for (int index=0;index<300;index++)
+		{
+			putImage(column.neurons[index].generateSample(), index*5, 3);
+		}
+		repaint();
+	}
+	
+	public void putImage(Image image, int xOffset, int yOffset)
+	{
+		for (int y=0;y<image.imageY;y++)
+		{
+			for (int x=0;x<image.imageX;x++)
+			{
+				if (image.getPixel(x, y)!=0)
+				{
+					drawingPanel.setPixel(xOffset+x,yOffset+y);
+				}
+			}
+		}
 	}
 }
