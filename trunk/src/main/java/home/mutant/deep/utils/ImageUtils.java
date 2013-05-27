@@ -34,6 +34,38 @@ public class ImageUtils
 		}
 	}
 	
+	public static List<Integer> readMinstLabels(String labelsResourcePath)
+	{
+		List<Integer> labels = new ArrayList<Integer>();
+		InputStream stream = ImageUtils.class.getResourceAsStream(labelsResourcePath);
+		byte[] bRead = new byte[8];
+		try
+		{
+			stream.read(bRead);
+		} 
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		bRead = new byte[1];
+		while(true)
+		{
+			try
+			{
+				if (stream.read(bRead)!=1)
+				{
+					break;
+				}
+			} 
+			catch (IOException e)
+			{
+				e.printStackTrace();
+				break;
+			}
+			labels.add((int)bRead[0]);
+		}
+		return labels;
+	}
 	public static List<byte[][]> readMnist(String imageResourcePath)
 	{
 		List<byte[][]> images = new ArrayList<byte[][]>();
@@ -42,9 +74,9 @@ public class ImageUtils
 		try
 		{
 			stream.read(bRead);
-		} catch (IOException e1)
+		}
+		catch (IOException e1)
 		{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		bRead = new byte[28*28];
@@ -87,7 +119,7 @@ public class ImageUtils
 			{
 				for (int j = 0;j<28;j++)
 				{
-					if (image[j][i]<0)
+					if (image[j][i]!=0)
 					{
 						newImage[offset++]=(byte) 1;
 						image[j][i]=(byte) 1;

@@ -11,6 +11,7 @@ public class ShowMnist
 	public static void main(String[] args)
 	{
 		List<byte[][]> images = ImageUtils.readMnist("/mnist/train-images.idx3-ubyte");
+		List<Integer> labels = ImageUtils.readMinstLabels("/mnist/train-labels.idx1-ubyte");
 		
 		ResultFrame frame = new ResultFrame(1200, 600);
 		frame.showMnist2(ImageUtils.convertToBW(images), 0);

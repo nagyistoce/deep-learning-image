@@ -7,8 +7,9 @@ import java.util.List;
 
 public class Image 
 {
-	private int imageX,imageY;
-	byte[] data;
+	public int imageX,imageY;
+	byte[] data = null ;
+	long[] binaryData = null;
 	
 	public Image(byte[] data, int x, int y)
 	{
@@ -37,6 +38,24 @@ public class Image
 		this.imageY = y;
 	}
 	
+	public Image(long[] dataBinary, int x, int y)
+	{
+		this.imageX=x;
+		this.imageY=y;
+		this.data = new byte[x*y];
+		for(int index=0;index<x*y;index++)
+		{
+			int indexLong = index/64;
+			int indexBit = index%64;
+			long mask = ((long)1)<<indexBit;
+			if ((mask&dataBinary[indexLong]) != 0)
+			{
+				data[index]=1;
+			}
+		}
+		binaryData = new long[dataBinary.length];
+		System.arraycopy(dataBinary, 0, binaryData, 0, dataBinary.length);
+	}
 	public Image(double[] data) 
 	{
 		this(data, (int)Math.sqrt(data.length), (int)Math.sqrt(data.length));
@@ -45,6 +64,7 @@ public class Image
 	{
 		return data;
 	}
+	
 	
 	public byte[][] getDataTwoDimensional()
 	{
@@ -83,7 +103,7 @@ public class Image
 	{
 		for(int x=0;x<smallImage.imageX;x++)
 		{
-			for(int y=0;y<smallImage.imageY;x++)
+			for(int y=0;y<smallImage.imageY;y++)
 			{
 				setPixel(origX+x, origY+y, smallImage.getPixel(x, y));
 			}
@@ -94,11 +114,48 @@ public class Image
 		Image extracted = new Image(sizeX, sizeY);
 		for(int x=0;x<sizeX;x++)
 		{
-			for(int y=0;y<sizeY;x++)
+			for(int y=0;y<sizeY;y++)
 			{
 				extracted.setPixel(x, y, getPixel(origX+x, origY+y));
 			}
 		}
 		return extracted;
+	}
+	public long[] getDataBinary() 
+	{
+		if (binaryData == null)
+		{
+			int length = imageX*imageY;
+			if (length%64!=0)
+			{
+				length = length/64 +1;
+			}
+			else
+			{
+				length = length/64;
+			}
+			binaryData = new long[length];
+		}
+		long indexBit = 0;
+		int indexLong = 0;
+		for (int i = 0; i < data.length; i++) 
+		{
+			long mask = ((long)1) << indexBit;
+			if (data[i]==0)
+			{
+				binaryData[indexLong] &= ~mask;
+			}
+			else
+			{
+				binaryData[indexLong] |= mask;
+			}
+			indexBit++;
+			if (indexBit==64)
+			{
+				indexBit=0;
+				indexLong++;
+			}
+		}
+		return binaryData;
 	}
 }
