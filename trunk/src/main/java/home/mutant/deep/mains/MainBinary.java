@@ -1,13 +1,16 @@
-package home.mutant.deep;
+package home.mutant.deep.mains;
 
 
-import home.mutant.deep.model.Image;
-import home.mutant.deep.model.TwoFullConnectedLayersBinary;
+import home.mutant.deep.networks.TwoFullConnectedLayersBinary;
+import home.mutant.deep.neurons.BinaryNeuron;
+import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.ImageUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainBinary
 {
@@ -45,11 +48,11 @@ public class MainBinary
 	private void run()
 	{
 		//ResultFrame frame = new ResultFrame(1600, 600);
-		TwoFullConnectedLayersBinary model = new TwoFullConnectedLayersBinary(300*200, 28*28);
+		TwoFullConnectedLayersBinary model = new TwoFullConnectedLayersBinary(300*200, 28*28,BinaryNeuron.class);
 		model.initWeightsFromImages(trainImages);
 		int missed=0;
 		int total=0;
-		for (int test = 0; test<10000; test++)
+		for (int test = 0; test<1000; test++)
 		{
 			total++;
 			int indexMax = model.forwardStepIndex(testImages.get(test));
@@ -57,14 +60,75 @@ public class MainBinary
 			{
 				missed++;
 			}
+//			List<Integer> indexesMax = model.forwardStepMultipleIndex(testImages.get(test),10);
+//			int labelTest = getLabelForIndexes(indexesMax);
+//			Map<Integer,Double> maps = model.forwardStepMultipleIndexWithValues(testImages.get(test),1);
+//			int labelTest = getLabelForIndexesWithValues(maps);
+//			if (testLabels.get(test)!=labelTest)
+//			{
+//				missed++;
+//			}
 			if (test%100==99)
 			{
 				System.out.println("Error rate "+missed*100./total);
 			}
 		}
-		
+		System.out.println("FINAL Error rate "+missed*100./total);
 	}
 	
+	private int getLabelForIndexesWithValues(Map<Integer, Double> maps) 
+	{
+		Map<Integer, Double> occurenceEach = new HashMap<Integer, Double>();
+		for (Integer integer : maps.keySet()) 
+		{
+			Double occurence = occurenceEach.get(trainLabels.get(integer));
+			if (occurence==null)
+			{
+				occurenceEach.put(trainLabels.get(integer), 0.);
+				occurence=0.;
+			}
+			occurence+=(maps.get(integer)/784.)*(maps.get(integer)/784.);
+			occurenceEach.put(trainLabels.get(integer), occurence);
+		}
+		double max = 0;
+		int label = -1;
+		for (Integer labelTmp : occurenceEach.keySet()) 
+		{
+			if (occurenceEach.get(labelTmp)>max)
+			{
+				max=occurenceEach.get(labelTmp);
+				label = labelTmp;
+			}
+		}
+		return label;
+	}
+
+	private int getLabelForIndexes(List<Integer> indexesMax) 
+	{
+		Map<Integer, Integer> occurenceEach = new HashMap<Integer, Integer>();
+		for (Integer integer : indexesMax) 
+		{
+			Integer integer2 = occurenceEach.get(trainLabels.get(integer));
+			if (integer2==null)
+			{
+				occurenceEach.put(trainLabels.get(integer), 0);
+				integer2=0;
+			}
+			occurenceEach.put(trainLabels.get(integer), ++integer2);
+		}
+		int max = 0;
+		int label = -1;
+		for (Integer labelTmp : occurenceEach.keySet()) 
+		{
+			if (occurenceEach.get(labelTmp)>max)
+			{
+				max=occurenceEach.get(labelTmp);
+				label = labelTmp;
+			}
+		}
+		return label;
+	}
+
 	public MainBinary() throws IOException
 	{
 		loadImages();

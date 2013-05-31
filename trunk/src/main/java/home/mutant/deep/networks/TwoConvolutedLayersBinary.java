@@ -1,4 +1,6 @@
-package home.mutant.deep.model;
+package home.mutant.deep.networks;
+
+import home.mutant.deep.ui.Image;
 
 import java.util.List;
 

@@ -1,5 +1,10 @@
 package home.mutant.deep.utils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MathUtils
 {
 	public static double standardDev(int[] values)
@@ -83,7 +88,6 @@ public class MathUtils
 			if (array[out]>max)
 			{
 				max = array[out];
-				
 			}
 		}
 		return max;
@@ -148,5 +152,60 @@ public class MathUtils
 			}
 		}
 		return coincidence;
+	}
+	public static List<Integer> indexMaxMultiple(int numberMax, double[] output) 
+	{
+		List<Integer> resIndex = new ArrayList<Integer>();
+		List<Double> resValues = new ArrayList<Double>();
+		for (int i = 0; i < output.length; i++)
+		{
+			int index = insertSortedValue(output[i], resValues, numberMax);
+			if (index<numberMax)
+			{
+				resIndex.add(index, i);
+			}
+		}
+		
+		return resIndex.subList(0, numberMax);
+	}
+	public static int insertSortedValue(double value,List<Double> arr, int maxCapacity)
+	{
+		int indexToInsert = 0;
+		for (Double integer : arr) 
+		{
+			if (value>integer)
+			{
+				break;
+			}
+			indexToInsert++;
+
+		}
+		arr.add(indexToInsert, value);
+		if (arr.size()>maxCapacity)
+		{
+			arr.remove(maxCapacity);
+		}
+		return indexToInsert;
+	}
+	public static Map<Integer, Double> indexMaxMultipleWithValues(int numberMax, double[] output) 
+	{
+		List<Integer> resIndex = new ArrayList<Integer>();
+		List<Double> resValues = new ArrayList<Double>();
+		for (int i = 0; i < output.length; i++)
+		{
+			int index = insertSortedValue(output[i], resValues, numberMax);
+			if (index<numberMax)
+			{
+				resIndex.add(index, i);
+			}
+		}
+		
+		Map<Integer, Double> res = new HashMap<Integer, Double>();
+		resIndex =  resIndex.subList(0, numberMax);
+		for (int indexRes=0;indexRes<resIndex.size();indexRes++) 
+		{
+			res.put(resIndex.get(indexRes), resValues.get(indexRes));
+		}
+		return res;
 	}
 }
