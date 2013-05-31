@@ -1,8 +1,8 @@
-package home.mutant.deep;
+package home.mutant.deep.mains;
 
 
-import home.mutant.deep.model.Image;
-import home.mutant.deep.model.ThreeConvolutedLayersBinary;
+import home.mutant.deep.networks.ThreeConvolutedLayersBinary;
+import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.ImageUtils;
 

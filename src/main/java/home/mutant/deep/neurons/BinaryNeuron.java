@@ -1,9 +1,12 @@
-package home.mutant.deep.model;
+package home.mutant.deep.neurons;
+
+import home.mutant.deep.abstracts.Neuron;
+import home.mutant.deep.ui.Image;
 
 
-public class BinaryNeuron
+public class BinaryNeuron implements Neuron
 {
-	private long[] weights = null;
+	public long[] weights = null;
 	public int noSynapses=0;
 	public BinaryNeuron(int noSynapses)
 	{
@@ -16,18 +19,10 @@ public class BinaryNeuron
 		weights = new long[noLongs];
 	}
 	
-	public void setWeights(long[] initWeights)
-	{
-		int length = initWeights.length;
-		if (weights.length<length)
-		{
-			length = weights.length;
-		}
-		System.arraycopy(initWeights, 0, weights, 0, length);
-	}
 	
-	public long calculateOutput(long[] inputs)
+	public long calculateOutput(Image image)
 	{
+		long[] inputs = image.getDataBinary();
 		long sum = 0;
 		for (int i = 0; i < inputs.length; i++) 
 		{

@@ -1,13 +1,18 @@
-package home.mutant.deep.model;
+package home.mutant.deep.networks;
 
 
+import home.mutant.deep.abstracts.Neuron;
+import home.mutant.deep.neurons.BinaryNeuron;
+import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.MathUtils;
 
+import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Map;
 
-public class TwoFullConnectedLayersBinary implements RecognizerGenerator
+public class TwoFullConnectedLayersBinary
 {
-	public BinaryNeuron[] neurons;
+	public Neuron[] neurons;
 	int firstFreeSlot = 0;
 	public TwoFullConnectedLayersBinary(int topLayerNeurons, int bottomLayerNeuron)
 	{
@@ -16,6 +21,22 @@ public class TwoFullConnectedLayersBinary implements RecognizerGenerator
 			neurons[i] = new BinaryNeuron(bottomLayerNeuron);
 		}
 	}
+	public TwoFullConnectedLayersBinary(int topLayerNeurons, int bottomLayerNeuron, Class<? extends Neuron> clazz)
+	{
+		neurons = (Neuron[])Array.newInstance(clazz, topLayerNeurons);
+		try 
+		{
+			for (int i = 0; i < neurons.length; i++) 
+			{
+				neurons[i] = clazz.getConstructor(int.class).newInstance(bottomLayerNeuron);
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void randomize()
 	{
 		for (int i = 0; i < neurons.length; i++) {
@@ -54,7 +75,7 @@ public class TwoFullConnectedLayersBinary implements RecognizerGenerator
 	{
 		double[] output = new double[neurons.length];
 		for (int i = 0; i < neurons.length; i++) {
-			output[i] = neurons[i].calculateOutput(image.getDataBinary());
+			output[i] = neurons[i].calculateOutput(image);
 		}
 //		if (applySigmoid)
 //		{
@@ -79,16 +100,34 @@ public class TwoFullConnectedLayersBinary implements RecognizerGenerator
 	{
 		double[] output = new double[neurons.length];
 		for (int i = 0; i < neurons.length; i++) {
-			output[i] = neurons[i].calculateOutput(image.getDataBinary());
+			output[i] = neurons[i].calculateOutput(image);
 		}
 		return MathUtils.indexMax(output);
+	}
+	
+	public List<Integer> forwardStepMultipleIndex(Image image, int numberIndexes)
+	{
+		double[] output = new double[neurons.length];
+		for (int i = 0; i < neurons.length; i++) {
+			output[i] = neurons[i].calculateOutput(image);
+		}
+		return MathUtils.indexMaxMultiple(numberIndexes,output);
+	}
+	
+	public Map<Integer,Double> forwardStepMultipleIndexWithValues(Image image, int numberIndexes)
+	{
+		double[] output = new double[neurons.length];
+		for (int i = 0; i < neurons.length; i++) {
+			output[i] = neurons[i].calculateOutput(image);
+		}
+		return MathUtils.indexMaxMultipleWithValues(numberIndexes,output);
 	}
 	
 	public long forwardStepMax(Image image)
 	{
 		long[] output = new long[neurons.length];
 		for (int i = 0; i < neurons.length; i++) {
-			output[i] = neurons[i].calculateOutput(image.getDataBinary());
+			output[i] = neurons[i].calculateOutput(image);
 		}
 		return MathUtils.max(output);
 	}
@@ -97,7 +136,7 @@ public class TwoFullConnectedLayersBinary implements RecognizerGenerator
 	{
 		long [] output = new long[neurons.length];
 		for (int i = 0; i < neurons.length; i++) {
-			output[i] = neurons[i].calculateOutput(image.getDataBinary());
+			output[i] = neurons[i].calculateOutput(image);
 		}
 		int indexMax = MathUtils.indexMax(output);
 		byte[] outByte = new byte[output.length]; 

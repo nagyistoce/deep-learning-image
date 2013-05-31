@@ -1,4 +1,4 @@
-package home.mutant.deep.model;
+package home.mutant.deep.ui;
 
 import home.mutant.deep.utils.ImageUtils;
 
@@ -53,7 +53,7 @@ public class Image
 				data[index]=1;
 			}
 		}
-		binaryData = new long[dataBinary.length];
+		binaryData =new long[dataBinary.length];
 		System.arraycopy(dataBinary, 0, binaryData, 0, dataBinary.length);
 	}
 	public Image(double[] data) 
