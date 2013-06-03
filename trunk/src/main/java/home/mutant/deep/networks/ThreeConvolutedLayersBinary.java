@@ -1,5 +1,6 @@
 package home.mutant.deep.networks;
 
+import home.mutant.deep.abstracts.Neuron;
 import home.mutant.deep.ui.Image;
 
 import java.util.List;
@@ -7,13 +8,13 @@ import java.util.List;
 public class ThreeConvolutedLayersBinary 
 {
 	public TwoConvolutedLayersBinary bottom;
-	public TwoFullConnectedLayersBinary top;
+	public TwoFullConnectedLayers top;
 	
-	public ThreeConvolutedLayersBinary(int bottomXYDimension, int columnXYDimensionBottom, int columnXYDimensionTop, int topNeurons)
+	public ThreeConvolutedLayersBinary(int bottomXYDimension, int columnXYDimensionBottom, int columnXYDimensionTop, int topNeurons, Class<? extends Neuron> clazz)
 	{
-		bottom = new TwoConvolutedLayersBinary(columnXYDimensionBottom, columnXYDimensionTop);
+		bottom = new TwoConvolutedLayersBinary(columnXYDimensionBottom, columnXYDimensionTop, clazz);
 		int ratio = bottomXYDimension/columnXYDimensionBottom;
-		top = new TwoFullConnectedLayersBinary(topNeurons, columnXYDimensionTop*columnXYDimensionTop*ratio*ratio);
+		top = new TwoFullConnectedLayers(topNeurons, columnXYDimensionTop*columnXYDimensionTop*ratio*ratio, clazz);
 	}
 	public void initWeightsFromImages(List<Image> images)
 	{

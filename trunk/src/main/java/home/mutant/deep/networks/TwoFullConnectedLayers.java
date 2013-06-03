@@ -2,26 +2,19 @@ package home.mutant.deep.networks;
 
 
 import home.mutant.deep.abstracts.Neuron;
-import home.mutant.deep.neurons.BinaryNeuron;
+import home.mutant.deep.model.IndexValue;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.MathUtils;
 
 import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Map;
 
-public class TwoFullConnectedLayersBinary
+public class TwoFullConnectedLayers
 {
 	public Neuron[] neurons;
 	int firstFreeSlot = 0;
-	public TwoFullConnectedLayersBinary(int topLayerNeurons, int bottomLayerNeuron)
-	{
-		neurons = new BinaryNeuron[topLayerNeurons];
-		for (int i = 0; i < neurons.length; i++) {
-			neurons[i] = new BinaryNeuron(bottomLayerNeuron);
-		}
-	}
-	public TwoFullConnectedLayersBinary(int topLayerNeurons, int bottomLayerNeuron, Class<? extends Neuron> clazz)
+
+	public TwoFullConnectedLayers(int topLayerNeurons, int bottomLayerNeuron, Class<? extends Neuron> clazz)
 	{
 		neurons = (Neuron[])Array.newInstance(clazz, topLayerNeurons);
 		try 
@@ -114,7 +107,7 @@ public class TwoFullConnectedLayersBinary
 		return MathUtils.indexMaxMultiple(numberIndexes,output);
 	}
 	
-	public Map<Integer,Double> forwardStepMultipleIndexWithValues(Image image, int numberIndexes)
+	public List<IndexValue> forwardStepMultipleIndexWithValues(Image image, int numberIndexes)
 	{
 		double[] output = new double[neurons.length];
 		for (int i = 0; i < neurons.length; i++) {

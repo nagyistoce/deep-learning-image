@@ -2,6 +2,7 @@ package home.mutant.deep.mains;
 
 
 import home.mutant.deep.networks.ThreeConvolutedLayersBinary;
+import home.mutant.deep.neurons.BinaryNeuron;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.ImageUtils;
@@ -25,16 +26,16 @@ public class MainConvolutedBinary
 
 	private void run()
 	{
-		ThreeConvolutedLayersBinary model = new ThreeConvolutedLayersBinary(28,4,50,60000);
-		System.out.println("START");
-		model.initWeightsFromImages(trainImages.subList(0, 20000));
+		ThreeConvolutedLayersBinary model = new ThreeConvolutedLayersBinary(28,7,350,6000, BinaryNeuron.class);
+		model.initWeightsFromImages(trainImages.subList(0, 6000));
 		ResultFrame frame = new ResultFrame(1600, 600);
-		//frame.showBinaryColumn(model.bottom.column);
+		frame.showBinaryColumn(model.bottom.column);
 		//frame.showImage(model.bottom.reconstruct(testImages.get(0)));
-		frame.showImage(model.bottom.forwardStep(testImages.get(0)));
+		//frame.showImage(testImages.get(0));
+		//frame.showImage(model.bottom.forwardStep(testImages.get(0)));
 		int missed=0;
 		int total=0;
-		for (int test = 0; test<100; test++)
+		for (int test = 0; test<1000; test++)
 		{
 			total++;
 			int indexMax = model.forwardStepIndex(testImages.get(test));
@@ -42,8 +43,9 @@ public class MainConvolutedBinary
 			if (testLabels.get(test)!=trainLabels.get(indexMax))
 			{
 				missed++;
+				System.out.println("Label is " +testLabels.get(test)+", model says "+trainLabels.get(indexMax));
 			}
-			System.out.println("Label is " +testLabels.get(test)+", model says "+trainLabels.get(indexMax));
+			
 			if (test%100==99)
 			{
 				System.out.println("Error rate "+missed*100./total);

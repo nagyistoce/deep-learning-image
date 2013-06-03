@@ -1,5 +1,7 @@
 package home.mutant.deep.utils;
 
+import home.mutant.deep.ui.Image;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,6 +68,29 @@ public class ImageUtils
 		}
 		return labels;
 	}
+	
+	public static List<Image> readMnistAsImage(String imageResourcePath)
+	{
+		List<byte[][]> bytes = readMnist(imageResourcePath);
+		List<Image> images = new ArrayList<Image>();
+		for (byte[][] bs : bytes) 
+		{
+			images.add(new Image(bs));
+		}
+		return images;
+	}
+	
+	public static List<Image> readMnistAsBWImage(String imageResourcePath)
+	{
+		List<byte[]> bytes =convertToBW(readMnist(imageResourcePath));
+		List<Image> images = new ArrayList<Image>();
+		for (byte[] bs : bytes) 
+		{
+			images.add(new Image(bs));
+		}
+		return images;
+	}
+	
 	public static List<byte[][]> readMnist(String imageResourcePath)
 	{
 		List<byte[][]> images = new ArrayList<byte[][]>();
@@ -119,15 +144,15 @@ public class ImageUtils
 			{
 				for (int j = 0;j<28;j++)
 				{
-					if (image[j][i]!=0)
+					if (image[i][j]!=0)
 					{
-						newImage[offset++]=(byte) 1;
-						image[j][i]=(byte) 1;
+						newImage[offset++]=(byte) 255;
+						image[i][j]=(byte) 255;
 					}
 					else
 					{
 						newImage[offset++]=(byte) 0;
-						image[j][i]=(byte) 0;
+						image[i][j]=(byte) 0;
 					}
 				}				
 			}

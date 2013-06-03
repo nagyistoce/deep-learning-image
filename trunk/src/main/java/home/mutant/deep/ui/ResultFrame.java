@@ -1,7 +1,7 @@
 package home.mutant.deep.ui;
 
 import home.mutant.deep.model.ModelTestResult;
-import home.mutant.deep.networks.TwoFullConnectedLayersBinary;
+import home.mutant.deep.networks.TwoFullConnectedLayers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ public class ResultFrame extends JFrame
 		repaint();
 	}
 	
-	public ModelTestResult showOutput(TwoFullConnectedLayersBinary model, Image image, List<Integer> labels)
+	public ModelTestResult showOutput(TwoFullConnectedLayers model, Image image, List<Integer> labels)
 	{
 		return showImage(new Image(model.forwardStep(image,true), 300, 300), labels);
 	}
@@ -127,7 +127,24 @@ public class ResultFrame extends JFrame
 		repaint();
 	}
 	
-	public void showBinaryColumn(TwoFullConnectedLayersBinary column)
+	public void showImages(List<Image> images, int index)
+	{
+		drawingPanel.empty();
+		for (int n1=0;n1<20;n1++)
+		{
+			byte[][] image = images.get(index+n1).getDataTwoDimensional();
+			for (int i =0;i<28;i++)
+			{
+				for (int j=0;j<28;j++)
+				{
+					drawingPanel.setPixel(j+n1*28,i,image[i][j]);
+				}
+			}
+		}
+		repaint();
+	}
+	
+	public void showBinaryColumn(TwoFullConnectedLayers column)
 	{
 		drawingPanel.empty();
 		for (int index=0;index<300;index++)
@@ -139,9 +156,9 @@ public class ResultFrame extends JFrame
 	
 	public void putImage(Image image, int xOffset, int yOffset)
 	{
-		for (int y=0;y<image.imageY;y++)
+		for (int x=0;x<image.imageX;x++)
 		{
-			for (int x=0;x<image.imageX;x++)
+			for (int y=0;y<image.imageY;y++)
 			{
 				if (image.getPixel(x, y)!=0)
 				{

@@ -1,17 +1,18 @@
 package home.mutant.deep.networks;
 
+import home.mutant.deep.abstracts.Neuron;
 import home.mutant.deep.ui.Image;
 
 import java.util.List;
 
 public class TwoConvolutedLayersBinary 
 {
-	public TwoFullConnectedLayersBinary column; 
+	public TwoFullConnectedLayers column; 
 	int columnXYDimensionBottom;
 	int columnXYDimensionTop;
-	public TwoConvolutedLayersBinary(int columnXYDimensionBottom, int columnXYDimensionTop)
+	public TwoConvolutedLayersBinary(int columnXYDimensionBottom, int columnXYDimensionTop, Class<? extends Neuron> clazz)
 	{
-		column = new  TwoFullConnectedLayersBinary(columnXYDimensionTop*columnXYDimensionTop, columnXYDimensionBottom*columnXYDimensionBottom);
+		column = new  TwoFullConnectedLayers(columnXYDimensionTop*columnXYDimensionTop, columnXYDimensionBottom*columnXYDimensionBottom,clazz);
 		this.columnXYDimensionBottom = columnXYDimensionBottom;
 		this.columnXYDimensionTop = columnXYDimensionTop;
 	}
@@ -27,9 +28,8 @@ public class TwoConvolutedLayersBinary
 					Image subImage = image.extractImage(xIndex, yIndex, columnXYDimensionBottom, columnXYDimensionBottom);
 					long max = column.forwardStepMax(subImage);
 					
-					if (max<columnXYDimensionBottom*columnXYDimensionBottom-1)
+					if (max<columnXYDimensionBottom*columnXYDimensionBottom-3)
 					{
-						System.out.println(max);
 						column.initWeightsFromOneImage(subImage);
 					}
 				}
