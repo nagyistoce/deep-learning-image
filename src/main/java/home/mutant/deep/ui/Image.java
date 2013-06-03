@@ -60,11 +60,24 @@ public class Image
 	{
 		this(data, (int)Math.sqrt(data.length), (int)Math.sqrt(data.length));
 	}
+	public Image(byte[][] bs) 
+	{
+		this.imageX = bs.length;
+		this.imageY = bs[0].length;
+		this.data = new byte[imageX*imageY];
+		int offset=0;
+		for (int x=0;x<imageX;x++) 
+		{
+			for (int y=0;y<imageY;y++)
+			{
+				data[offset++] = bs[x][y];
+			}
+		}
+	}
 	public byte[] getDataOneDimensional()
 	{
 		return data;
 	}
-	
 	
 	public byte[][] getDataTwoDimensional()
 	{
@@ -123,19 +136,21 @@ public class Image
 	}
 	public long[] getDataBinary() 
 	{
-		if (binaryData == null)
+		if (binaryData!=null)
 		{
-			int length = imageX*imageY;
-			if (length%64!=0)
-			{
-				length = length/64 +1;
-			}
-			else
-			{
-				length = length/64;
-			}
-			binaryData = new long[length];
+			return binaryData;
 		}
+
+		int length = imageX*imageY;
+		if (length%64!=0)
+		{
+			length = length/64 +1;
+		}
+		else
+		{
+			length = length/64;
+		}
+		binaryData = new long[length];
 		long indexBit = 0;
 		int indexLong = 0;
 		for (int i = 0; i < data.length; i++) 

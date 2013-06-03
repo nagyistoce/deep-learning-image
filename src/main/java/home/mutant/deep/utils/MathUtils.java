@@ -1,5 +1,7 @@
 package home.mutant.deep.utils;
 
+import home.mutant.deep.model.IndexValue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -187,7 +189,7 @@ public class MathUtils
 		}
 		return indexToInsert;
 	}
-	public static Map<Integer, Double> indexMaxMultipleWithValues(int numberMax, double[] output) 
+	public static List<IndexValue> indexMaxMultipleWithValues(int numberMax, double[] output) 
 	{
 		List<Integer> resIndex = new ArrayList<Integer>();
 		List<Double> resValues = new ArrayList<Double>();
@@ -200,11 +202,11 @@ public class MathUtils
 			}
 		}
 		
-		Map<Integer, Double> res = new HashMap<Integer, Double>();
+		List<IndexValue> res = new ArrayList<IndexValue>();
 		resIndex =  resIndex.subList(0, numberMax);
 		for (int indexRes=0;indexRes<resIndex.size();indexRes++) 
 		{
-			res.put(resIndex.get(indexRes), resValues.get(indexRes));
+			res.add(new IndexValue(resIndex.get(indexRes), resValues.get(indexRes)));
 		}
 		return res;
 	}

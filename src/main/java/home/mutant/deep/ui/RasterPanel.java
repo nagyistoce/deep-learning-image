@@ -67,7 +67,7 @@ public class RasterPanel extends JPanel
 	public void setPixel(int x, int y, byte greyScale)
 	{
 		int maxIndex = height *width;
-		int index= width*y+x % maxIndex;
+		int index= (width*y+x) % maxIndex;
 		pixels[index] = 0xFF000000+greyScale + (greyScale<<8) + (greyScale<<16);
 	}
 	
