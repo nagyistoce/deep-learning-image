@@ -27,8 +27,7 @@ public class TwoConvolutedLayersBinary
 				{
 					Image subImage = image.extractImage(xIndex, yIndex, columnXYDimensionBottom, columnXYDimensionBottom);
 					long max = column.forwardStepMax(subImage);
-					
-					if (max<columnXYDimensionBottom*columnXYDimensionBottom-3)
+					if (max<columnXYDimensionBottom*columnXYDimensionBottom)
 					{
 						column.initWeightsFromOneImage(subImage);
 					}
@@ -45,7 +44,7 @@ public class TwoConvolutedLayersBinary
 			for (int yIndex=0;yIndex<ratio;yIndex+=1)
 			{
 				Image subImage = image.extractImage(xIndex*columnXYDimensionBottom, yIndex*columnXYDimensionBottom, columnXYDimensionBottom, columnXYDimensionBottom);
-				Image subImageForwarded = column.forwardStepImageMax(subImage);
+				Image subImageForwarded = column.forwardStepImageThreshold(subImage,columnXYDimensionBottom*columnXYDimensionBottom-10);
 				ret.pasteImage(subImageForwarded, xIndex*columnXYDimensionTop, yIndex*columnXYDimensionTop);
 			}
 		}

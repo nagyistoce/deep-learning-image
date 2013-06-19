@@ -210,4 +210,38 @@ public class MathUtils
 		}
 		return res;
 	}
+	public static int getMaxAverage(List<IndexValue> indexes,List<Integer> trainLabels)
+	{
+		Map<Integer, Double> average = new HashMap<Integer,Double>();
+		for (IndexValue indexValue : indexes) 
+		{
+			if (average.get(trainLabels.get(indexValue.index))==null)
+			{
+				average.put(trainLabels.get(indexValue.index),0.);
+			}
+			average.put(trainLabels.get(indexValue.index),average.get(trainLabels.get(indexValue.index))+indexValue.value*indexValue.value);
+		}
+		
+		double max=0;
+		int label=-1;
+		for (Integer key : average.keySet()) 
+		{
+			if (max<average.get(key))
+			{
+				max = average.get(key);
+				label = key;
+			}
+		}
+		return label;
+	}
+	
+	public static String printIndexes(List<IndexValue> indexes, List<Integer> trainLabels)
+	{
+		String res="";
+		for (IndexValue indexVal: indexes) 
+		{
+			res+=trainLabels.get(indexVal.index)+":"+indexVal.value+ ", ";
+		}
+		return res;
+	}
 }

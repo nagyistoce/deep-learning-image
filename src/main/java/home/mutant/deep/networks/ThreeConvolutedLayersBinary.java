@@ -1,6 +1,7 @@
 package home.mutant.deep.networks;
 
 import home.mutant.deep.abstracts.Neuron;
+import home.mutant.deep.model.IndexValue;
 import home.mutant.deep.ui.Image;
 
 import java.util.List;
@@ -30,6 +31,12 @@ public class ThreeConvolutedLayersBinary
 	{
 		Image bottomGenerated = bottom.forwardStep(image);
 		return top.forwardStepMax(bottomGenerated);
+	}
+	
+	public List<IndexValue> forwardStepMultipleIndexWithValues(Image image, int numberIndexes)
+	{
+		Image bottomGenerated = bottom.forwardStep(image);
+		return top.forwardStepMultipleIndexWithValues(bottomGenerated, numberIndexes);
 	}
 	public Image forwardStep(Image image)
 	{
