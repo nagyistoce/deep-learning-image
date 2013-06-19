@@ -8,12 +8,11 @@ import home.mutant.deep.neurons.BinaryNeuron;
 import home.mutant.deep.neurons.ByteNeuron;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.ImageUtils;
+import home.mutant.deep.utils.MathUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainTwoLayers
 {
@@ -26,7 +25,7 @@ public class MainTwoLayers
 	public Style style=Style.BW;
 	public static void main(String[] args) throws IOException
 	{
-		new MainTwoLayers(Style.GREY).run();
+		new MainTwoLayers(Style.BW).run();
 	}
 
 	private void run()
@@ -45,16 +44,16 @@ public class MainTwoLayers
 		int missedAverage=0;
 		int missedMax=0;
 		int total=0;
-		for (int test = 0; test<1000; test++)
+		for (int test = 0; test<10000; test++)
 		{
 			total++;
 			//int indexMax = model.forwardStepIndex(testImages.get(test));
 			List<IndexValue> indexes=model.forwardStepMultipleIndexWithValues(testImages.get(test), 10);
 			//if (testLabels.get(test)!=trainLabels.get(indexes.get(0).index))
-			if (testLabels.get(test)!=getMaxAverage(indexes))
+			if (testLabels.get(test)!=MathUtils.getMaxAverage(indexes,trainLabels))
 			{
 				missedAverage++;
-				System.out.println("AVERAGE Label is " +testLabels.get(test)+", model says "+printIndexes(indexes));
+				System.out.println("AVERAGE Label is " +testLabels.get(test)+", model says "+MathUtils.printIndexes(indexes, trainLabels));
 			}
 			if (testLabels.get(test)!=trainLabels.get(indexes.get(0).index))
 			{
@@ -69,41 +68,7 @@ public class MainTwoLayers
 		}
 	}
 	
-	public String printIndexes(List<IndexValue> indexes)
-	{
-		String res="";
-		for (IndexValue indexVal: indexes) 
-		{
-			res+=trainLabels.get(indexVal.index)+":"+indexVal.value+ ", ";
-		}
-		return res;
-	}
-	
-	public int getMaxAverage(List<IndexValue> indexes)
-	{
-		Map<Integer, Double> average = new HashMap<Integer,Double>();
-		for (IndexValue indexValue : indexes) 
-		{
-			if (average.get(trainLabels.get(indexValue.index))==null)
-			{
-				average.put(trainLabels.get(indexValue.index),0.);
-			}
-			average.put(trainLabels.get(indexValue.index),average.get(trainLabels.get(indexValue.index))+indexValue.value*indexValue.value);
-		}
-		
-		double max=0;
-		int label=-1;
-		for (Integer key : average.keySet()) 
-		{
-			if (max<average.get(key))
-			{
-				max = average.get(key);
-				label = key;
-			}
-		}
-		return label;
-	}
-	
+
 	public MainTwoLayers(Style style) throws IOException
 	{
 		this.style = style;

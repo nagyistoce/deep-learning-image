@@ -136,7 +136,18 @@ public class TwoFullConnectedLayers
 		outByte[indexMax] = 1;
 		return new Image(outByte);
 	}
-	
+
+	public Image forwardStepImageThreshold(Image image, int threshold)
+	{
+		byte[] outByte = new byte[neurons.length]; 
+		for (int i = 0; i < neurons.length; i++) {
+			if(neurons[i].calculateOutput(image)>threshold)
+			{
+				outByte[i] = 1;
+			}
+		}
+		return new Image(outByte);
+	}
 	private Integer noSamplesForThreshold(double[] output, Integer threshold)
 	{
 		Integer ret=0;
@@ -165,7 +176,6 @@ public class TwoFullConnectedLayers
 		firstFreeSlot++;
 		if (firstFreeSlot>=neurons.length)
 		{
-			System.out.println("CUCUCUC");
 			firstFreeSlot=0;
 		}
 	}

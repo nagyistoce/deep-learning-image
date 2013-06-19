@@ -147,7 +147,7 @@ public class ResultFrame extends JFrame
 	public void showBinaryColumn(TwoFullConnectedLayers column)
 	{
 		drawingPanel.empty();
-		for (int index=0;index<300;index++)
+		for (int index=0;index<256;index++)
 		{
 			putImage(column.neurons[index].generateSample(), index*5, 3);
 		}
