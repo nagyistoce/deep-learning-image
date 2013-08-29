@@ -160,10 +160,7 @@ public class ResultFrame extends JFrame
 		{
 			for (int y=0;y<image.imageY;y++)
 			{
-				if (image.getPixel(x, y)!=0)
-				{
-					drawingPanel.setPixel(xOffset+x,yOffset+y);
-				}
+				drawingPanel.setPixel(xOffset+x,yOffset+y,image.getPixel(x, y));
 			}
 		}
 	}

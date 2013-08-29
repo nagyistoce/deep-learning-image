@@ -210,7 +210,7 @@ public class MathUtils
 		}
 		return res;
 	}
-	public static int getMaxAverage(List<IndexValue> indexes,List<Integer> trainLabels)
+	public static int getMaxFromAverage(List<IndexValue> indexes,List<Integer> trainLabels)
 	{
 		Map<Integer, Double> average = new HashMap<Integer,Double>();
 		for (IndexValue indexValue : indexes) 
@@ -235,6 +235,20 @@ public class MathUtils
 		return label;
 	}
 	
+	public static int getKeyForMaxValue(Map<Integer, Integer> map)
+	{
+		int max=Integer.MIN_VALUE;
+		int label=-1;
+		for (Integer key : map.keySet()) 
+		{
+			if (max<map.get(key))
+			{
+				max = map.get(key);
+				label = key;
+			}
+		}
+		return label;
+	}
 	public static String printIndexes(List<IndexValue> indexes, List<Integer> trainLabels)
 	{
 		String res="";
@@ -243,5 +257,19 @@ public class MathUtils
 			res+=trainLabels.get(indexVal.index)+":"+indexVal.value+ ", ";
 		}
 		return res;
+	}
+	public static IndexValue indexValueMax(double[] output) 
+	{
+		double max = Double.NEGATIVE_INFINITY;
+		int indexMax=-1;
+		for (int out=0;out<output.length;out++)
+		{
+			if (output[out]>max)
+			{
+				max = output[out];
+				indexMax = out;
+			}
+		}
+		return new IndexValue(indexMax, max);
 	}
 }

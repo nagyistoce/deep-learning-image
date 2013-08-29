@@ -30,6 +30,12 @@ public class MainTwoLayers
 
 	private void run()
 	{
+		//runMaxAndAverage();
+		runMaxForAffine();
+	}
+	
+	private void runMaxAndAverage()
+	{
 		Class<? extends Neuron> clazz = null;
 		if (style == Style.BW)
 		{
@@ -50,7 +56,7 @@ public class MainTwoLayers
 			//int indexMax = model.forwardStepIndex(testImages.get(test));
 			List<IndexValue> indexes=model.forwardStepMultipleIndexWithValues(testImages.get(test), 10);
 			//if (testLabels.get(test)!=trainLabels.get(indexes.get(0).index))
-			if (testLabels.get(test)!=MathUtils.getMaxAverage(indexes,trainLabels))
+			if (testLabels.get(test)!=MathUtils.getMaxFromAverage(indexes,trainLabels))
 			{
 				missedAverage++;
 				System.out.println("AVERAGE Label is " +testLabels.get(test)+", model says "+MathUtils.printIndexes(indexes, trainLabels));
@@ -67,7 +73,30 @@ public class MainTwoLayers
 			}
 		}
 	}
-	
+
+	private void runMaxForAffine()
+	{
+		Class<? extends Neuron> clazz = null;
+		if (style == Style.BW)
+		{
+			clazz = BinaryNeuron.class;
+		}
+		else
+		{
+			clazz = ByteNeuron.class;
+		}
+		TwoFullConnectedLayers model = new TwoFullConnectedLayers(300*200, 28*28,clazz);
+		model.initWeightsFromImages(trainImages.subList(0, 60000));
+		RunnerTwoLayers runner1 = new RunnerTwoLayers(model,testImages.subList(0, 2500),testLabels.subList(0, 2500),trainLabels);
+		RunnerTwoLayers runner2 = new RunnerTwoLayers(model,testImages.subList(2500, 5000),testLabels.subList(2500, 5000),trainLabels);
+		RunnerTwoLayers runner3 = new RunnerTwoLayers(model,testImages.subList(5000, 7500),testLabels.subList(5000, 7500),trainLabels);
+		RunnerTwoLayers runner4 = new RunnerTwoLayers(model,testImages.subList(7500, 10000),testLabels.subList(7500, 10000),trainLabels);
+		runner1.join();
+		runner2.join();
+		runner3.join();
+		runner4.join();
+		System.out.println("FINAL Error rate  "+String.format( "%.2f", (runner1.missedMax+runner2.missedMax+runner3.missedMax+runner4.missedMax)*100./10000)+"%");
+	}
 
 	public MainTwoLayers(Style style) throws IOException
 	{

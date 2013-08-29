@@ -98,6 +98,15 @@ public class TwoFullConnectedLayers
 		return MathUtils.indexMax(output);
 	}
 	
+	public IndexValue forwardStepIndexValue(Image image)
+	{
+		double[] output = new double[neurons.length];
+		for (int i = 0; i < neurons.length; i++) {
+			output[i] = neurons[i].calculateOutput(image);
+		}
+		return MathUtils.indexValueMax(output);
+	}
+	
 	public List<Integer> forwardStepMultipleIndex(Image image, int numberIndexes)
 	{
 		double[] output = new double[neurons.length];
