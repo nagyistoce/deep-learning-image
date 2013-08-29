@@ -2,6 +2,9 @@ package home.mutant.deep.utils;
 
 import home.mutant.deep.ui.Image;
 
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -125,7 +128,7 @@ public class ImageUtils
 			{
 				for (int j = 0;j<28;j++)
 				{
-					image[j][i] = bRead[offsetRead++];
+					image[i][j] = bRead[offsetRead++];
 				}				
 			}
 			images.add(image);
@@ -186,5 +189,36 @@ public class ImageUtils
 			}		
 		}
 		return dividedImages;
+	}
+	public static Image affineTransform(Image image, int offsetX, int offsetY, double theta)
+	{
+		AffineTransform tx = new AffineTransform();
+		tx.translate(offsetX, offsetY);
+		tx.rotate(theta, image.imageX/2, image.imageY/2);
+		Image dest = new Image(image.imageX, image.imageY);
+		for (int x=0;x<dest.imageX;x++)
+		{
+			for (int y=0;y<dest.imageY;y++)
+			{
+				Point ptDst = new Point(x, y);
+				try 
+				{
+					tx.inverseTransform(new Point(x, y), ptDst);
+					if (ptDst.x>=0 && ptDst.x<image.imageX && ptDst.y>=0 && ptDst.y<image.imageY)
+					{
+						dest.setPixel(x, y, image.getPixel(ptDst.x, ptDst.y));
+					}
+					else
+					{
+						dest.setPixel(x, y, (byte)0);
+					}
+				} 
+				catch (NoninvertibleTransformException e) 
+				{
+					dest.setPixel(x, y, (byte)0);
+				}
+			}
+		}
+		return dest;
 	}
 }

@@ -70,7 +70,7 @@ public class MainConvolutedBinary
 			int indexMax = model.forwardStepIndex(testImages.get(test));
 			List<IndexValue> indexes=model.forwardStepMultipleIndexWithValues(testImages.get(test), 7);
 			//if (testLabels.get(test)!=trainLabels.get(indexes.get(0).index))
-			if (testLabels.get(test)!=MathUtils.getMaxAverage(indexes, trainLabels))
+			if (testLabels.get(test)!=MathUtils.getMaxFromAverage(indexes, trainLabels))
 			{
 				missedAverage++;
 				System.out.println("+++++++ average Label is " +testLabels.get(test)+", model says "+MathUtils.printIndexes(indexes, trainLabels));
