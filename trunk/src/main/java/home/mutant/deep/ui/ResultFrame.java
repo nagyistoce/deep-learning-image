@@ -143,6 +143,11 @@ public class ResultFrame extends JFrame
 		}
 		repaint();
 	}
+
+	public void showImages(List<Image> images)
+	{
+		showImages(images, 0);
+	}
 	
 	public void showBinaryColumn(TwoFullConnectedLayers column)
 	{
