@@ -25,11 +25,11 @@ public class ByteNeuron implements Neuron
 			int in = inputs[i];
 			if (w<0)
 			{
-				w = 256+w;
+				w += 256;
 			}
 			if (in<0)
 			{
-				in = 256+in;
+				in += 256;
 			}		
 			int j = Math.abs(w-in);
 			sum+=256-j;
@@ -58,4 +58,33 @@ public class ByteNeuron implements Neuron
 		weights = image.getDataOneDimensional();
 	}
 
+	/**
+	 * Just pull the weights toward inputs
+	 */
+	public void updateWeightsFromImage(Image image) 
+	{
+		byte[] inputs = image.getDataOneDimensional();
+		for (int i = 0; i < weights.length; i++) 
+		{
+			if (inputs[i]>weights[i])
+			{
+				weights[i]++;
+			}
+			else
+			{
+				weights[i]--;
+			}
+		}
+	}
+
+	public void decayWeights() 
+	{
+		for (int i = 0; i < weights.length; i++) 
+		{
+			if (weights[i]>-128)
+			{
+				weights[i]--;
+			}
+		}
+	}
 }

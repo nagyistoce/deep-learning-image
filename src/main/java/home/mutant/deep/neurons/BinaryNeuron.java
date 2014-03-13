@@ -54,4 +54,17 @@ public class BinaryNeuron implements Neuron
 	{
 		weights = image.getDataBinary();
 	}
+
+	public void updateWeightsFromImage(Image image) 
+	{
+		initWeightsFromImage(image);
+	}
+
+	public void decayWeights()
+	{
+		for (int i = 0; i < weights.length; i++) 
+		{
+			weights[i]=0;
+		}
+	}
 }

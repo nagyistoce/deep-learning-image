@@ -157,6 +157,21 @@ public class TwoFullConnectedLayers
 		}
 		return new Image(outByte);
 	}
+	
+	public Image forwardStepImageLearning(Image image, int threshold)
+	{
+		byte[] outByte = new byte[neurons.length]; 
+		for (int i = 0; i < neurons.length; i++) 
+		{
+			if(neurons[i].calculateOutput(image)>threshold)
+			{
+				outByte[i] = 1;
+				neurons[i].updateWeightsFromImage(image);
+			}
+		}
+		return new Image(outByte);
+	}
+	
 	private Integer noSamplesForThreshold(double[] output, Integer threshold)
 	{
 		Integer ret=0;
