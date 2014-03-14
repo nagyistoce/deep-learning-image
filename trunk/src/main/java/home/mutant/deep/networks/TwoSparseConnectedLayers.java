@@ -22,12 +22,13 @@ public class TwoSparseConnectedLayers
 	 * 					columnXYDimensionTop*columnXYDimensionTop output neurons for a column	
 	 * @param clazz
 	 */
-	public TwoSparseConnectedLayers(int columnXYDimensionBottom, int columnXYDimensionTop, Class<? extends Neuron> clazz)
+	public TwoSparseConnectedLayers(int columnXYDimensionTop, int columnXYDimensionBottom, Class<? extends Neuron> clazz)
 	{
 		column = new  TwoFullConnectedLayers(columnXYDimensionTop*columnXYDimensionTop, columnXYDimensionBottom*columnXYDimensionBottom,clazz);
 		this.columnXYDimensionBottom = columnXYDimensionBottom;
 		this.columnXYDimensionTop = columnXYDimensionTop;
 	}
+	
 	public void randomize()
 	{
 		for (int i = 0; i < column.neurons.length; i++) {
@@ -47,7 +48,7 @@ public class TwoSparseConnectedLayers
 	 */
 	public Image forwardStep(Image image)
 	{
-		Image subImage = image.extractImage(0, 0, columnXYDimensionBottom, columnXYDimensionBottom);
-		return column.forwardStepImageLearning(subImage, columnXYDimensionBottom*columnXYDimensionBottom-10);
+		//Image subImage = image.extractImage(0, 0, columnXYDimensionBottom, columnXYDimensionBottom);
+		return column.forwardStepImageLearning(image);
 	}
 }

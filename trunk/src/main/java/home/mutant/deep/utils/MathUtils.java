@@ -95,31 +95,36 @@ public class MathUtils
 		return max;
 	}
 	
-	public static Double sigmoid(double totalInput)
+	public static Double sigmoidBinary(double totalInput)
 	{
-		return (Math.random()<= 1./(1+Math.exp(-totalInput)))?1.:0;
+		return (Math.random()<= sigmoidFunction(totalInput))?1.:0;
 	}
 	
-	public static Double sigmoid(double totalInput, double threshhold)
+	public static double sigmoidFunction(double totalInput)
 	{
-		return (Math.random()<= 1./(1+Math.exp(-totalInput+threshhold)))?1.:0;
+		return  1./(1+Math.exp(-totalInput));
+	}
+	
+	public static Double sigmoidBinary(double totalInput, double threshhold)
+	{
+		return (Math.random()<= sigmoidFunction(-totalInput+threshhold))?1.:0;
 	}	
 	public static Double asymptoticToZero(double x)
 	{
 		return 10000*Math.exp(-1*x/1000.);
 	}
-	public static void sigmoid(double[] input)
+	public static void sigmoidBinary(double[] input)
 	{
 		for (int i=0; i<input.length; i++)
 		{
-			input[i] = MathUtils.sigmoid(input[i]);
+			input[i] = MathUtils.sigmoidBinary(input[i]);
 		}
 	}
-	public static void sigmoid(double[] input, double threshhold)
+	public static void sigmoidBinary(double[] input, double threshhold)
 	{
 		for (int i=0; i<input.length; i++)
 		{
-			input[i] = MathUtils.sigmoid(input[i],threshhold);
+			input[i] = MathUtils.sigmoidBinary(input[i],threshhold);
 		}
 	}
 	
