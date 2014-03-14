@@ -1,6 +1,7 @@
 package home.mutant.deep.mains;
 
 
+import home.mutant.deep.mains.MainTwoLayers.Style;
 import home.mutant.deep.model.IndexValue;
 import home.mutant.deep.networks.ThreeConvolutedLayersBinary;
 import home.mutant.deep.neurons.BinaryNeuron;
@@ -95,22 +96,6 @@ public class MainConvolutedBinary
 	}
 	public MainConvolutedBinary() throws IOException
 	{
-		loadImages();
-	}
-	private void loadImages() throws IOException
-	{
-		List<byte[]> imagesByte = ImageUtils.convertToBW(ImageUtils.readMnist("/mnist/train-images.idx3-ubyte"));
-		for (byte[] bs : imagesByte) 
-		{
-			trainImages.add(new Image(bs));
-		}
-		trainLabels = ImageUtils.readMinstLabels("/mnist/train-labels.idx1-ubyte");
-		
-		imagesByte = ImageUtils.convertToBW(ImageUtils.readMnist("/mnist/t10k-images.idx3-ubyte"));
-		for (byte[] bs : imagesByte) 
-		{
-			testImages.add(new Image(bs));
-		}
-		testLabels = ImageUtils.readMinstLabels("/mnist/t10k-labels.idx1-ubyte");
+		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, Style.BW);
 	}
 }

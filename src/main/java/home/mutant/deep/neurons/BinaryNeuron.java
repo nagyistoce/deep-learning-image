@@ -18,8 +18,7 @@ public class BinaryNeuron implements Neuron
 		this.noSynapses = noSynapses;
 		weights = new long[noLongs];
 	}
-	
-	
+
 	public long calculateOutput(Image image)
 	{
 		long[] inputs = image.getDataBinary();
@@ -28,13 +27,19 @@ public class BinaryNeuron implements Neuron
 		{
 			if (i>=weights.length)
 			{
-				return sum;
+				break;
 			}
-			sum+=Long.bitCount(~(inputs[i]^weights[i]));
+			sum+=64 - Long.bitCount(~(inputs[i]^weights[i]));
 		}
-		return sum - weights.length*64+noSynapses;
+		return sum;
 	}
 
+	public double calculateOutputProbability(Image image) 
+	{
+		double prob = calculateOutput(image);
+		return prob/weights.length;
+	}
+	
 	public void randomize() 
 	{
 		for (int index = 0; index<noSynapses;index++)
@@ -60,11 +65,15 @@ public class BinaryNeuron implements Neuron
 		initWeightsFromImage(image);
 	}
 
-	public void decayWeights()
+	public void decayWeights(Image image)
 	{
 		for (int i = 0; i < weights.length; i++) 
 		{
 			weights[i]=0;
 		}
+	}
+	public double calculateOutputDouble(Image image)
+	{
+		return (double)calculateOutput(image);
 	}
 }

@@ -2,6 +2,7 @@ package home.mutant.deep.neurons;
 
 import home.mutant.deep.abstracts.Neuron;
 import home.mutant.deep.ui.Image;
+import home.mutant.deep.utils.MathUtils;
 
 public class ByteNeuron implements Neuron 
 {
@@ -19,10 +20,10 @@ public class ByteNeuron implements Neuron
 		{
 			if (i>=weights.length)
 			{
-				return sum;
+				break;
 			}
 			int w= weights[i];
-			int in = inputs[i];
+			int in = inputs[i];	
 			if (w<0)
 			{
 				w += 256;
@@ -30,13 +31,19 @@ public class ByteNeuron implements Neuron
 			if (in<0)
 			{
 				in += 256;
-			}		
-			int j = Math.abs(w-in);
-			sum+=256-j;
+			}
+			sum+=w*in;
 		}
 		return sum;
 	}
 
+	public double calculateOutputProbability(Image image) 
+	{
+		double output = calculateOutput(image);
+		//System.out.println(prob);
+		return MathUtils.sigmoidFunction(output-3);
+	}
+	
 	@Override
 	public void randomize() 
 	{
@@ -66,25 +73,56 @@ public class ByteNeuron implements Neuron
 		byte[] inputs = image.getDataOneDimensional();
 		for (int i = 0; i < weights.length; i++) 
 		{
-			if (inputs[i]>weights[i])
+			int w = weights[i];
+			int in = inputs[i];	
+			if (w<0)
 			{
-				weights[i]++;
+				w += 256;
 			}
+			if (in<0)
+			{
+				in += 256;
+			}
+
+			if (in>w)
+			{
+				if (w<255)
+					w++;
+			}
+			else if (in<w)
+			{
+				if (w>0)
+					w--;
+			}
+			if (w>127)
+				weights[i] = (byte)(w-256);
 			else
-			{
-				weights[i]--;
-			}
+				weights[i] = (byte)w;
 		}
 	}
 
-	public void decayWeights() 
+	public void decayWeights(Image image) 
 	{
 		for (int i = 0; i < weights.length; i++) 
 		{
-			if (weights[i]>-128)
+			int w= weights[i];
+			if (w<0)
 			{
-				weights[i]--;
+				w += 256;
 			}
+
+			if (w>0)
+				w--;
+
+			if (w>127)
+				weights[i] = (byte)(w-256);
+			else
+				weights[i] = (byte)w;
 		}
+	}
+	@Override
+	public double calculateOutputDouble(Image image)
+	{
+		return (double)calculateOutput(image);
 	}
 }

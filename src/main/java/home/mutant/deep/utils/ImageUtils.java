@@ -1,5 +1,6 @@
 package home.mutant.deep.utils;
 
+import home.mutant.deep.mains.MainTwoLayers.Style;
 import home.mutant.deep.ui.Image;
 
 import java.awt.Point;
@@ -220,5 +221,21 @@ public class ImageUtils
 			}
 		}
 		return dest;
+	}
+	
+	public static void loadImages(List<Image> trainImages, List<Image> testImages, List<Integer> trainLabels, List<Integer> testLabels, Style style) throws IOException
+	{
+		trainLabels.addAll(ImageUtils.readMinstLabels("/mnist/train-labels.idx1-ubyte"));
+		testLabels.addAll(ImageUtils.readMinstLabels("/mnist/t10k-labels.idx1-ubyte"));
+		if (style == Style.BW)
+		{
+			trainImages.addAll(ImageUtils.readMnistAsBWImage("/mnist/train-images.idx3-ubyte"));
+			testImages.addAll(ImageUtils.readMnistAsBWImage("/mnist/t10k-images.idx3-ubyte"));
+		}
+		else
+		{
+			trainImages.addAll(ImageUtils.readMnistAsImage("/mnist/train-images.idx3-ubyte"));
+			testImages.addAll(ImageUtils.readMnistAsImage("/mnist/t10k-images.idx3-ubyte"));			
+		}
 	}
 }

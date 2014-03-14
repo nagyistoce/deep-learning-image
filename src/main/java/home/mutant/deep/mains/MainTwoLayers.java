@@ -101,21 +101,6 @@ public class MainTwoLayers
 	public MainTwoLayers(Style style) throws IOException
 	{
 		this.style = style;
-		loadImages();
-	}
-	private void loadImages() throws IOException
-	{
-		trainLabels = ImageUtils.readMinstLabels("/mnist/train-labels.idx1-ubyte");
-		testLabels = ImageUtils.readMinstLabels("/mnist/t10k-labels.idx1-ubyte");
-		if (style == Style.BW)
-		{
-			trainImages = ImageUtils.readMnistAsBWImage("/mnist/train-images.idx3-ubyte");
-			testImages = ImageUtils.readMnistAsBWImage("/mnist/t10k-images.idx3-ubyte");
-		}
-		else
-		{
-			trainImages = ImageUtils.readMnistAsImage("/mnist/train-images.idx3-ubyte");
-			testImages = ImageUtils.readMnistAsImage("/mnist/t10k-images.idx3-ubyte");			
-		}
+		ImageUtils.loadImages(trainImages, testImages, trainLabels, trainLabels, style);
 	}
 }
