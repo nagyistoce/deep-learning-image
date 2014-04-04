@@ -12,4 +12,6 @@ public interface Neuron
 	void 	initWeightsFromImage(Image image);
 	void 	updateWeightsFromImage(Image image);
 	void 	decayWeights(Image image);
+	int 	getOutputIndex();
+	void 	setOutputIndex(int index);
 }

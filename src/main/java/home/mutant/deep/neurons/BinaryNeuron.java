@@ -76,4 +76,18 @@ public class BinaryNeuron implements Neuron
 	{
 		return (double)calculateOutput(image);
 	}
+
+	@Override
+	public int getOutputIndex()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setOutputIndex(int index)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

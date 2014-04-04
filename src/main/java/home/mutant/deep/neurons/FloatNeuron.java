@@ -1,14 +1,15 @@
 package home.mutant.deep.neurons;
 
 import home.mutant.deep.abstracts.Neuron;
+import home.mutant.deep.mains.MainTwoSparseLayers;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.MathUtils;
 
 public class FloatNeuron implements Neuron
 {
-	public static float MAX_SYNAPSE = 100000;
-	public static float STEP_LEARNING = 1;
-	
+	public static float MAX_SYNAPSE = (float) 0.1;
+	public static float STEP_LEARNING = (float) 0.0001;
+	int outputIndex=-1;
 	public float[] weights = null;
 	public FloatNeuron(int noSynapses)
 	{
@@ -28,18 +29,25 @@ public class FloatNeuron implements Neuron
 			{
 				in+=256;
 			}
-			sum = in*weights[i];
+			float f = in*weights[i];
+
+			sum += f;
+//			if (f!=0)
+//			{
+//				System.out.println(f+" "+ sum);
+//			}
 		}
 		return  sum;
 	}
 	public long calculateOutput(Image image)
 	{
-		return (long) calculateOutput(image);
+		return (long) calculateOutputDouble(image);
 	}
 	@Override
 	public double calculateOutputProbability(Image image)
 	{
-		double output = calculateOutput(image);
+		double output = calculateOutputDouble(image);
+		//System.out.println(output);
 		return MathUtils.sigmoidFunction(output);
 	}
 
@@ -94,23 +102,51 @@ public class FloatNeuron implements Neuron
 			int in = input[i];
 			if (in==0)
 			{
-				weights[i] -= STEP_LEARNING;
+				//double diff = (weights[i]+MAX_SYNAPSE)/2;
+				//weights[i] -= 5*STEP_LEARNING;
 			}
 			else
 			{
-				weights[i] += STEP_LEARNING;
+				//double diff = (MAX_SYNAPSE-weights[i])/2;
+				weights[i] +=STEP_LEARNING;
+				if (weights[i]> MainTwoSparseLayers.max_weights)
+				{
+					MainTwoSparseLayers.max_weights = weights[i];
+					System.out.println(MainTwoSparseLayers.max_weights);
+				}
 			}
-			
 		}	
 	}
 
 	@Override
 	public void decayWeights(Image image)
 	{
-		for (int i = 0; i < weights.length; i++)
+		byte[] input = image.getDataOneDimensional();
+		for (int i = 0; i < input.length; i++)
 		{
-			weights[i] -= STEP_LEARNING;
+//			if (i>=weights.length)
+//				break;
+//			int in = input[i];
+//			if (in==0)
+//			{
+//				weights[i] += STEP_LEARNING;
+//			}
+//			else
+//			{
+				//weights[i] /= 400000000.92;
+//			}
 		}
 	}
-
+	@Override
+	public int getOutputIndex()
+	{
+		// TODO Auto-generated method stub
+		return outputIndex;
+	}
+	@Override
+	public void setOutputIndex(int index)
+	{
+		outputIndex=index;
+		
+	}
 }
