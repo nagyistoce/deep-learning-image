@@ -38,6 +38,11 @@ public class Image
 		this.imageY = y;
 	}
 	
+	public Image(int size)
+	{
+		this((int)Math.sqrt(size),(int)Math.sqrt(size));
+	}
+	
 	public Image(long[] dataBinary, int x, int y)
 	{
 		this.imageX=x;

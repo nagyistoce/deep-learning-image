@@ -46,9 +46,9 @@ public class TwoSparseConnectedLayers
 	 * @param image
 	 * @return
 	 */
-	public Image forwardStep(Image image)
+	public Image forwardStep(Image image, int indexImage)
 	{
 		//Image subImage = image.extractImage(0, 0, columnXYDimensionBottom, columnXYDimensionBottom);
-		return column.forwardStepImageLearning(image);
+		return column.forwardStepImageLearning(image, indexImage);
 	}
 }

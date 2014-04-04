@@ -223,6 +223,22 @@ public class ImageUtils
 		return dest;
 	}
 	
+	public static void checkCollisions(Image image1, Image image2)
+	{
+		byte[] img1 = image1.getDataOneDimensional();
+		byte[] img2 = image2.getDataOneDimensional();
+		int s1=0, s2=0, s12=0;
+		for (int i = 0; i < img2.length; i++)
+		{
+			if (i>=img1.length) break;
+			if (img1[i]!=0) s1++;
+			if (img2[i]!=0) s2++;
+			if (img1[i]!=0 && (img2[i]!=0)) s12++;
+		}
+		System.out.println("s1="+s1 +" - " +((float)s1*100.)/img1.length+"%");
+		System.out.println("s2="+s2 +" - " +((float)s2*100.)/img1.length+"%");
+		System.out.println("s12="+s12 +" - " +((float)s12*100.)/img1.length+"%");
+	}
 	public static void loadImages(List<Image> trainImages, List<Image> testImages, List<Integer> trainLabels, List<Integer> testLabels, Style style) throws IOException
 	{
 		trainLabels.addAll(ImageUtils.readMinstLabels("/mnist/train-labels.idx1-ubyte"));

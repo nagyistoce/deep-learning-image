@@ -277,4 +277,14 @@ public class MathUtils
 		}
 		return new IndexValue(indexMax, max);
 	}
+	public static double abruptDistrib()
+	{
+		return abruptDistrib(0.075);
+	}
+	
+	public static double abruptDistrib(double exp)
+	{
+		return Math.pow(Math.random(), exp);
+	}
+	
 }

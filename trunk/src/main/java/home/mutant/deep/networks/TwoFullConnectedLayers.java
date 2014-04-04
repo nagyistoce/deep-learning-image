@@ -13,6 +13,8 @@ public class TwoFullConnectedLayers
 {
 	public Neuron[] neurons;
 	int firstFreeSlot = 0;
+	public int windowStart = 0;
+	public int windowSize = 3000;
 
 	public TwoFullConnectedLayers(int topLayerNeurons, int bottomLayerNeuron, Class<? extends Neuron> clazz)
 	{
@@ -158,19 +160,34 @@ public class TwoFullConnectedLayers
 		return new Image(outByte);
 	}
 	
-	public Image forwardStepImageLearning(Image image)
+	public Image forwardStepImageLearning(Image image, int indexImage)
 	{
-		byte[] outByte = new byte[neurons.length]; 
+		byte[] outByte = new byte[neurons.length];
+		double exp = 0.1;
 		for (int i = 0; i < neurons.length; i++) 
 		{
-			if(Math.random()<neurons[i].calculateOutputProbability(image))
+//			if (i>windowStart && i<windowStart+windowSize)
+//			{
+//				exp = 30.;
+//			}
+//			else
+//			{
+//				exp = 0.075;
+//			}
+			if(MathUtils.abruptDistrib(exp)<neurons[i].calculateOutputProbability(image))
 			{
+				if (neurons[i].getOutputIndex()==-1)
+					neurons[i].setOutputIndex(indexImage);
+//				if (neurons[i].getOutputIndex()!=indexImage)
+//					continue;
+				
 				outByte[i] = (byte)255;
 				neurons[i].updateWeightsFromImage(image);
 			}
 			else
 			{
-				neurons[i].decayWeights(image);
+				//if (Math.random()>0.9)
+					neurons[i].decayWeights(image);
 			}
 		}
 		return new Image(outByte);
@@ -207,5 +224,4 @@ public class TwoFullConnectedLayers
 			firstFreeSlot=0;
 		}
 	}
-
 }

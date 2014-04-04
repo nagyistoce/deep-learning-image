@@ -17,19 +17,23 @@ public class ResultFrame extends JFrame
     
     RasterPanel drawingPanel;
     
-    public ResultFrame(int width, int height, String title)
+    public ResultFrame(int width, int height,int x, int y, String title)
     {
     	this.width = width;
     	this.height = height;
     	setTitle(title);
     	setSize(this.width+20, this.height+50);
+    	setLocation(x, y);
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	drawingPanel = new RasterPanel (this.width,this.height);
         add (drawingPanel);
         drawingPanel.init();
         setVisible(true);
     }
-
+    public ResultFrame(int width, int height, String title)
+    {
+    	this(width, height,0,0, title);
+    }
     public ResultFrame(int width, int height)
     {
     	this(width, height, "Title");
@@ -91,10 +95,15 @@ public class ResultFrame extends JFrame
 	
 	public void showImage(Image image)
 	{
-		drawingPanel.empty();
 		putImage(image, 0, 0);
 		repaint();
 	}
+	public void showImage(Image image, int x, int y)
+	{
+		putImage(image, x, y);
+		repaint();
+	}
+	
 	public void showMnist(List<byte[][]> images, int index)
 	{
 		drawingPanel.empty();
