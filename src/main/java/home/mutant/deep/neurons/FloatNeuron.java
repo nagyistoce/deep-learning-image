@@ -8,7 +8,7 @@ import home.mutant.deep.utils.MathUtils;
 public class FloatNeuron implements Neuron
 {
 	public static float MAX_SYNAPSE = (float) 0.1;
-	public static float STEP_LEARNING = (float) 0.0001;
+	public static float STEP_LEARNING = (float) 0.00001;
 	int outputIndex=-1;
 	public float[] weights = null;
 	public FloatNeuron(int noSynapses)
@@ -103,12 +103,13 @@ public class FloatNeuron implements Neuron
 			if (in==0)
 			{
 				//double diff = (weights[i]+MAX_SYNAPSE)/2;
-				//weights[i] -= 5*STEP_LEARNING;
+				weights[i] -= 100*STEP_LEARNING;
+				//weights[i] /= 40000000000.92;
 			}
 			else
 			{
 				//double diff = (MAX_SYNAPSE-weights[i])/2;
-				weights[i] +=STEP_LEARNING;
+				weights[i] +=3.1*STEP_LEARNING;
 				if (weights[i]> MainTwoSparseLayers.max_weights)
 				{
 					MainTwoSparseLayers.max_weights = weights[i];
@@ -133,7 +134,7 @@ public class FloatNeuron implements Neuron
 //			}
 //			else
 //			{
-				//weights[i] /= 400000000.92;
+//				weights[i] /= 400000000.92;
 //			}
 		}
 	}
