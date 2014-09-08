@@ -163,7 +163,7 @@ public class TwoFullConnectedLayers
 	public Image forwardStepImageLearning(Image image, int indexImage)
 	{
 		byte[] outByte = new byte[neurons.length];
-		double exp = 0.1;
+		double exp = 0.15;
 		for (int i = 0; i < neurons.length; i++) 
 		{
 //			if (i>windowStart && i<windowStart+windowSize)
@@ -187,7 +187,7 @@ public class TwoFullConnectedLayers
 			else
 			{
 				//if (Math.random()>0.9)
-					neurons[i].decayWeights(image);
+					//neurons[i].decayWeights(image);
 			}
 		}
 		return new Image(outByte);

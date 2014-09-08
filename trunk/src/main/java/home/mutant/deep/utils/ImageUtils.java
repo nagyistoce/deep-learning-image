@@ -238,6 +238,7 @@ public class ImageUtils
 		System.out.println("s1="+s1 +" - " +((float)s1*100.)/img1.length+"%");
 		System.out.println("s2="+s2 +" - " +((float)s2*100.)/img1.length+"%");
 		System.out.println("s12="+s12 +" - " +((float)s12*100.)/img1.length+"%");
+		System.out.println();
 	}
 	public static void loadImages(List<Image> trainImages, List<Image> testImages, List<Integer> trainLabels, List<Integer> testLabels, Style style) throws IOException
 	{
