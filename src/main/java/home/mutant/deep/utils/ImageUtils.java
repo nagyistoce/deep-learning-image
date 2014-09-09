@@ -1,6 +1,5 @@
 package home.mutant.deep.utils;
 
-import home.mutant.deep.mains.MainTwoLayers.Style;
 import home.mutant.deep.ui.Image;
 
 import java.awt.Point;
@@ -16,6 +15,7 @@ import javax.imageio.ImageIO;
 
 public class ImageUtils 
 {
+	public enum Style {BW, GREY};
 	public static void readResourceImage(String imageResourcePath, byte[] inValues) throws IOException 
 	{
 		readImage(ImageIO.read(ImageUtils.class.getResourceAsStream(imageResourcePath)), inValues);

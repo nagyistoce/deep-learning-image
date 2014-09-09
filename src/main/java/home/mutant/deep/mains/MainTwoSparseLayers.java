@@ -1,11 +1,11 @@
 package home.mutant.deep.mains;
 
-import home.mutant.deep.mains.MainTwoLayers.Style;
 import home.mutant.deep.networks.TwoSparseConnectedLayers;
 import home.mutant.deep.neurons.FloatNeuron;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.ImageUtils;
+import home.mutant.deep.utils.ImageUtils.Style;
 
 import java.io.IOException;
 import java.util.ArrayList;

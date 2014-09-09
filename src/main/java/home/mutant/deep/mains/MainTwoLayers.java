@@ -8,6 +8,7 @@ import home.mutant.deep.neurons.BinaryNeuron;
 import home.mutant.deep.neurons.ByteNeuron;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.ImageUtils;
+import home.mutant.deep.utils.ImageUtils.Style;
 import home.mutant.deep.utils.MathUtils;
 
 import java.io.IOException;
@@ -16,13 +17,14 @@ import java.util.List;
 
 public class MainTwoLayers
 {
-	public enum Style {BW, GREY};
 	List<Image> trainImages = new ArrayList<Image>();
 	List<Integer> trainLabels  = new ArrayList<Integer>();
 
 	List<Image> testImages = new ArrayList<Image>();
 	List<Integer> testLabels  = new ArrayList<Integer>();
 	public Style style=Style.BW;
+	
+	
 	public static void main(String[] args) throws IOException
 	{
 		new MainTwoLayers(Style.BW).run();

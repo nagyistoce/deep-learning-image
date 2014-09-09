@@ -1,12 +1,12 @@
 package home.mutant.deep.mains;
 
 
-import home.mutant.deep.mains.MainTwoLayers.Style;
 import home.mutant.deep.model.IndexValue;
 import home.mutant.deep.networks.ThreeConvolutedLayersBinary;
 import home.mutant.deep.neurons.BinaryNeuron;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.ImageUtils;
+import home.mutant.deep.utils.ImageUtils.Style;
 import home.mutant.deep.utils.MathUtils;
 
 import java.io.IOException;
