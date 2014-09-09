@@ -19,9 +19,9 @@ public class TestBinarySynapses
 		long[] inputs = new long[1];
 		inputs[0] = (long)-1;
 
-		Assert.assertEquals(56, syn.calculateOutput(new Image(inputs,7,8)));
+		Assert.assertEquals(64, syn.calculateOutput(new Image(inputs,7,8)));
 		inputs[0] = 255L;
-		Assert.assertEquals(0, syn.calculateOutput(new Image(inputs,7,8)));
+		Assert.assertEquals(8, syn.calculateOutput(new Image(inputs,7,8)));
 	}
 	@Test
 	public void testMem()

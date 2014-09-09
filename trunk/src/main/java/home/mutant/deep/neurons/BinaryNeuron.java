@@ -29,7 +29,7 @@ public class BinaryNeuron implements Neuron
 			{
 				break;
 			}
-			sum+=64 - Long.bitCount(~(inputs[i]^weights[i]));
+			sum+=Long.bitCount(~(inputs[i]^weights[i]));
 		}
 		return sum;
 	}
