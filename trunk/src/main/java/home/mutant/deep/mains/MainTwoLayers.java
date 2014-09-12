@@ -103,6 +103,6 @@ public class MainTwoLayers
 	public MainTwoLayers(Style style) throws IOException
 	{
 		this.style = style;
-		ImageUtils.loadImages(trainImages, testImages, trainLabels, trainLabels, style);
+		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style);
 	}
 }
