@@ -99,23 +99,24 @@ public class ImageUtils
 	{
 		List<byte[][]> images = new ArrayList<byte[][]>();
 		InputStream stream = ImageUtils.class.getResourceAsStream(imageResourcePath);
-		byte[] bRead = new byte[16];
+		byte[] bRead;
 		try
 		{
-			stream.read(bRead);
+			readExactly(stream, 16);
 		}
 		catch (IOException e1)
 		{
 			e1.printStackTrace();
 		}
-		bRead = new byte[28*28];
+		
 		while(true)
 		{
 			byte[][] image = new byte[28][28];
-			int offsetRead = 0;
+			
 			try
 			{
-				if (stream.read(bRead)!=28*28)
+				bRead = readExactly(stream, 28*28);
+				if (bRead == null)
 				{
 					break;
 				}
@@ -125,6 +126,7 @@ public class ImageUtils
 				e.printStackTrace();
 				break;
 			}
+			int offsetRead = 0;
 			for (int i = 0;i<28;i++)
 			{
 				for (int j = 0;j<28;j++)
@@ -137,6 +139,22 @@ public class ImageUtils
 		return images;
 	}
 	
+	static byte[] readExactly(InputStream is, int noBytes) throws IOException
+	{
+		byte[] res = new byte[noBytes];
+		int offset=0;
+		int read=0;
+		while(offset<noBytes)
+		{
+			read = is.read(res,offset,noBytes-offset);
+			offset+=read;
+			if (read == -1)
+			{
+				return null;
+			}
+		}
+		return res;
+	}
 	public static List<byte[]> convertToBW(List<byte[][]> images)
 	{
 		List<byte[]> newImages = new ArrayList<byte[]>();
