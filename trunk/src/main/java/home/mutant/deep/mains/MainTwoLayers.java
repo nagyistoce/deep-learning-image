@@ -36,6 +36,7 @@ public class MainTwoLayers
 		runMaxForAffine();
 	}
 	
+	@SuppressWarnings("unused")
 	private void runMaxAndAverage()
 	{
 		Class<? extends Neuron> clazz = null;
