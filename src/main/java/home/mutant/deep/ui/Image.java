@@ -2,6 +2,7 @@ package home.mutant.deep.ui;
 
 import home.mutant.deep.utils.ImageUtils;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,28 @@ public class Image
 	public Image(int size)
 	{
 		this((int)Math.sqrt(size),(int)Math.sqrt(size));
+	}
+	
+	public Image(BufferedImage bufferedImage)
+	{
+		this(bufferedImage.getWidth(),bufferedImage.getHeight());
+		int offset=0;
+		for (int y = 0; y < bufferedImage.getHeight(); y++) 
+		{
+			for (int x = 0; x < bufferedImage.getWidth(); x++) 
+			{
+                int c = bufferedImage.getRGB(x,y);
+                int  color = (c & 0x00ffffff);
+                
+                data[offset]=0;
+                if (color>0)
+                {
+                	data[offset]=1;
+                }
+                offset++;
+			}
+		}
+
 	}
 	
 	public Image(long[] dataBinary, int x, int y)
