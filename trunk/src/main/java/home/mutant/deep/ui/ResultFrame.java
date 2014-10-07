@@ -145,14 +145,21 @@ public class ResultFrame extends JFrame
 	public void showImages(List<Image> images, int index)
 	{
 		drawingPanel.empty();
-		for (int n1=0;n1<20;n1++)
+		int size = 50;
+		if (images.size()<50)
 		{
-			byte[][] image = images.get(index+n1).getDataTwoDimensional();
-			for (int i =0;i<28;i++)
+			size=images.size();
+		}
+		for (int n1=index;n1<size;n1++)
+		{
+			byte[][] image = images.get(n1).getDataTwoDimensional();
+			int imageX = images.get(n1).imageX;
+			int imageY = images.get(n1).imageY;
+			for (int i =0;i<imageX;i++)
 			{
-				for (int j=0;j<28;j++)
+				for (int j=0;j<imageY;j++)
 				{
-					drawingPanel.setPixel(j+n1*28,i,image[i][j]);
+					drawingPanel.setPixel(j+n1*(imageX+5),i,image[i][j]);
 				}
 			}
 		}

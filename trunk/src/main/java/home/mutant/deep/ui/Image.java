@@ -58,7 +58,7 @@ public class Image
                 data[offset]=0;
                 if (color>0)
                 {
-                	data[offset]=1;
+                	data[offset]=(byte)255;
                 }
                 offset++;
 			}
