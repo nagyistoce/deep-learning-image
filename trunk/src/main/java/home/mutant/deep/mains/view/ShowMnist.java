@@ -12,6 +12,6 @@ public class ShowMnist
 		
 		ResultFrame frame = new ResultFrame(1200, 600);
 		//frame.showMnist2(ImageUtils.convertToBW(images), 0);
-		frame.showImages(ImageUtils.readMnistAsBWImage("/mnist/train-images.idx3-ubyte"), 0);
+		frame.showImages(ImageUtils.readMnistAsBWImage("/mnist/train-images.idx3-ubyte"), 20);
 	}
 }
