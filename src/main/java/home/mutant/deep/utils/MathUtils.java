@@ -95,9 +95,9 @@ public class MathUtils
 		return max;
 	}
 	
-	public static Double sigmoidBinary(double totalInput)
+	public static int sigmoidBinary(double totalInput)
 	{
-		return (Math.random()<= sigmoidFunction(totalInput))?1.:0;
+		return (Math.random()<= sigmoidFunction(totalInput))?1:0;
 	}
 	
 	public static double sigmoidFunction(double totalInput)
