@@ -144,9 +144,17 @@ public class ResultFrame extends JFrame
 	
 	public void showImages(List<Image> images, int index)
 	{
+		showImages(images, index, 50);
+	}
+
+	public void showImages(List<Image> images, int index, int size)
+	{
 		drawingPanel.empty();
-		int size = 50;
-		if (images.size()<50)
+		if (index>size)
+		{
+			index = size;
+		}
+		if (images.size()<size)
 		{
 			size=images.size();
 		}
@@ -165,7 +173,7 @@ public class ResultFrame extends JFrame
 		}
 		repaint();
 	}
-
+	
 	public void showImages(List<Image> images)
 	{
 		showImages(images, 0);
