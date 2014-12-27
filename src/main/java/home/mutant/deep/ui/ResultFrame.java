@@ -2,6 +2,7 @@ package home.mutant.deep.ui;
 
 import home.mutant.deep.model.ModelTestResult;
 import home.mutant.deep.networks.TwoFullConnectedLayers;
+import home.mutant.liquid.networks.FeedForward;
 
 import java.util.HashMap;
 import java.util.List;
@@ -198,5 +199,17 @@ public class ResultFrame extends JFrame
 				drawingPanel.setPixel(xOffset+x,yOffset+y,image.getPixel(x, y));
 			}
 		}
+	}
+	public void showNetwork(FeedForward net, int xOffset, int yOffset)
+	{
+		drawingPanel.empty();
+		for (int x=0;x<net.layers.size();x++)
+		{
+			for (int y=0;y<net.layers.get(x).size();y++)
+			{
+				drawingPanel.setPixel(xOffset+x,yOffset+y,(byte)(net.layers.get(x).get(y).output*255));
+			}
+		}
+		repaint();
 	}
 }
