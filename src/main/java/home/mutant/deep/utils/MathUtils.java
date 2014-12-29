@@ -287,4 +287,22 @@ public class MathUtils
 		return Math.pow(Math.random(), exp);
 	}
 	
+	public static double sum(double[] array)
+	{
+		double sum=0;
+		for (int i = 0; i < array.length; i++)
+		{
+			sum+=array[i];
+		}
+		return sum;
+	}
+	public static double sumSquared(double[] array)
+	{
+		double sum=0;
+		for (int i = 0; i < array.length; i++)
+		{
+			sum+=array[i]*array[i];
+		}
+		return sum;
+	}
 }

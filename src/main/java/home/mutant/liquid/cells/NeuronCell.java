@@ -13,6 +13,7 @@ public class NeuronCell
 	private int noUpdates=0;
 	public List<Integer> recognized = new ArrayList<Integer>();
 	public int lastRecognized = -1;
+	private double threshold=0;
 	
 	public NeuronCell(int noSynapses)
 	{
@@ -88,4 +89,40 @@ public class NeuronCell
 		}
 		noUpdates++;
 	}
+	
+	
+	public double output(Image image)
+	{
+		double sum=0;
+		byte[] pixels = image.getDataOneDimensional();
+		for (int i = 0; i < pixels.length; i++) 
+		{
+			int pixel = pixels[i];
+			if (pixel<0)pixel+=255;
+			double weight = weights[i];
+			if (weight==0) weight=-150;
+			sum+=(pixel)*weight;
+		}
+		return sum;
+	}
+	public boolean isFiring(Image image)
+	{
+		double output = output(image);
+//		System.out.println(output);
+//		System.out.println(threshold);
+//		System.out.println();
+		return output>threshold;
+	}
+	public void modifyWeights(Image image)
+	{
+		byte[] pixels = image.getDataOneDimensional();
+		for (int i = 0; i < pixels.length; i++) 
+		{
+			int pixel = pixels[i];
+			if (pixel<0)pixel+=255;
+			weights[i]=(weights[i]+pixel)/2;
+		}
+		threshold = MathUtils.sumSquared(weights);
+	}
+	
 }
