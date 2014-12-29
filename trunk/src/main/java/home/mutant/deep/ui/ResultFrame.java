@@ -2,7 +2,9 @@ package home.mutant.deep.ui;
 
 import home.mutant.deep.model.ModelTestResult;
 import home.mutant.deep.networks.TwoFullConnectedLayers;
+import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.networks.FeedForward;
+import home.mutant.liquid.networks.SimpleNet;
 
 import java.util.HashMap;
 import java.util.List;
@@ -200,7 +202,7 @@ public class ResultFrame extends JFrame
 			}
 		}
 	}
-	public void showNetwork(FeedForward net, int xOffset, int yOffset)
+	public void showNetworkOutput(FeedForward net, int xOffset, int yOffset)
 	{
 		drawingPanel.empty();
 		for (int x=0;x<net.layers.size();x++)
@@ -209,6 +211,35 @@ public class ResultFrame extends JFrame
 			{
 				drawingPanel.setPixel(xOffset+x,yOffset+y,(byte)(net.layers.get(x).get(y).output*255));
 			}
+		}
+		repaint();
+	}
+	public void showNetworkWeightsBW(SimpleNet net, int noNeuronsPerLine)
+	{
+		drawingPanel.empty();
+		int layer =0;
+		int indexNeuronX=0;
+		for (int indexNeuron=0;indexNeuron<net.neurons.size();indexNeuron++)
+		{
+			NeuronCell neuron = net.neurons.get(indexNeuron);
+			int sizeX = (int) Math.sqrt(neuron.weights.length);
+			int indexWeight = 0;
+			if (indexNeuronX==noNeuronsPerLine)
+			{
+				indexNeuronX=0;
+				layer++;
+			}
+			for (int y=layer*(sizeX+1);y<layer*(sizeX+1)+sizeX;y++)
+			{
+				for (int x=indexNeuronX*(sizeX+1);x<indexNeuronX*(sizeX+1)+sizeX;x++)
+				{
+					int weight = (int)(neuron.weights[indexWeight++]*127+128);
+					if(weight<0) weight = 0;
+					if(weight>255) weight = 255;
+					drawingPanel.setPixel(x,y,(byte)(weight));
+				}
+			}
+			indexNeuronX++;
 		}
 		repaint();
 	}

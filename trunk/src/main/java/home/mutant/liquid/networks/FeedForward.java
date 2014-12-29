@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FeedForward
 {
-	public final static int NO_SYNAPSES=6;
+	public final static int NO_SYNAPSES=2;
 	public List<List<NeuronCell>> layers = new ArrayList<List<NeuronCell>>();
 	
 	public FeedForward(int noLayers, int NoNeuronsPerLayer) 
