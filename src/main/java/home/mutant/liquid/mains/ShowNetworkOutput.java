@@ -3,7 +3,7 @@ package home.mutant.liquid.mains;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.liquid.networks.FeedForward;
 
-public class ShowNetwork 
+public class ShowNetworkOutput 
 {
 	public static void main(String[] args)
 	{
@@ -21,8 +21,7 @@ public class ShowNetwork
 				input[i]= Math.random()-0.5;
 			}
 			net.step(input);
-			frame.showNetwork(net, 0, 0);
+			frame.showNetworkOutput(net, 0, 0);
 		}
-			
 	}
 }
