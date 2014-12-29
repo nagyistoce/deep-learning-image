@@ -243,4 +243,32 @@ public class ResultFrame extends JFrame
 		}
 		repaint();
 	}
+	
+	public void showNetworkWeights(SimpleNet net, int noNeuronsPerLine)
+	{
+		drawingPanel.empty();
+		int layer =0;
+		int indexNeuronX=0;
+		for (int indexNeuron=0;indexNeuron<net.neurons.size();indexNeuron++)
+		{
+			NeuronCell neuron = net.neurons.get(indexNeuron);
+			int sizeX = (int) Math.sqrt(neuron.weights.length);
+			int indexWeight = 0;
+			if (indexNeuronX==noNeuronsPerLine)
+			{
+				indexNeuronX=0;
+				layer++;
+			}
+			for (int y=layer*(sizeX+1);y<layer*(sizeX+1)+sizeX;y++)
+			{
+				for (int x=indexNeuronX*(sizeX+1);x<indexNeuronX*(sizeX+1)+sizeX;x++)
+				{
+					int weight = (int)(neuron.weights[indexWeight++]);
+					drawingPanel.setPixel(x,y,(byte)(weight));
+				}
+			}
+			indexNeuronX++;
+		}
+		repaint();
+	}
 }
