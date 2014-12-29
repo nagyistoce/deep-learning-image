@@ -124,5 +124,4 @@ public class NeuronCell
 		}
 		threshold = MathUtils.sumSquared(weights);
 	}
-	
 }
