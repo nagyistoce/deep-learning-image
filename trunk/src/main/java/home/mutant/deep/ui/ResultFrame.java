@@ -246,6 +246,10 @@ public class ResultFrame extends JFrame
 	
 	public void showNetworkWeights(SimpleNet net, int noNeuronsPerLine)
 	{
+		showNetworkWeights(net, noNeuronsPerLine, 0);
+	}
+	public void showNetworkWeights(SimpleNet net, int noNeuronsPerLine, int interImagesBorderSize)
+	{
 		drawingPanel.empty();
 		int layer =0;
 		int indexNeuronX=0;
@@ -259,9 +263,9 @@ public class ResultFrame extends JFrame
 				indexNeuronX=0;
 				layer++;
 			}
-			for (int y=layer*(sizeX+1);y<layer*(sizeX+1)+sizeX;y++)
+			for (int y=layer*(sizeX+interImagesBorderSize);y<layer*(sizeX+interImagesBorderSize)+sizeX;y++)
 			{
-				for (int x=indexNeuronX*(sizeX+1);x<indexNeuronX*(sizeX+1)+sizeX;x++)
+				for (int x=indexNeuronX*(sizeX+interImagesBorderSize);x<indexNeuronX*(sizeX+interImagesBorderSize)+sizeX;x++)
 				{
 					int weight = (int)(neuron.weights[indexWeight++]);
 					drawingPanel.setPixel(x,y,(byte)(weight));

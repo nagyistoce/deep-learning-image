@@ -1,43 +1,51 @@
 package home.mutant.liquid.mains;
 
-import java.io.IOException;
-
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.networks.SimpleNet;
 
-public class ShowNetworkWeights 
+import java.io.IOException;
+import java.util.List;
+
+public class ShowNetworkWeightsSubImages 
 {
 	public static void main(String[] args) throws IOException
 	{
-		ResultFrame frame = new ResultFrame(1800, 1200);
+		ResultFrame frame = new ResultFrame(1900, 1080);
 		SimpleNet net = new SimpleNet();
 		MnistDatabase.loadImages();
-		for (int imageIndex=0;imageIndex<6000;imageIndex++)
+		int subImageX=7;
+		int subImageStep = 4;
+		for (int imageIndex=0;imageIndex<60000;imageIndex++)
 		{
-			NeuronCell found = null;
-			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
-			for (NeuronCell neuron : net.neurons)
-			{
-				if (neuron.isFiring(trainImage.getDataOneDimensional()))
-				{
-					found=neuron;
-					break;
-				}
-			}
-			if (found == null)
-			{
-				found = new NeuronCell(784);
-				net.neurons.add(found);
-				found.modifyWeights(trainImage.getDataOneDimensional());
-			}
 			
-			//found.recognized.add(MnistDatabase.trainLabels.get(imageIndex));
-			found.lastRecognized=MnistDatabase.trainLabels.get(imageIndex);
+			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
+			List<byte[]> subImages = trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep);
+			for (byte[] subImage : subImages) 
+			{
+				NeuronCell found = null;
+				for (NeuronCell neuron : net.neurons)
+				{
+					if (neuron.isFiring(subImage))
+					{
+						found=neuron;
+						break;
+					}
+				}
+				if (found == null)
+				{
+					found = new NeuronCell(subImageX*subImageX);
+					net.neurons.add(found);
+					found.modifyWeights(subImage);
+				}
+				
+				//found.recognized.add(MnistDatabase.trainLabels.get(imageIndex));
+				found.lastRecognized=MnistDatabase.trainLabels.get(imageIndex);
+			}
 		}
-		frame.showNetworkWeights(net, 60);
+		frame.showNetworkWeights(net, 1900/(subImageX));
 		System.out.println(net.neurons.size());
 //		int count=0;
 //		for (int imageIndex=0;imageIndex<10000;imageIndex++)

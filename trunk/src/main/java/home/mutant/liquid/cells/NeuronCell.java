@@ -91,10 +91,9 @@ public class NeuronCell
 	}
 	
 	
-	public double output(Image image)
+	public double output(byte[] pixels)
 	{
 		double sum=0;
-		byte[] pixels = image.getDataOneDimensional();
 		for (int i = 0; i < pixels.length; i++) 
 		{
 			int pixel = pixels[i];
@@ -105,22 +104,21 @@ public class NeuronCell
 		}
 		return sum;
 	}
-	public boolean isFiring(Image image)
+	public boolean isFiring(byte[] pixels)
 	{
-		double output = output(image);
+		output = output(pixels);
 //		System.out.println(output);
 //		System.out.println(threshold);
 //		System.out.println();
-		return output>threshold;
+		return output>=threshold;
 	}
-	public void modifyWeights(Image image)
+	public void modifyWeights(byte[] pixels)
 	{
-		byte[] pixels = image.getDataOneDimensional();
 		for (int i = 0; i < pixels.length; i++) 
 		{
 			int pixel = pixels[i];
 			if (pixel<0)pixel+=255;
-			weights[i]=(weights[i]+pixel)/2;
+			weights[i]=(weights[i]+pixel);
 		}
 		threshold = MathUtils.sumSquared(weights);
 	}

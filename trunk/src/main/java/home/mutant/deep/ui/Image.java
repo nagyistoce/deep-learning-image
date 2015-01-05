@@ -131,6 +131,11 @@ public class Image
 		return dividedImages;
 	}
 	
+	public List<byte[]> divideImage(int newX, int newY, int stepX, int stepY)
+	{
+		return ImageUtils.divideImage(data, newX, newY, imageX, imageY, stepX, stepY);
+	}
+	
 	public void setPixel(int setX, int setY, byte value)
 	{
 		data[setY*imageX+setX] = value;
