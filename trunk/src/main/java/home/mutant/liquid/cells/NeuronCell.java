@@ -15,6 +15,11 @@ public class NeuronCell
 	public int lastRecognized = -1;
 	private double threshold=0;
 	
+	public double minDistance;
+	public int indexNeuronMinDistance = -1;
+	public int xShow = 950;
+	public int yShow = 540;
+	
 	public NeuronCell(int noSynapses)
 	{
 		weights = new double[noSynapses];
@@ -90,7 +95,6 @@ public class NeuronCell
 		noUpdates++;
 	}
 	
-	
 	public double output(byte[] pixels)
 	{
 		double sum=0;
@@ -112,6 +116,13 @@ public class NeuronCell
 //		System.out.println();
 		return output>=threshold;
 	}
+	
+	public double getDistanceFromImage(byte[] pixels)
+	{
+		output = output(pixels);
+		return threshold - output;
+	}
+	
 	public void modifyWeights(byte[] pixels)
 	{
 		for (int i = 0; i < pixels.length; i++) 
