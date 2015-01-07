@@ -202,6 +202,7 @@ public class ResultFrame extends JFrame
 			}
 		}
 	}
+	
 	public void showNetworkOutput(FeedForward net, int xOffset, int yOffset)
 	{
 		drawingPanel.empty();
@@ -214,6 +215,7 @@ public class ResultFrame extends JFrame
 		}
 		repaint();
 	}
+	
 	public void showNetworkWeightsBW(SimpleNet net, int noNeuronsPerLine)
 	{
 		drawingPanel.empty();
@@ -274,5 +276,45 @@ public class ResultFrame extends JFrame
 			indexNeuronX++;
 		}
 		repaint();
+	}
+	
+	public void addWeightsToFrame(NeuronCell neuron, int xOffset, int yOffset)
+	{
+		int xIncrease= 0;
+		int yIncrease=0;
+		
+		if (neuron.indexNeuronMinDistance!=5000)
+		{
+			return;
+		}
+		if (neuron.indexNeuronMinDistance!=-1)
+		{
+			double radius = neuron.minDistance/2000;
+			System.out.println(radius+"   "+neuron.indexNeuronMinDistance);
+			double angle = Math.random()*2*Math.PI;
+			xIncrease = (int)(radius*Math.cos(angle));
+			yIncrease = (int)(radius*Math.sin(angle));
+		}
+		else
+		{
+			xIncrease = neuron.xShow;
+			yIncrease = neuron.yShow;
+		}
+		
+		int sizeX = (int) Math.sqrt(neuron.weights.length);
+		int indexWeight=0;
+		for (int x=0;x<sizeX;x++)
+		{
+			for (int y=0;y<sizeX;y++)
+			{
+				int weight = (int)(neuron.weights[indexWeight++]);
+				drawingPanel.setPixel(xOffset+xIncrease+x,yOffset+yIncrease+y,(byte)(weight));
+			}
+		}
+		if (neuron.indexNeuronMinDistance!=-1)
+		{
+			neuron.xShow = xOffset+xIncrease;
+			neuron.yShow = yOffset+yIncrease;
+		}
 	}
 }
