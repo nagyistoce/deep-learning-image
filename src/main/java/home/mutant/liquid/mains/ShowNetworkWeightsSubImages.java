@@ -28,7 +28,7 @@ public class ShowNetworkWeightsSubImages
 				NeuronCell found = null;
 				for (NeuronCell neuron : net.neurons)
 				{
-					if (neuron.isFiring(subImage))
+					if (neuron.isFiringDifference(subImage))
 					{
 						found=neuron;
 						break;

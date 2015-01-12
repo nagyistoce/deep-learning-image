@@ -15,13 +15,13 @@ public class ShowNetworkWeights
 		ResultFrame frame = new ResultFrame(1800, 1200);
 		SimpleNet net = new SimpleNet();
 		MnistDatabase.loadImages();
-		for (int imageIndex=0;imageIndex<6000;imageIndex++)
+		for (int imageIndex=0;imageIndex<600;imageIndex++)
 		{
 			NeuronCell found = null;
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
 			for (NeuronCell neuron : net.neurons)
 			{
-				if (neuron.isFiring(trainImage.getDataOneDimensional()))
+				if (neuron.isFiringDifference(trainImage.getDataOneDimensional()))
 				{
 					found=neuron;
 					break;
