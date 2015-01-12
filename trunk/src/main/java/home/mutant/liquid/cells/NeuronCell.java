@@ -6,14 +6,14 @@ import java.util.List;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.MathUtils;
 
-public class NeuronCell
+public abstract class NeuronCell
 {
 	public double[] weights = null;
 	public double output = 0;
-	private int noUpdates=0;
+	protected int noUpdates=0;
 	public List<Integer> recognized = new ArrayList<Integer>();
 	public int lastRecognized = -1;
-	private double threshold=0;
+	protected double threshold=0;
 	
 	public double minDistance;
 	public int indexNeuronMinDistance = -1;
@@ -60,118 +60,10 @@ public class NeuronCell
 		output = MathUtils.sigmoidFunction(sum);
 		return output;
 	}
-	public double outputBW(Image image)
-	{
-		double sum=0;
-		byte[] pixels = image.getDataOneDimensional();
-		for (int i = 0; i < pixels.length; i++) 
-		{
-			int pixel = pixels[i]*-1;
-			if (pixel==0)pixel=-1;
-			sum+=(pixel)*weights[i];
-		}
-		return sum;
-	}
-	public boolean isFiringBW(Image image)
-	{
-		double output = outputBW(image);
-		//System.out.println(output);
-		double threshold = weights.length;
-		threshold -=  threshold/(Math.pow(2, noUpdates));
-		threshold*=0.82;
-		//System.out.println(threshold);
-		//System.out.println();
-		return output>threshold;
-	}
-	public void modifyWeightsBW(Image image)
-	{
-		byte[] pixels = image.getDataOneDimensional();
-		for (int i = 0; i < pixels.length; i++) 
-		{
-			int pixel = pixels[i]*-1;
-			if (pixel==0)pixel=-1;
-			weights[i]=(weights[i]+pixel)/2;
-		}
-		noUpdates++;
-	}
 	
-	public double output(double[] pixels)
-	{
-		double sum=0;
-		for (int i = 0; i < pixels.length; i++) 
-		{
-			double weight = weights[i];
-			if (weight==0) weight=-150;
-			sum+=(pixels[i])*weight;
-		}
-		return sum;
-	}
-	
-	public double output(byte[] pixels)
-	{
-		double sum=0;
-		for (int i = 0; i < pixels.length; i++) 
-		{
-			int pixel = pixels[i];
-			if (pixel<0)pixel+=255;
-			double weight = weights[i];
-			if (weight==0) weight=-150;
-			sum+=(pixel)*weight;
-		}
-		return sum;
-	}
-	
-	public double outputDifference(byte[] pixels)
-	{
-		double sum=0;
-		for (int i = 0; i < pixels.length; i++) 
-		{
-			int pixel = pixels[i];
-			if (pixel<0)pixel+=255;
-			double weight = weights[i]-pixel;
-			sum+=weight*weight;
-		}
-		return sum;
-	}
-	
-	public boolean isFiring(byte[] pixels)
-	{
-		output = output(pixels);
-//		System.out.println(output);
-//		System.out.println(threshold);
-//		System.out.println();
-		return output>=threshold;
-	}
-	
-	public boolean isFiringDifference(byte[] pixels)
-	{
-		output = outputDifference(pixels);
-//		System.out.println(output);
-//		System.out.println(threshold);
-//		System.out.println();
-		return output<100000;
-	}
-	
-	public double getDistanceFromImage(byte[] pixels)
-	{
-		output = output(pixels);
-		return threshold - output;
-	}
-	
-	public double getDistanceFromNeuron(NeuronCell neuron)
-	{
-		output = output(neuron.weights);
-		return output;
-	}
-	
-	public void modifyWeights(byte[] pixels)
-	{
-		for (int i = 0; i < pixels.length; i++) 
-		{
-			int pixel = pixels[i];
-			if (pixel<0)pixel+=255;
-			weights[i]=(weights[i]+pixel);
-		}
-		threshold = MathUtils.sumSquared(weights);
-	}
+	public abstract double output(byte[] pixels);
+	public abstract boolean isFiring(byte[] pixels);
+	public abstract void modifyWeights(byte[] pixels);
+	public abstract double getDistanceFromImage(byte[] pixels);
+	public abstract double getDistanceFromNeuron(NeuronCell neuron);
 }

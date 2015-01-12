@@ -1,12 +1,13 @@
 package home.mutant.liquid.mains;
 
-import java.io.IOException;
-
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.liquid.cells.NeuronCell;
+import home.mutant.liquid.cells.NeuronCellGreyDifference;
 import home.mutant.liquid.networks.SimpleNet;
+
+import java.io.IOException;
 
 public class ShowNetworkWeights 
 {
@@ -21,7 +22,7 @@ public class ShowNetworkWeights
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
 			for (NeuronCell neuron : net.neurons)
 			{
-				if (neuron.isFiringDifference(trainImage.getDataOneDimensional()))
+				if (neuron.isFiring(trainImage.getDataOneDimensional()))
 				{
 					found=neuron;
 					break;
@@ -29,7 +30,7 @@ public class ShowNetworkWeights
 			}
 			if (found == null)
 			{
-				found = new NeuronCell(784);
+				found = new NeuronCellGreyDifference(784);
 				net.neurons.add(found);
 				found.modifyWeights(trainImage.getDataOneDimensional());
 			}

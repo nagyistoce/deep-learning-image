@@ -1,12 +1,13 @@
 package home.mutant.liquid.mains;
 
-import java.io.IOException;
-
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.liquid.cells.NeuronCell;
+import home.mutant.liquid.cells.NeuronCellBW;
 import home.mutant.liquid.networks.SimpleNet;
+
+import java.io.IOException;
 
 public class ShowNetworkWeightsBW 
 {
@@ -21,7 +22,7 @@ public class ShowNetworkWeightsBW
 			Image testImage = MnistDatabase.trainImages.get(imageIndex);
 			for (NeuronCell neuron : net.neurons)
 			{
-				if (neuron.isFiringBW(testImage))
+				if (neuron.isFiring(testImage.getDataOneDimensional()))
 				{
 					found=neuron;
 					break;
@@ -29,10 +30,10 @@ public class ShowNetworkWeightsBW
 			}
 			if (found == null)
 			{
-				found = new NeuronCell(784);
+				found = new NeuronCellBW(784);
 				net.neurons.add(found);
 			}
-			found.modifyWeightsBW(testImage);
+			found.modifyWeights(testImage.getDataOneDimensional());
 			found.recognized.add(MnistDatabase.trainLabels.get(imageIndex));
 			found.lastRecognized=MnistDatabase.trainLabels.get(imageIndex);
 		}
@@ -46,7 +47,7 @@ public class ShowNetworkWeightsBW
 			for (NeuronCell neuron : net.neurons)
 			{
 				
-				if (neuron.isFiringBW(MnistDatabase.testImages.get(imageIndex)))
+				if (neuron.isFiring(MnistDatabase.testImages.get(imageIndex).getDataOneDimensional()))
 				{
 					netTest.neurons.add(neuron);
 				}
@@ -60,6 +61,6 @@ public class ShowNetworkWeightsBW
 			System.out.println();
 		}
 		System.out.println(count);
-		//frame.showNetworkWeights(netTest, 60);
+		frame.showNetworkWeights(net, 60);
 	}
 }
