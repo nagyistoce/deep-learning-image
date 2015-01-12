@@ -4,6 +4,7 @@ import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.liquid.cells.NeuronCell;
+import home.mutant.liquid.cells.NeuronCellGrey;
 import home.mutant.liquid.networks.SimpleNet;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class ShowNetworkSubImagesDistanceMap
 				}
 				if (found == null)
 				{
-					found = new NeuronCell(subImageX*subImageX);
+					found = new NeuronCellGrey(subImageX*subImageX);
 					found.minDistance = minDistance;
 					found.indexNeuronMinDistance = indexNeuronMinDistance;
 					net.neurons.add(found);

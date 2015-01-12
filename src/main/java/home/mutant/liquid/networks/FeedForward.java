@@ -1,6 +1,7 @@
 package home.mutant.liquid.networks;
 
 import home.mutant.liquid.cells.NeuronCell;
+import home.mutant.liquid.cells.NeuronCellGrey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ public class FeedForward
 			List<NeuronCell> layer = new ArrayList<NeuronCell>();
 			for (int j=0;j<NoNeuronsPerLayer;j++)
 			{
-				layer.add(new NeuronCell(NO_SYNAPSES));
+				layer.add(new NeuronCellGrey(NO_SYNAPSES));
 			}
 			layers.add(layer);
 		}
