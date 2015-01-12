@@ -18,7 +18,7 @@ public class ShowNetworkSubImagesDistanceMap
 		MnistDatabase.loadImages();
 		int subImageX=7;
 		int subImageStep = 4;
-		for (int imageIndex=0;imageIndex<6000;imageIndex++)
+		for (int imageIndex=0;imageIndex<600;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
@@ -74,6 +74,8 @@ public class ShowNetworkSubImagesDistanceMap
 		}
 		frame.repaint();
 		System.out.println(net.neurons.size());
+		System.out.println( net.neurons.get(10).getDistanceFromNeuron(net.neurons.get(11)));
+		System.out.println( net.neurons.get(11).getDistanceFromNeuron(net.neurons.get(10)));
 //		int count=0;
 //		for (int imageIndex=0;imageIndex<10000;imageIndex++)
 //		{
