@@ -25,7 +25,7 @@ public class NeuronCellGreyDifference extends NeuronCell
 			int pixel = pixels[i];
 			if (pixel<0)pixel+=255;
 			double weight = weights[i]-pixel;
-			sum+=Math.abs(weight);
+			sum+=weight*weight;//Math.abs(weight);
 		}
 		return sum;
 	}

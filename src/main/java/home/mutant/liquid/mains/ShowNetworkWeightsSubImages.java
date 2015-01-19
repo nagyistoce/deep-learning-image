@@ -24,7 +24,8 @@ public class ShowNetworkWeightsSubImages
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
 		}
-		for (int imageIndex=0;imageIndex<6000;imageIndex++)
+		long t0=System.currentTimeMillis();
+		for (int imageIndex=0;imageIndex<600;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
@@ -53,6 +54,7 @@ public class ShowNetworkWeightsSubImages
 				//found.lastRecognized=MnistDatabase.trainLabels.get(imageIndex);
 			}
 		}
+		System.out.println(System.currentTimeMillis()-t0);
 		frame.showNetworkWeights(net, 1900/(subImageX+1),1);
 		System.out.println(net.neurons.size());
 //		int count=0;
