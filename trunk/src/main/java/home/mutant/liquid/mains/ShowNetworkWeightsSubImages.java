@@ -3,16 +3,18 @@ package home.mutant.liquid.mains;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
-import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.cells.NeuronCellGreyDifference;
 import home.mutant.liquid.networks.SimpleNet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowNetworkWeightsSubImages 
 {
-	public static void main(String[] args) throws IOException
+	public static final int NO_THREADS = 8;
+	public static final int NO_NEURONS_PER_THREAD = 1250;
+	public static void main(String[] args) throws IOException, InterruptedException
 	{
 		ResultFrame frame = new ResultFrame(1900, 1080);
 		SimpleNet net = new SimpleNet();
@@ -20,38 +22,33 @@ public class ShowNetworkWeightsSubImages
 		MnistDatabase.loadImages();
 		int subImageX=7;
 		int subImageStep = 4;
-		for (int i=0;i<10000;i++)
+		for (int i=0;i<NO_THREADS * NO_NEURONS_PER_THREAD;i++)
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
 		}
 		long t0=System.currentTimeMillis();
-		for (int imageIndex=0;imageIndex<600;imageIndex++)
+		
+		List<OutputNeuronsRunnable>  runnables = new ArrayList<OutputNeuronsRunnable>();
+		for (int i=0;i<NO_THREADS;i++)
+		{
+			OutputNeuronsRunnable ouputRunnable = new OutputNeuronsRunnable(net.neurons.subList(i*NO_NEURONS_PER_THREAD, (i+1)*NO_NEURONS_PER_THREAD));
+			runnables.add(ouputRunnable);
+		}
+		for (int imageIndex=0;imageIndex<6000;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
 			List<byte[]> subImages = trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep);
-			for (byte[] subImage : subImages) 
+			List<Thread>  threads = new ArrayList<Thread>();
+			for (int i=0;i<NO_THREADS;i++)
 			{
-				NeuronCell found = null;
-				for (NeuronCell neuron : net.neurons)
-				{
-					if (neuron.isFiring(subImage))
-					{
-						found=neuron;
-						found.modifyWeights(subImage);
-						//break;
-					}
-				}
-//				if (found == null)
-//				{
-//					found = new NeuronCellGreyDifference(subImageX*subImageX);
-//					net.neurons.add(found);
-//					found.modifyWeights(subImage);
-//					
-//				}
-				
-				//found.recognized.add(MnistDatabase.trainLabels.get(imageIndex));
-				//found.lastRecognized=MnistDatabase.trainLabels.get(imageIndex);
+				runnables.get(i).subImages = subImages;
+				threads.add(new Thread(runnables.get(i)));
+				threads.get(i).start();
+			}
+			for (int i=0;i<NO_THREADS;i++)
+			{
+				threads.get(i).join();
 			}
 		}
 		System.out.println(System.currentTimeMillis()-t0);
