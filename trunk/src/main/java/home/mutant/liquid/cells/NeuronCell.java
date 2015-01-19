@@ -26,7 +26,7 @@ public abstract class NeuronCell
 		for (int i=0;i<noSynapses;i++)
 		{
 			//if (Math.random()>.6)
-				weights[i]=0;//Math.random()*256-128;
+				weights[i]=Math.random()*256;
 		}
 	}
 	public double outputProbability(double[] input)

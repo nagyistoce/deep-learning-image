@@ -4,7 +4,6 @@ import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.liquid.cells.NeuronCell;
-import home.mutant.liquid.cells.NeuronCellGrey;
 import home.mutant.liquid.cells.NeuronCellGreyDifference;
 import home.mutant.liquid.networks.SimpleNet;
 
@@ -17,10 +16,15 @@ public class ShowNetworkWeightsSubImages
 	{
 		ResultFrame frame = new ResultFrame(1900, 1080);
 		SimpleNet net = new SimpleNet();
+
 		MnistDatabase.loadImages();
 		int subImageX=7;
 		int subImageStep = 4;
-		for (int imageIndex=0;imageIndex<600;imageIndex++)
+		for (int i=0;i<10000;i++)
+		{
+			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
+		}
+		for (int imageIndex=0;imageIndex<6000;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
@@ -33,21 +37,23 @@ public class ShowNetworkWeightsSubImages
 					if (neuron.isFiring(subImage))
 					{
 						found=neuron;
-						break;
+						found.modifyWeights(subImage);
+						//break;
 					}
 				}
-				if (found == null)
-				{
-					found = new NeuronCellGreyDifference(subImageX*subImageX);
-					net.neurons.add(found);
-					found.modifyWeights(subImage);
-				}
+//				if (found == null)
+//				{
+//					found = new NeuronCellGreyDifference(subImageX*subImageX);
+//					net.neurons.add(found);
+//					found.modifyWeights(subImage);
+//					
+//				}
 				
 				//found.recognized.add(MnistDatabase.trainLabels.get(imageIndex));
-				found.lastRecognized=MnistDatabase.trainLabels.get(imageIndex);
+				//found.lastRecognized=MnistDatabase.trainLabels.get(imageIndex);
 			}
 		}
-		frame.showNetworkWeights(net, 1900/(subImageX));
+		frame.showNetworkWeights(net, 1900/(subImageX+1),1);
 		System.out.println(net.neurons.size());
 //		int count=0;
 //		for (int imageIndex=0;imageIndex<10000;imageIndex++)
