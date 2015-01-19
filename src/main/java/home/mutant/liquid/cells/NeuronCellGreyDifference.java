@@ -15,7 +15,7 @@ public class NeuronCellGreyDifference extends NeuronCell
 //		System.out.println(output);
 //		System.out.println(threshold);
 //		System.out.println();
-		return output<100000;
+		return output<5000/(noUpdates+1);
 	}
 	public double output(byte[] pixels)
 	{
@@ -25,7 +25,7 @@ public class NeuronCellGreyDifference extends NeuronCell
 			int pixel = pixels[i];
 			if (pixel<0)pixel+=255;
 			double weight = weights[i]-pixel;
-			sum+=weight*weight;
+			sum+=Math.abs(weight);
 		}
 		return sum;
 	}
@@ -35,18 +35,19 @@ public class NeuronCellGreyDifference extends NeuronCell
 		{
 			int pixel = pixels[i];
 			if (pixel<0)pixel+=255;
-			weights[i]=(weights[i]+pixel);
+			weights[i]=(weights[i]+pixel)/2;
 		}
 		threshold = MathUtils.sumSquared(weights);
+		noUpdates++;
 	}
 	@Override
-	public double getDistanceFromImage(byte[] pixels) {
-		// TODO Auto-generated method stub
+	public double getDistanceFromImage(byte[] pixels) 
+	{
 		return 0;
 	}
 	@Override
-	public double getDistanceFromNeuron(NeuronCell neuron) {
-		// TODO Auto-generated method stub
+	public double getDistanceFromNeuron(NeuronCell neuron) 
+	{
 		return 0;
 	}
 }
