@@ -191,9 +191,9 @@ public class ImageUtils
 	public static List<byte[]> divideImage(byte[] image, int newX, int newY, int actualX, int actualY, int stepX, int stepY)
 	{
 		List<byte[]> dividedImages = new ArrayList<byte[]>();
-		for (int y=0; y<actualY-newY; y+=stepY)
+		for (int y=0; y<=actualY-newY; y+=stepY)
 		{
-			for (int x=0; x<actualX-newX; x+=stepX)
+			for (int x=0; x<=actualX-newX; x+=stepX)
 			{
 				byte[] newImage = new byte[newX*newY];
 				int offsetImage = 0;

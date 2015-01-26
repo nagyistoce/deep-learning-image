@@ -12,11 +12,11 @@ import java.util.List;
 
 public class ShowNetworkWeightsSubImages 
 {
-	public static final int NO_THREADS = 8;
-	public static final int NO_NEURONS_PER_THREAD = 1250;
+	public static final int NO_THREADS = 12;
+	public static final int NO_NEURONS_PER_THREAD = 854;
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
-		ResultFrame frame = new ResultFrame(1900, 1080);
+		
 		SimpleNet net = new SimpleNet();
 
 		MnistDatabase.loadImages();
@@ -26,7 +26,7 @@ public class ShowNetworkWeightsSubImages
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
 		}
-		long t0=System.currentTimeMillis();
+		
 		
 		List<OutputNeuronsRunnable>  runnables = new ArrayList<OutputNeuronsRunnable>();
 		for (int i=0;i<NO_THREADS;i++)
@@ -34,26 +34,31 @@ public class ShowNetworkWeightsSubImages
 			OutputNeuronsRunnable ouputRunnable = new OutputNeuronsRunnable(net.neurons.subList(i*NO_NEURONS_PER_THREAD, (i+1)*NO_NEURONS_PER_THREAD));
 			runnables.add(ouputRunnable);
 		}
-		for (int imageIndex=0;imageIndex<6000;imageIndex++)
+		List<byte[]> subImages = new ArrayList<byte[]>();
+		long t0=System.currentTimeMillis();
+		for (int imageIndex=0;imageIndex<600;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
-			List<byte[]> subImages = trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep);
-			List<Thread>  threads = new ArrayList<Thread>();
-			for (int i=0;i<NO_THREADS;i++)
-			{
-				runnables.get(i).subImages = subImages;
-				threads.add(new Thread(runnables.get(i)));
-				threads.get(i).start();
-			}
-			for (int i=0;i<NO_THREADS;i++)
-			{
-				threads.get(i).join();
-			}
+			subImages.addAll(trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep));
 		}
+		List<Thread>  threads = new ArrayList<Thread>();
+		
+		for (int i=0;i<NO_THREADS;i++)
+		{
+			runnables.get(i).subImages = subImages;
+			threads.add(new Thread(runnables.get(i)));
+			threads.get(i).start();
+		}
+		for (int i=0;i<NO_THREADS;i++)
+		{
+			threads.get(i).join();
+		}
+		
 		System.out.println(System.currentTimeMillis()-t0);
+		ResultFrame frame = new ResultFrame(1900, 1080);
 		frame.showNetworkWeights(net, 1900/(subImageX+1),1);
-		System.out.println(net.neurons.size());
+		//System.out.println(net.neurons.size());
 //		int count=0;
 //		for (int imageIndex=0;imageIndex<10000;imageIndex++)
 //		{
