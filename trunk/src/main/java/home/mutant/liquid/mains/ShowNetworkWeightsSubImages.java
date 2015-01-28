@@ -12,8 +12,9 @@ import java.util.List;
 
 public class ShowNetworkWeightsSubImages 
 {
-	public static final int NO_THREADS = 12;
-	public static final int NO_NEURONS_PER_THREAD = 854;
+	public static final int NO_THREADS = 8;
+	public static final int NO_NEURONS_PER_THREAD = 125;
+
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
 		
@@ -27,16 +28,16 @@ public class ShowNetworkWeightsSubImages
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
 		}
 		
-		
 		List<OutputNeuronsRunnable>  runnables = new ArrayList<OutputNeuronsRunnable>();
 		for (int i=0;i<NO_THREADS;i++)
 		{
 			OutputNeuronsRunnable ouputRunnable = new OutputNeuronsRunnable(net.neurons.subList(i*NO_NEURONS_PER_THREAD, (i+1)*NO_NEURONS_PER_THREAD));
 			runnables.add(ouputRunnable);
 		}
+
 		List<byte[]> subImages = new ArrayList<byte[]>();
 		long t0=System.currentTimeMillis();
-		for (int imageIndex=0;imageIndex<600;imageIndex++)
+		for (int imageIndex=0;imageIndex<60000;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
@@ -54,33 +55,18 @@ public class ShowNetworkWeightsSubImages
 		{
 			threads.get(i).join();
 		}
-		
+		System.out.println(net.neurons.size());
+		net.sortNeuronsByDistance();
+		System.out.println(net.neurons.size());
 		System.out.println(System.currentTimeMillis()-t0);
 		ResultFrame frame = new ResultFrame(1900, 1080);
 		frame.showNetworkWeights(net, 1900/(subImageX+1),1);
-		//System.out.println(net.neurons.size());
-//		int count=0;
-//		for (int imageIndex=0;imageIndex<10000;imageIndex++)
-//		{
-//			SimpleNet netTest = new SimpleNet();
-//			System.out.println(MnistDatabase.testLabels.get(imageIndex));
-//			for (NeuronCell neuron : net.neurons)
-//			{
-//				
-//				if (neuron.isFiringBW(MnistDatabase.testImages.get(imageIndex)))
-//				{
-//					netTest.neurons.add(neuron);
-//				}
-//			}
-//			if (netTest.neurons.size()==0)
-//				count++;
-//			for (NeuronCell neuron : netTest.neurons)
-//			{
-//				System.out.println(neuron.lastRecognized);
-//			}
-//			System.out.println();
-//		}
-//		System.out.println(count);
-		//frame.showNetworkWeights(netTest, 60);
+		
+		byte[] zeroPixels = new byte[49];
+		for(int i=0; i<net.neurons.size()-1;i++)
+		{
+			//System.out.println(net.neurons.get(i).output(net.neurons.get(i+1)));
+			System.out.println(net.neurons.get(i).output(zeroPixels));
+		}
 	}
 }

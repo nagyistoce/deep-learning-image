@@ -60,4 +60,10 @@ public class NeuronCellGrey extends NeuronCell
 		output = output(neuron.weights);
 		return output;
 	}
+	@Override
+	public double output(NeuronCell neuron)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

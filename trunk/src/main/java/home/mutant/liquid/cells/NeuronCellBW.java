@@ -52,4 +52,11 @@ public class NeuronCellBW extends NeuronCell
 	{
 		return 0;
 	}
+
+	@Override
+	public double output(NeuronCell neuron)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
