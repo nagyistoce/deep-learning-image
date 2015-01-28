@@ -10,7 +10,7 @@ public abstract class NeuronCell
 {
 	public double[] weights = null;
 	public double output = 0;
-	protected int noUpdates=0;
+	public int noUpdates=0;
 	public List<Integer> recognized = new ArrayList<Integer>();
 	public int lastRecognized = -1;
 	protected double threshold=0;
@@ -62,6 +62,7 @@ public abstract class NeuronCell
 	}
 	
 	public abstract double output(byte[] pixels);
+	public abstract double output(NeuronCell neuron);
 	public abstract boolean isFiring(byte[] pixels);
 	public abstract void modifyWeights(byte[] pixels);
 	public abstract double getDistanceFromImage(byte[] pixels);

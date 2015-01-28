@@ -13,10 +13,12 @@ public class NeuronCellGreyDifference extends NeuronCell
 	{
 		output = output(pixels);
 //		System.out.println(output);
-//		System.out.println(threshold);
+//		System.out.println(output<1000/(noUpdates+1));
+//		System.out.println(noUpdates);
 //		System.out.println();
-		return output<800/(noUpdates+1);
+		return output<750/Math.log((noUpdates+Math.E));
 	}
+	
 	public double output(byte[] pixels)
 	{
 		double sum=0;
@@ -25,10 +27,26 @@ public class NeuronCellGreyDifference extends NeuronCell
 			int pixel = pixels[i];
 			if (pixel<0)pixel+=255;
 			double weight = weights[i]-pixel;
-			sum+=weight*weight;
+			sum+=weight*weight;//Math.abs(weight);
+
 		}
 		return Math.sqrt(sum);
 	}
+	
+	public double output(NeuronCell other)
+	{
+		double sum=0;
+		for (int i = 0; i < other.weights.length; i++) 
+		{
+			double weight = weights[i]-other.weights[i];
+			sum+=weight*weight;//Math.abs(weight);
+
+		}
+		sum = Math.sqrt(sum);
+		//System.out.println(sum);
+		return sum;
+	}
+	
 	public void modifyWeights(byte[] pixels)
 	{
 		for (int i = 0; i < pixels.length; i++) 
