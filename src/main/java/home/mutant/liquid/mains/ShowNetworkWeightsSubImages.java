@@ -3,17 +3,20 @@ package home.mutant.liquid.mains;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
+import home.mutant.deep.utils.kmeans.Kmeans;
+import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.cells.NeuronCellGreyDifference;
 import home.mutant.liquid.networks.SimpleNet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ShowNetworkWeightsSubImages 
 {
 	public static final int NO_THREADS = 8;
-	public static final int NO_NEURONS_PER_THREAD = 125;
+	public static final int NO_NEURONS_PER_THREAD = 1250;
 
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
@@ -22,7 +25,7 @@ public class ShowNetworkWeightsSubImages
 
 		MnistDatabase.loadImages();
 		int subImageX=7;
-		int subImageStep = 4;
+		int subImageStep = 2;
 		for (int i=0;i<NO_THREADS * NO_NEURONS_PER_THREAD;i++)
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
@@ -37,7 +40,7 @@ public class ShowNetworkWeightsSubImages
 
 		List<byte[]> subImages = new ArrayList<byte[]>();
 		long t0=System.currentTimeMillis();
-		for (int imageIndex=0;imageIndex<60000;imageIndex++)
+		for (int imageIndex=0;imageIndex<600;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
@@ -55,18 +58,39 @@ public class ShowNetworkWeightsSubImages
 		{
 			threads.get(i).join();
 		}
+		ResultFrame frame = new ResultFrame(1900, 1080);
+		
+		List<List<Integer>> clusters = Kmeans.run(net.neurons, 100);
+		List<NeuronCell> neurons = new ArrayList<NeuronCell>();
+		for (List<Integer> list : clusters)
+		{
+			for (Integer integer : list)
+			{
+				neurons.add(net.neurons.get(integer));
+			}
+		}
+		net.neurons = neurons;
+		/*
 		System.out.println(net.neurons.size());
 		net.sortNeuronsByDistance();
+		//Collections.sort(net.neurons);
 		System.out.println(net.neurons.size());
 		System.out.println(System.currentTimeMillis()-t0);
-		ResultFrame frame = new ResultFrame(1900, 1080);
-		frame.showNetworkWeights(net, 1900/(subImageX+1),1);
-		
+
+		*/
 		byte[] zeroPixels = new byte[49];
-		for(int i=0; i<net.neurons.size()-1;i++)
+		int countZeroUpdates = 0;
+		for(int i=0; i<net.neurons.size()/10-1;i++)
 		{
-			//System.out.println(net.neurons.get(i).output(net.neurons.get(i+1)));
-			System.out.println(net.neurons.get(i).output(zeroPixels));
+			System.out.println(net.neurons.get(i).output(net.neurons.get(i+1)));
+			//System.out.println(net.neurons.get(i).output(zeroPixels));
+			if (net.neurons.get(i).noUpdates == 0)
+			{
+				countZeroUpdates++;
+			}
 		}
+		System.out.println(countZeroUpdates);
+		
+		frame.showNetworkWeights(net, 1900/(subImageX+1),1);
 	}
 }

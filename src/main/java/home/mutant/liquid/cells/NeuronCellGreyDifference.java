@@ -9,6 +9,12 @@ public class NeuronCellGreyDifference extends NeuronCell
 	{
 		super(noSynapses);
 	}
+	public NeuronCellGreyDifference(NeuronCell cell) 
+	{
+		super(cell.weights.length);
+		System.arraycopy(cell.weights, 0, weights, 0, weights.length);
+	}
+	
 	public boolean isFiring(byte[] pixels)
 	{
 		output = output(pixels);
@@ -53,7 +59,7 @@ public class NeuronCellGreyDifference extends NeuronCell
 		{
 			int pixel = pixels[i];
 			if (pixel<0)pixel+=255;
-			weights[i]=(weights[i]+pixel)/2;
+			weights[i]=weights[i]+(pixel - weights[i])/2;
 		}
 		//threshold = MathUtils.sumSquared(weights);
 		noUpdates++;

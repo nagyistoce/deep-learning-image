@@ -6,7 +6,7 @@ import java.util.List;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.utils.MathUtils;
 
-public abstract class NeuronCell
+public abstract class NeuronCell implements Comparable<NeuronCell>
 {
 	public double[] weights = null;
 	public double output = 0;
@@ -60,7 +60,13 @@ public abstract class NeuronCell
 		output = MathUtils.sigmoidFunction(sum);
 		return output;
 	}
-	
+	public int compareTo(NeuronCell other)
+	{
+		byte [] zeroPixels = new byte[weights.length];
+		double o1 = output(zeroPixels);
+		return (int)(o1-other.output(zeroPixels));
+	}
+
 	public abstract double output(byte[] pixels);
 	public abstract double output(NeuronCell neuron);
 	public abstract boolean isFiring(byte[] pixels);
