@@ -19,9 +19,10 @@ import org.jocl.cl_mem;
 
 public class RunNeuronsOpenCl 
 {
-	public static final int NO_NEURONS = 102400;
+	public static final int NO_NEURONS = 10240;
 	public static final int NO_SYNAPSES = 49;
-	public static final int NO_IMAGES = 144;
+	public static final int NO_IMAGES = 36;
+	public static final int NO_BATCH_IMAGES = 8;
     public static void main(String args[]) throws IOException
     {
     	float[] synapses = new float[NO_NEURONS*(NO_SYNAPSES+1)];
@@ -42,27 +43,23 @@ public class RunNeuronsOpenCl
     	OpenClWrapper wrapper = new OpenClWrapper(text, "outputNeuron");
     	
     	cl_mem synapsesMem = wrapper.addInputMemObject(synapses);
-		cl_mem imageMem = wrapper.addInputMemObject(NO_SYNAPSES*NO_IMAGES);
+		cl_mem imageMem = wrapper.addInputMemObject(NO_SYNAPSES*NO_IMAGES*NO_BATCH_IMAGES);
         
 		int subImageX=7;
 		int subImageStep = 4;
 		long t0=System.currentTimeMillis();
 
-		for (int imageIndex=0;imageIndex<60000;imageIndex+=4)
+		for (int imageIndex=0;imageIndex<6000;imageIndex+=NO_BATCH_IMAGES)
 		{
-			
-			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
-			List<byte[]> subImages = trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep);
-			Image trainImage2 = MnistDatabase.trainImages.get(imageIndex+1);
-			subImages.addAll(trainImage2.divideImage(subImageX, subImageX, subImageStep, subImageStep));
-			Image trainImage3 = MnistDatabase.trainImages.get(imageIndex+2);
-			subImages.addAll(trainImage3.divideImage(subImageX, subImageX, subImageStep, subImageStep));
-			Image trainImage4 = MnistDatabase.trainImages.get(imageIndex+3);
-			subImages.addAll(trainImage4.divideImage(subImageX, subImageX, subImageStep, subImageStep));
+			List<byte[]> subImages = new ArrayList<byte[]>();
+			for (int batch=0;batch<NO_BATCH_IMAGES;batch++)
+			{
+				subImages.addAll(MnistDatabase.testImages.get(imageIndex+batch).divideImage(subImageX, subImageX, subImageStep, subImageStep));
+			}
 			float[] subImageFloats = OpenClWrapper.listBytesToFloats(subImages);
 			//System.out.println("Image: "+java.util.Arrays.toString(subImageFloats));
 			wrapper.copyDataHtoD(imageMem, subImageFloats);
-	        wrapper.runKernel(NO_NEURONS, 32);
+	        wrapper.runKernel(NO_NEURONS, 64);
 	        wrapper.finish();
 	        //System.out.println("Result: "+java.util.Arrays.toString(outputs));
 	        //System.out.println();
