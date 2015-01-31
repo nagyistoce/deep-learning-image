@@ -3,12 +3,15 @@ package home.mutant.opelcl.mains;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
+import home.mutant.deep.utils.kmeans.Kmeans;
+import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.cells.NeuronCellGreyDifference;
 import home.mutant.liquid.networks.SimpleNet;
 import home.mutant.opelcl.OpenClWrapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,9 +19,9 @@ import org.jocl.cl_mem;
 
 public class RunNeuronsOpenCl 
 {
-	public static final int NO_NEURONS = 10240;
+	public static final int NO_NEURONS = 102400;
 	public static final int NO_SYNAPSES = 49;
-	public static final int NO_IMAGES = 36;
+	public static final int NO_IMAGES = 144;
     public static void main(String args[]) throws IOException
     {
     	float[] synapses = new float[NO_NEURONS*(NO_SYNAPSES+1)];
@@ -45,16 +48,21 @@ public class RunNeuronsOpenCl
 		int subImageStep = 4;
 		long t0=System.currentTimeMillis();
 
-		for (int imageIndex=0;imageIndex<60000;imageIndex++)
+		for (int imageIndex=0;imageIndex<60000;imageIndex+=4)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
 			List<byte[]> subImages = trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep);
-
+			Image trainImage2 = MnistDatabase.trainImages.get(imageIndex+1);
+			subImages.addAll(trainImage2.divideImage(subImageX, subImageX, subImageStep, subImageStep));
+			Image trainImage3 = MnistDatabase.trainImages.get(imageIndex+2);
+			subImages.addAll(trainImage3.divideImage(subImageX, subImageX, subImageStep, subImageStep));
+			Image trainImage4 = MnistDatabase.trainImages.get(imageIndex+3);
+			subImages.addAll(trainImage4.divideImage(subImageX, subImageX, subImageStep, subImageStep));
 			float[] subImageFloats = OpenClWrapper.listBytesToFloats(subImages);
 			//System.out.println("Image: "+java.util.Arrays.toString(subImageFloats));
 			wrapper.copyDataHtoD(imageMem, subImageFloats);
-	        wrapper.runKernel(NO_NEURONS, 64);
+	        wrapper.runKernel(NO_NEURONS, 32);
 	        wrapper.finish();
 	        //System.out.println("Result: "+java.util.Arrays.toString(outputs));
 	        //System.out.println();
@@ -73,7 +81,17 @@ public class RunNeuronsOpenCl
 				neuron.weights[j] = synapses[i*50+j];
 			}
 		}
-		ResultFrame frame = new ResultFrame(1900, 1080);
-		frame.showNetworkWeights(net, 1900/(subImageX+1),1);
+		ResultFrame frame = new ResultFrame(1200, 1000);
+//		List<List<Integer>> clusters = Kmeans.run(net.neurons, 100);
+//		List<NeuronCell> neurons = new ArrayList<NeuronCell>();
+//		for (List<Integer> list : clusters)
+//		{
+//			for (int i =0;i<list.size() & i<150;i++)
+//			{
+//				neurons.add(net.neurons.get(list.get(i)));
+//			}
+//		}
+//		net.neurons = neurons;
+		frame.showNetworkWeights(net, 1200/(subImageX+1),1);
     }
 }
