@@ -11,7 +11,7 @@ __kernel void outputNeuron(__global float *synapses, __constant float *image)
 	float weight;
 	for(index=0;index<49;index++)
 		synapseBuffer[index] = synapses[neuronIndex+index];
-	for(indexImage=0;indexImage<144;indexImage++)
+	for(indexImage=0;indexImage<36*8;indexImage++)
 	{
 		sum = 0;
 		for(index=0;index<49;index++)
