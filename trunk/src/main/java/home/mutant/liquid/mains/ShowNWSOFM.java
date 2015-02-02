@@ -10,10 +10,9 @@ import home.mutant.liquid.networks.SimpleNet;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class ShowNetworkWeightsSubImages 
+public class ShowNWSOFM 
 {
 	public static final int NO_THREADS = 8;
 	public static final int NO_NEURONS_PER_THREAD = 125;
