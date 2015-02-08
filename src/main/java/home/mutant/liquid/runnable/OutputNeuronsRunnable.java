@@ -1,4 +1,4 @@
-package home.mutant.liquid.mains;
+package home.mutant.liquid.runnable;
 
 import home.mutant.liquid.cells.NeuronCell;
 

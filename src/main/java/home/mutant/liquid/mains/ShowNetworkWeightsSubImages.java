@@ -7,6 +7,7 @@ import home.mutant.deep.utils.kmeans.Kmeans;
 import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.cells.NeuronCellGreyDifference;
 import home.mutant.liquid.networks.SimpleNet;
+import home.mutant.liquid.runnable.OutputNeuronsRunnable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,24 +41,28 @@ public class ShowNetworkWeightsSubImages
 
 		List<byte[]> subImages = new ArrayList<byte[]>();
 		long t0=System.currentTimeMillis();
-		for (int imageIndex=0;imageIndex<600;imageIndex++)
+		for (int imageIndex=0;imageIndex<1;imageIndex++)
 		{
 			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
 			subImages.addAll(trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep));
 		}
 		List<Thread>  threads = new ArrayList<Thread>();
+		for(int cycles=0;cycles<1;cycles++)
+		{
+			for (int i=0;i<NO_THREADS;i++)
+			{
+				runnables.get(i).subImages = subImages;
+				threads.add(new Thread(runnables.get(i)));
+				threads.get(i).start();
+			}
+			for (int i=0;i<NO_THREADS;i++)
+			{
+				threads.get(i).join();
+			}
+			threads.clear();
+		}
 		
-		for (int i=0;i<NO_THREADS;i++)
-		{
-			runnables.get(i).subImages = subImages;
-			threads.add(new Thread(runnables.get(i)));
-			threads.get(i).start();
-		}
-		for (int i=0;i<NO_THREADS;i++)
-		{
-			threads.get(i).join();
-		}
 		ResultFrame frame = new ResultFrame(1200, 1080);
 		
 		List<List<Integer>> clusters = Kmeans.run(net.neurons, 100);
