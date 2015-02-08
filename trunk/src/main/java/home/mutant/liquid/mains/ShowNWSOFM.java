@@ -6,7 +6,9 @@ import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.deep.utils.kmeans.Kmeans;
 import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.cells.NeuronCellGreyDifference;
+import home.mutant.liquid.networks.DoubleNet;
 import home.mutant.liquid.networks.SimpleNet;
+import home.mutant.liquid.runnable.OutputNeuronsRunnable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class ShowNWSOFM
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
 		
-		SimpleNet net = new SimpleNet();
+		DoubleNet net = new DoubleNet();
 
 		MnistDatabase.loadImages();
 		int subImageX=7;
@@ -28,6 +30,7 @@ public class ShowNWSOFM
 		for (int i=0;i<NO_THREADS * NO_NEURONS_PER_THREAD;i++)
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
+			net.neurons2.add(new NeuronCellGreyDifference(subImageX*subImageX));
 		}
 		
 		List<OutputNeuronsRunnable>  runnables = new ArrayList<OutputNeuronsRunnable>();
