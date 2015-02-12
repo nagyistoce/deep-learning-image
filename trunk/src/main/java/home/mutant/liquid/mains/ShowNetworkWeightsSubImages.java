@@ -17,7 +17,7 @@ import java.util.List;
 public class ShowNetworkWeightsSubImages 
 {
 	public static final int NO_THREADS = 8;
-	public static final int NO_NEURONS_PER_THREAD = 125;
+	public static final int NO_NEURONS_PER_THREAD = 1250;
 
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
@@ -25,8 +25,8 @@ public class ShowNetworkWeightsSubImages
 		SimpleNet net = new SimpleNet();
 
 		MnistDatabase.loadImages();
-		int subImageX=7;
-		int subImageStep = 4;
+		int subImageX=5;
+		int subImageStep = 2;
 		for (int i=0;i<NO_THREADS * NO_NEURONS_PER_THREAD;i++)
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
@@ -41,9 +41,8 @@ public class ShowNetworkWeightsSubImages
 
 		List<byte[]> subImages = new ArrayList<byte[]>();
 		long t0=System.currentTimeMillis();
-		for (int imageIndex=0;imageIndex<1;imageIndex++)
+		for (int imageIndex=0;imageIndex<600;imageIndex++)
 		{
-			
 			Image trainImage = MnistDatabase.trainImages.get(imageIndex);
 			subImages.addAll(trainImage.divideImage(subImageX, subImageX, subImageStep, subImageStep));
 		}
@@ -75,12 +74,12 @@ public class ShowNetworkWeightsSubImages
 			}
 		}
 		net.neurons = neurons;
-		/*
+		
 		System.out.println(net.neurons.size());
 		net.sortNeuronsByDistance();
 		//Collections.sort(net.neurons);
 		System.out.println(net.neurons.size());
-		*/
+		
 		System.out.println(System.currentTimeMillis()-t0);
 
 		
