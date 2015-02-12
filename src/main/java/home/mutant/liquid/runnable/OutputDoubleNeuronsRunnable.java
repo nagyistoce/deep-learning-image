@@ -31,7 +31,7 @@ public class OutputDoubleNeuronsRunnable implements Runnable
 			NeuronCell neuronFrom3 = netFrom.get(offset-1);
 			for (int i = 0; i < neuronFrom.weights.length; i++)
 			{
-				neuronTo.weights[i] = (1*neuronFrom.weights[i]+neuronFrom2.weights[i]+ neuronFrom3.weights[i])/3;
+				neuronTo.weights[i] = (10*neuronFrom.weights[i]+neuronFrom2.weights[i]+ neuronFrom3.weights[i])/12;
 			}
 		}	
 	}

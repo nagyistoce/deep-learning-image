@@ -71,7 +71,7 @@ public class ShowNWSOFM
 		}
 		List<Thread>  threads = new ArrayList<Thread>();
 		
-		for(int cycles=0;cycles<30;cycles++)
+		for(int cycles=0;cycles<10;cycles++)
 		{
 			threads.clear();
 			for (int i=0;i<NO_THREADS;i++)
@@ -120,38 +120,20 @@ public class ShowNWSOFM
 			}
 		}
 		ResultFrame frame = new ResultFrame(1200, 1080);
-		/*
-		List<List<Integer>> clusters = Kmeans.run(net.neurons, 100);
-		List<NeuronCell> neurons = new ArrayList<NeuronCell>();
-		for (List<Integer> list : clusters)
-		{
-			for (Integer integer : list)
-			{
-				neurons.add(net.neurons.get(integer));
-			}
-		}
-		net.neurons = neurons;
 		
-		System.out.println(net.neurons.size());
-		net.sortNeuronsByDistance();
-		//Collections.sort(net.neurons);
-		System.out.println(net.neurons.size());
-		*/
-		System.out.println(System.currentTimeMillis()-t0);
-
-		
-//		byte[] zeroPixels = new byte[49];
-//		int countZeroUpdates = 0;
-//		for(int i=0; i<net.neurons.size()/10-1;i++)
+//		List<List<Integer>> clusters = Kmeans.run(net.neurons, 100);
+//		List<NeuronCell> neurons = new ArrayList<NeuronCell>();
+//		for (List<Integer> list : clusters)
 //		{
-//			System.out.println(net.neurons.get(i).output(net.neurons.get(i+1)));
-//			//System.out.println(net.neurons.get(i).output(zeroPixels));
-//			if (net.neurons.get(i).noUpdates == 0)
+//			for (Integer integer : list)
 //			{
-//				countZeroUpdates++;
+//				neurons.add(net.neurons.get(integer));
 //			}
 //		}
-//		System.out.println(countZeroUpdates);
+//		net.neurons = neurons;
+		
+		System.out.println(System.currentTimeMillis()-t0);
+
 		
 		frame.showNetworkWeights(net, 1200/(subImageX+1),1);
 	}

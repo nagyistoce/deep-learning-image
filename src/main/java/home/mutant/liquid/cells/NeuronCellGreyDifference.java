@@ -4,10 +4,11 @@ import home.mutant.deep.utils.MathUtils;
 
 public class NeuronCellGreyDifference extends NeuronCell
 {
-
+	double initThreshold = 0;
 	public NeuronCellGreyDifference(int noSynapses) 
 	{
 		super(noSynapses);
+		initThreshold = 120*Math.sqrt(noSynapses);
 	}
 	public NeuronCellGreyDifference(NeuronCell cell) 
 	{
@@ -22,7 +23,8 @@ public class NeuronCellGreyDifference extends NeuronCell
 //		System.out.println(output<1000/(noUpdates+1));
 //		System.out.println(noUpdates);
 //		System.out.println();
-		return output<750/Math.log((noUpdates+Math.E));
+		//return output<750/Math.log((noUpdates+Math.E));
+		return output<initThreshold/Math.log((noUpdates+Math.E));
 	}
 	
 	public double output(byte[] pixels)
