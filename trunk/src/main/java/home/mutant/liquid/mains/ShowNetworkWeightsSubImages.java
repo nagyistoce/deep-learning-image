@@ -21,12 +21,21 @@ public class ShowNetworkWeightsSubImages
 
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
+		int subImageX=5;
+		int subImageStep = 2;
 		
+		SimpleNet net = train(subImageX, subImageStep);
+		ResultFrame frame = new ResultFrame(1200, 1080);
+		frame.showNetworkWeights(net, 1200/(subImageX+1),1);
+	}
+
+	static SimpleNet train(int subImageX, int subImageStep)
+			throws IOException, InterruptedException
+	{
 		SimpleNet net = new SimpleNet();
 
 		MnistDatabase.loadImages();
-		int subImageX=5;
-		int subImageStep = 2;
+
 		for (int i=0;i<NO_THREADS * NO_NEURONS_PER_THREAD;i++)
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
@@ -62,7 +71,7 @@ public class ShowNetworkWeightsSubImages
 			threads.clear();
 		}
 		
-		ResultFrame frame = new ResultFrame(1200, 1080);
+		
 		
 		List<List<Integer>> clusters = Kmeans.run(net.neurons, 100);
 		List<NeuronCell> neurons = new ArrayList<NeuronCell>();
@@ -81,21 +90,6 @@ public class ShowNetworkWeightsSubImages
 		System.out.println(net.neurons.size());
 		
 		System.out.println(System.currentTimeMillis()-t0);
-
-		
-		byte[] zeroPixels = new byte[49];
-		int countZeroUpdates = 0;
-		for(int i=0; i<net.neurons.size()/10-1;i++)
-		{
-			System.out.println(net.neurons.get(i).output(net.neurons.get(i+1)));
-			//System.out.println(net.neurons.get(i).output(zeroPixels));
-			if (net.neurons.get(i).noUpdates == 0)
-			{
-				countZeroUpdates++;
-			}
-		}
-		System.out.println(countZeroUpdates);
-		
-		frame.showNetworkWeights(net, 1200/(subImageX+1),1);
+		return net;
 	}
 }
