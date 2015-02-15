@@ -270,6 +270,7 @@ public class ResultFrame extends JFrame
 				for (int x=indexNeuronX*(sizeX+interImagesBorderSize);x<indexNeuronX*(sizeX+interImagesBorderSize)+sizeX;x++)
 				{
 					int weight = (int)(neuron.weights[indexWeight++]);
+					//weight+=128;
 					drawingPanel.setPixel(x,y,(byte)(weight));
 				}
 			}

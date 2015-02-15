@@ -51,7 +51,7 @@ public class SimpleNet
 				min = difference;
 			}
 		}
-		if (min<200)
+		if (min<50)
 			return -1;
 		return minIndex;
 	}

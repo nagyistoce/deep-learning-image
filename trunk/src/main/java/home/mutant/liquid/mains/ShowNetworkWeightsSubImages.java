@@ -6,6 +6,7 @@ import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.deep.utils.kmeans.Kmeans;
 import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.cells.NeuronCellGreyDifference;
+import home.mutant.liquid.cells.NeuronCellGreyIntegrate;
 import home.mutant.liquid.networks.SimpleNet;
 import home.mutant.liquid.runnable.OutputNeuronsRunnable;
 
@@ -17,7 +18,7 @@ import java.util.List;
 public class ShowNetworkWeightsSubImages 
 {
 	public static final int NO_THREADS = 8;
-	public static final int NO_NEURONS_PER_THREAD = 1250;
+	public static final int NO_NEURONS_PER_THREAD = 200;
 
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
@@ -40,7 +41,8 @@ public class ShowNetworkWeightsSubImages
 		{
 			net.neurons.add(new NeuronCellGreyDifference(subImageX*subImageX));
 		}
-		
+		ResultFrame frame = new ResultFrame(1200, 1080);
+		frame.showNetworkWeights(net, 1200/(subImageX+1),1);
 		List<OutputNeuronsRunnable>  runnables = new ArrayList<OutputNeuronsRunnable>();
 		for (int i=0;i<NO_THREADS;i++)
 		{
