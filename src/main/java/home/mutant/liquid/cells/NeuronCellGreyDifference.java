@@ -30,7 +30,7 @@ public class NeuronCellGreyDifference extends NeuronCell
 		//double prob = (maxThreshold-output)/maxThreshold;
 		//System.out.println(prob);
 		//return prob>1-0.5/Math.log((noUpdates+Math.E));
-		threshold+= Math.random()*100-50;
+		//threshold+= Math.random()*100-50;
 		return output<threshold;// initThreshold/Math.log((noUpdates+Math.E));
 		
 		//System.out.println(prob*prob*prob*prob);
@@ -72,7 +72,7 @@ public class NeuronCellGreyDifference extends NeuronCell
 		{
 			int pixel = pixels[i];
 			if (pixel<0)pixel+=255;
-			weights[i]=(pixel + 2* weights[i])/3;
+			weights[i]=(pixel + 10* weights[i])/11;
 		}
 		//threshold = MathUtils.sumSquared(weights);
 		//if (noUpdates<20)

@@ -44,11 +44,14 @@ public class ShowSecondLayer
 					for (int indexImageY=0;indexImageY<subImagesSize;indexImageY++)
 					{
 						NeuronCell filter = net.neurons.get(indexFilter);
-						if (filter.isFiring(subImages.get(indexSubImage)))
-						{
-							//secondLayer.setPixel(filterX*subImagesSize+indexImageX, filterY*subImagesSize+indexImageY, (byte) (MathUtils.sigmoidFunction(filter.output(subImages.get(indexSubImage)))*255));
-							secondLayer.setPixel(filterX*subImagesSize+indexImageX, filterY*subImagesSize+indexImageY, (byte) 255);
-						}
+//						if (filter.isFiring(subImages.get(indexSubImage)))
+//						{
+//							secondLayer.setPixel(filterX*subImagesSize+indexImageX, filterY*subImagesSize+indexImageY, (byte) 255);
+//						}
+						double output = filter.output(subImages.get(indexSubImage));
+						//System.out.println(output);
+						secondLayer.setPixel(filterX*subImagesSize+indexImageX, filterY*subImagesSize+indexImageY, (byte) ((1275-output)*0.2));
+						//secondLayer.setPixel(indexImageX*filtersMapSize+filterX, indexImageY*filtersMapSize+filterY, (byte) ((1275-output)*0.2));
 						indexSubImage++;
 					}
 				}

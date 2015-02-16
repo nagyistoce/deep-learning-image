@@ -73,8 +73,6 @@ public class ShowNetworkWeightsSubImages
 			threads.clear();
 		}
 		
-		
-		
 		List<List<Integer>> clusters = Kmeans.run(net.neurons, 100);
 		List<NeuronCell> neurons = new ArrayList<NeuronCell>();
 		for (List<Integer> list : clusters)
