@@ -22,10 +22,10 @@ public class OutputNeuronsRunnable implements Runnable
 		{
 			for (NeuronCell neuron : net)
 			{
-				if (neuron.isFiring(subImage))
-				{
+				//if (neuron.isFiring(subImage))
+				//{
 					neuron.modifyWeights(subImage);
-				}
+				//}
 			}
 		}
 	}
