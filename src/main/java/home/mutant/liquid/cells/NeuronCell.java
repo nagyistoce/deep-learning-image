@@ -25,11 +25,15 @@ public abstract class NeuronCell implements Comparable<NeuronCell>
 		weights = new double[noSynapses];
 		for (int i=0;i<noSynapses;i++)
 		{
-			weights[i]=128;
-			if (Math.random()>.7)
+			//weights[i]=128;
+			//if (Math.random()>.7)
 				weights[i]=Math.random()*256;
 		}
 	}
+	public NeuronCell()
+	{
+	}
+	
 	public double outputProbability(double[] input)
 	{
 		double sum=0;

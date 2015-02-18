@@ -18,7 +18,7 @@ public class NeuronCellGreyIntegrate extends NeuronCell
 			if (pixel<0)pixel+=255;
 			double weight = weights[i];
 			//if (weight==0) weight=-150;
-			sum+=(pixel)*weight;
+			sum+=pixel*weight;
 		}
 		//System.out.println(sum);
 		return sum;
