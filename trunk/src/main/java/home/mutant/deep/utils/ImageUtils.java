@@ -273,4 +273,14 @@ public class ImageUtils
 			testImages.addAll(ImageUtils.readMnistAsImage("/mnist/t10k-images.idx3-ubyte"));			
 		}
 	}
+	public static void gradientImage(Image image)
+	{
+		for (int x=1;x<image.imageX-1;x++)
+		{
+			for (int y=1;y<image.imageY-1;y++)
+			{
+			
+			}
+		}
+	}
 }
