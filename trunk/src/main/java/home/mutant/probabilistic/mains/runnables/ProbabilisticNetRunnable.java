@@ -42,7 +42,7 @@ public class ProbabilisticNetRunnable implements Runnable
 			neuron = neuron.pickLink();
 			if (neuron == null) continue;
 			//System.out.println("PICKED" + neuron);
-			neuron.output+=100;
+			neuron.output+=10;
 			if (neuron.output>255)
 				neuron.output=255;
 			neuron=null;
