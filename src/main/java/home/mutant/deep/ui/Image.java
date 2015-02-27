@@ -145,6 +145,13 @@ public class Image
 		return data[getY*imageX+getX];
 	}
 	
+	public int getPixelInt(int getX, int getY)
+	{
+		int pixel = data[getY*imageX+getX];
+		if (pixel<0)pixel+=255;
+		return pixel;
+	}
+	
 	public void pasteImage(Image smallImage, int origX, int origY)
 	{
 		for(int x=0;x<smallImage.imageX;x++)

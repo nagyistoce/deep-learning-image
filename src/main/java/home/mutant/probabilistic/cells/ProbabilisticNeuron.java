@@ -19,7 +19,7 @@ public class ProbabilisticNeuron
 			size--;
 		}
 		if (size==0) return null;
-		int index = (int) (Math.random()*40*size);
+		int index = (int) (Math.random()*3*size);
 		if (index>=size) return null;
 		return links.get(index);
 	}

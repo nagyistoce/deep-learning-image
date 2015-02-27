@@ -273,14 +273,61 @@ public class ImageUtils
 			testImages.addAll(ImageUtils.readMnistAsImage("/mnist/t10k-images.idx3-ubyte"));			
 		}
 	}
-	public static void gradientImage(Image image)
+	public static Image gradientImage(Image image)
 	{
+		Image dest = new Image(image.imageX, image.imageY);
 		for (int x=1;x<image.imageX-1;x++)
 		{
 			for (int y=1;y<image.imageY-1;y++)
 			{
-			
+				int y1 = image.getPixelInt(x, y-1);
+				y1-= image.getPixelInt(x, y+1);
+				int x1 = image.getPixelInt(x-1, y);
+				x1-= image.getPixelInt(x+1, y);
+				dest.setPixel(x,y,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
 			}
 		}
+		for (int x=1;x<image.imageX-1;x++)
+		{
+			int y1 = -1*image.getPixelInt(x, 1);
+			int x1 = image.getPixelInt(x-1, 0);
+			x1-= image.getPixelInt(x+1, 0);
+			dest.setPixel(x,0,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+			
+			y1 = image.getPixelInt(x, image.imageY-2);
+			x1 = image.getPixelInt(x-1, image.imageY-1);
+			x1-= image.getPixelInt(x+1, image.imageY-1);
+			dest.setPixel(x,image.imageY-1,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+		}
+		
+		for (int y=1;y<image.imageY-1;y++)
+		{
+			int y1 = -1*image.getPixelInt(1, y);
+			int x1 = image.getPixelInt(0,y-1);
+			x1-= image.getPixelInt(0,y+1);
+			dest.setPixel(0,y,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+			
+			y1 = image.getPixelInt(image.imageX-2,y);
+			x1 = image.getPixelInt(image.imageX-1, y-1);
+			x1-= image.getPixelInt(image.imageX-1, y+1);
+			dest.setPixel(image.imageX-1,y,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+		}
+		int x1=-1*image.getPixelInt(0,1);
+		int y1=-1*image.getPixelInt(1,0);
+		dest.setPixel(0,0,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+		
+		x1=image.getPixelInt(image.imageX-2,0);
+		y1=-1*image.getPixelInt(image.imageX-1,1);
+		dest.setPixel(image.imageX-1,0,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+		
+		x1=image.getPixelInt(0,image.imageY-2);
+		y1=-1*image.getPixelInt(1,image.imageY-1);
+		dest.setPixel(0,image.imageY-1,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+		
+		x1=image.getPixelInt(image.imageX-1,image.imageY-2);
+		y1=-1*image.getPixelInt(image.imageX-2,image.imageY-1);
+		dest.setPixel(image.imageX-1,image.imageY-1,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
+		
+		return dest;
 	}
 }

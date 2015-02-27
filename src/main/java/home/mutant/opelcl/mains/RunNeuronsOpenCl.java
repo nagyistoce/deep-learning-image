@@ -19,10 +19,10 @@ import org.jocl.cl_mem;
 
 public class RunNeuronsOpenCl 
 {
-	public static final int NO_NEURONS = 10240;
+	public static final int NO_NEURONS = 102400;
 	public static final int NO_SYNAPSES = 49;
 	public static final int NO_IMAGES = 36;
-	public static final int NO_BATCH_IMAGES = 8;
+	public static final int NO_BATCH_IMAGES = 800;
     public static void main(String args[]) throws IOException
     {
     	float[] synapses = new float[NO_NEURONS*(NO_SYNAPSES+1)];
@@ -49,12 +49,12 @@ public class RunNeuronsOpenCl
 		int subImageStep = 4;
 		long t0=System.currentTimeMillis();
 
-		for (int imageIndex=0;imageIndex<6000;imageIndex+=NO_BATCH_IMAGES)
+		for (int imageIndex=0;imageIndex<60000;imageIndex+=NO_BATCH_IMAGES)
 		{
 			List<byte[]> subImages = new ArrayList<byte[]>();
 			for (int batch=0;batch<NO_BATCH_IMAGES;batch++)
 			{
-				subImages.addAll(MnistDatabase.testImages.get(imageIndex+batch).divideImage(subImageX, subImageX, subImageStep, subImageStep));
+				subImages.addAll(MnistDatabase.trainImages.get(imageIndex+batch).divideImage(subImageX, subImageX, subImageStep, subImageStep));
 			}
 			float[] subImageFloats = OpenClWrapper.listBytesToFloats(subImages);
 			//System.out.println("Image: "+java.util.Arrays.toString(subImageFloats));

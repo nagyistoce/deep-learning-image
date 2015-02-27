@@ -31,5 +31,6 @@ public class TestBinarySynapses
 			neurons[i] = new BinaryNeuron(28*28);
 		}
 		Assert.assertEquals(100000, neurons.length);
+		System.out.println((byte)255);
 	}
 }
