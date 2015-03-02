@@ -1,5 +1,9 @@
 package home.mutant.probabilistic.nets;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,13 +11,13 @@ import home.mutant.deep.ui.Image;
 import home.mutant.probabilistic.cells.ProbabilisticNeuron;
 
 
-public class ProbabilisticNet 
+public class ProbabilisticNet implements Serializable
 {
 	public int X;
 	public int Y;
 	public Map<Integer, ProbabilisticNeuron> neurons = new HashMap<Integer, ProbabilisticNeuron>();
 	public ProbabilisticNeuron lastActivated = null;
-	public Image image;
+	public transient Image image;
 	public ProbabilisticNet(int x, int y) 
 	{
 		super();
@@ -47,17 +51,41 @@ public class ProbabilisticNet
 		}
 		while (neuron==null)
 		{
-			neuron = neurons.get((int)(Math.random()*X*Y));
+			neuron = neurons.get((int)(Math.random()*X*28));
 		}
-		while(count<1000)
+		while(count++<10000)
 		{
 			ProbabilisticNeuron neuronPicked = neuron.pickLink();
 			if (neuronPicked!=null) 
 			{
 				neuronPicked.output=255;
-				count++;
 			}
 		}
 		return generateImage();
+	}
+	public void saveNet()
+	{
+		ObjectOutputStream oout=null;;
+		
+        try
+        {
+        	oout = new ObjectOutputStream( new FileOutputStream("1.net"));
+        	oout.writeObject(this);
+		} 
+        catch (IOException e) 
+        {
+			e.printStackTrace();
+		}
+        finally
+        {
+        	try 
+        	{
+				if (oout!=null)oout.close();
+			} 
+        	catch (IOException e) 
+        	{
+				e.printStackTrace();
+			}
+        }
 	}
 }

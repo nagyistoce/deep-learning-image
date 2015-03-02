@@ -170,7 +170,7 @@ public class ResultFrame extends JFrame
 			{
 				for (int j=0;j<imageY;j++)
 				{
-					drawingPanel.setPixel(j+(n1-index)*(imageX+5),i,image[i][j]);
+					drawingPanel.setPixel(j+(n1-index)*(imageX+1),i,image[j][i]);
 				}
 			}
 		}

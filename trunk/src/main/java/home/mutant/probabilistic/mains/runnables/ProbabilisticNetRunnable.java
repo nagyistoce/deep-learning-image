@@ -31,18 +31,38 @@ public class ProbabilisticNetRunnable implements Runnable
 				continue;
 			}
 			
-			neuron.output-=20;
-			if(neuron.output<0)neuron.output = 0;
+			//if(neuron.output<0)neuron.output = 0;
 			//System.out.println(neuron.output);
-			if (lastNeuron!=null && lastNeuron.output>0 && neuron.output>0)
+			if (neuron.output>0)
 			{
-				lastNeuron.links.add(neuron);
+				if (lastNeuron!=null)
+				{
+					
+					if (neuron.Y>=28)
+						lastNeuron.links.add(neuron);
+					else
+					{
+						if(lastNeuron.Y<28)
+						{
+							int x= neuron.X-lastNeuron.X;
+							int y= neuron.Y-lastNeuron.Y;
+							double radius = Math.sqrt(x*x+y*y);
+							if (radius<28)
+								lastNeuron.links.add(neuron);
+						}
+					}
+					
+
+				}
+				
+				lastNeuron = neuron;
 			}
-			lastNeuron = neuron;
+			neuron.output-=80;
+			if (neuron.output<0)neuron.output=0;
 			neuron = neuron.pickLink();
 			if (neuron == null) continue;
 			//System.out.println("PICKED" + neuron);
-			neuron.output+=10;
+			neuron.output+=60;
 			if (neuron.output>255)
 				neuron.output=255;
 			neuron=null;

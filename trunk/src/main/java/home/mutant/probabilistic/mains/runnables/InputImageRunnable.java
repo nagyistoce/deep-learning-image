@@ -24,22 +24,22 @@ public class InputImageRunnable implements Runnable
 		while(epoch++<epochs)
 		{
 			int indexNeuron = (int) (Math.random()*pixels.length);
-			int pixel = pixels[indexNeuron];
+			double pixel = pixels[indexNeuron];
 			if (pixel<0)pixel+=255;
-			if(pixel>150 && pixel*Math.random()>20)
+			if(pixel >200)//==255 || pixel*pixel*pixel*pixel>Math.random()*255*255*255*255)
 			{
 				ProbabilisticNeuron neuron = net.neurons.get(indexNeuron);
 				if (neuron == null)
 				{
-					neuron = new ProbabilisticNeuron();
+					neuron = new ProbabilisticNeuron(indexNeuron%28, indexNeuron/28);
 					net.neurons.put(indexNeuron, neuron);
 				}
-				neuron.output+=10;
+				neuron.output+=60;
 				if (neuron.output>255)
 					neuron.output=255;
 			}
 		}
-		System.out.println("OUT InputThread");
+		//System.out.println("OUT InputThread");
 	}
 
 }

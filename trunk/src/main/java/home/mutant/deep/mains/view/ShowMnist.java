@@ -18,7 +18,6 @@ public class ShowMnist
 		//frame.showMnist2(ImageUtils.convertToBW(images), 0);
 		//frame.showImages(ImageUtils.readMnistAsBWImage("/mnist/train-images.idx3-ubyte"), 0, 20);
 		MnistDatabase.loadGradientImages();
-		Image image = MnistDatabase.trainImages.get(12);
-		frame.showImage(image, 30, 0);
+		frame.showImages(MnistDatabase.trainImages, 0, 40);
 	}
 }
