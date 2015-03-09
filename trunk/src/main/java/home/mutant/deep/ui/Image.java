@@ -53,13 +53,8 @@ public class Image
 			for (int x = 0; x < bufferedImage.getWidth(); x++) 
 			{
                 int c = bufferedImage.getRGB(x,y);
-                int  color = (c & 0x00ffffff);
-                
-                data[offset]=0;
-                if (color>0)
-                {
-                	data[offset]=(byte)255;
-                }
+                int  color = (c & 0xff);
+                data[offset]=(byte)color;
                 offset++;
 			}
 		}

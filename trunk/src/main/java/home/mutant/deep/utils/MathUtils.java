@@ -82,6 +82,21 @@ public class MathUtils
 		return indexMax;
 	}
 	
+	public static int indexMax(List<Integer> array)
+	{
+		long max = Long.MIN_VALUE;
+		int indexMax=-1;
+		for (int out=0;out<array.size();out++)
+		{
+			if (array.get(out)>max)
+			{
+				max = array.get(out);
+				indexMax = out;
+			}
+		}
+		return indexMax;
+	}
+	
 	public static double max(double[] array)
 	{
 		double max = Double.NEGATIVE_INFINITY;
@@ -304,5 +319,10 @@ public class MathUtils
 			sum+=array[i]*array[i];
 		}
 		return sum;
+	}
+	
+	public static double gaussian(double x, double mean)
+	{
+		return Math.exp(-1*(x*x)/2/mean/mean);
 	}
 }

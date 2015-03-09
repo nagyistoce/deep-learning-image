@@ -1,6 +1,7 @@
 package home.mutant.probabilistic.mains.runnables;
 
 import home.mutant.probabilistic.cells.ProbabilisticNeuron;
+import home.mutant.probabilistic.mains.RunProbabilisticNet;
 import home.mutant.probabilistic.nets.ProbabilisticNet;
 
 public class ProbabilisticNetRunnable implements Runnable 
@@ -38,16 +39,16 @@ public class ProbabilisticNetRunnable implements Runnable
 				if (lastNeuron!=null)
 				{
 					
-					if (neuron.Y>=28)
+					if (neuron.Y>=RunProbabilisticNet.IMAGE_SIZE)
 						lastNeuron.links.add(neuron);
 					else
 					{
-						if(lastNeuron.Y<28)
+						if(lastNeuron.Y<RunProbabilisticNet.IMAGE_SIZE)
 						{
 							int x= neuron.X-lastNeuron.X;
 							int y= neuron.Y-lastNeuron.Y;
 							double radius = Math.sqrt(x*x+y*y);
-							if (radius<28)
+							if (radius<2)//RunProbabilisticNet.IMAGE_SIZE)
 								lastNeuron.links.add(neuron);
 						}
 					}

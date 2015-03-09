@@ -1,6 +1,7 @@
 package home.mutant.probabilistic.mains.runnables;
 
 import home.mutant.probabilistic.cells.ProbabilisticNeuron;
+import home.mutant.probabilistic.mains.RunProbabilisticNet;
 import home.mutant.probabilistic.nets.ProbabilisticNet;
 
 public class InputImageRunnable implements Runnable 
@@ -26,12 +27,12 @@ public class InputImageRunnable implements Runnable
 			int indexNeuron = (int) (Math.random()*pixels.length);
 			double pixel = pixels[indexNeuron];
 			if (pixel<0)pixel+=255;
-			if(pixel >200)//==255 || pixel*pixel*pixel*pixel>Math.random()*255*255*255*255)
+			if(pixel>150)//pixel*pixel*pixel*pixel>Math.random()*255*255*255*255)
 			{
 				ProbabilisticNeuron neuron = net.neurons.get(indexNeuron);
 				if (neuron == null)
 				{
-					neuron = new ProbabilisticNeuron(indexNeuron%28, indexNeuron/28);
+					neuron = new ProbabilisticNeuron(indexNeuron%RunProbabilisticNet.IMAGE_SIZE, indexNeuron/RunProbabilisticNet.IMAGE_SIZE);
 					net.neurons.put(indexNeuron, neuron);
 				}
 				neuron.output+=60;
