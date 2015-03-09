@@ -1,5 +1,6 @@
 package home.mutant.deep.ui;
 
+import home.mutant.automata.ColumnNeuronCell;
 import home.mutant.deep.model.ModelTestResult;
 import home.mutant.deep.networks.TwoFullConnectedLayers;
 import home.mutant.liquid.cells.NeuronCell;
@@ -211,6 +212,19 @@ public class ResultFrame extends JFrame
 			for (int y=0;y<net.layers.get(x).size();y++)
 			{
 				drawingPanel.setPixel(xOffset+x,yOffset+y,(byte)(net.layers.get(x).get(y).output*255));
+			}
+		}
+		repaint();
+	}
+	
+	public void showColumnNeuronCells(ColumnNeuronCell net, int xOffset, int yOffset)
+	{
+		drawingPanel.empty();
+		for (int x=0;x<net.cells.length;x++)
+		{
+			for (int y=0;y<net.cells[0].length;y++)
+			{
+				drawingPanel.setPixel(xOffset+x,yOffset+y,(byte)(net.cells[x][y].output*255));
 			}
 		}
 		repaint();

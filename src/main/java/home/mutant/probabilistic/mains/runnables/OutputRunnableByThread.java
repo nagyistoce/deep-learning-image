@@ -1,6 +1,7 @@
 package home.mutant.probabilistic.mains.runnables;
 
 import home.mutant.probabilistic.cells.ProbabilisticNeuron;
+import home.mutant.probabilistic.mains.RunProbabilisticNet;
 import home.mutant.probabilistic.nets.ProbabilisticNet;
 
 public class OutputRunnableByThread implements Runnable 
@@ -19,11 +20,11 @@ public class OutputRunnableByThread implements Runnable
 	{
 		while(control.isAlive())
 		{
-			int indexNeuron = 784+(int) (Math.random()*net.X*(net.Y-28));
+			int indexNeuron = RunProbabilisticNet.IMAGE_SIZE*RunProbabilisticNet.IMAGE_SIZE+(int) (Math.random()*net.X*(net.Y-RunProbabilisticNet.IMAGE_SIZE));
 			ProbabilisticNeuron neuron = net.neurons.get(indexNeuron);
 			if (neuron==null || neuron.output==0) continue;
 //			System.out.println(neuron.output);
-			indexNeuron = (indexNeuron-784)/280;
+			indexNeuron = (indexNeuron-RunProbabilisticNet.IMAGE_SIZE*RunProbabilisticNet.IMAGE_SIZE)/(RunProbabilisticNet.IMAGE_SIZE*10);
 			outputs[indexNeuron]+=neuron.output;
 		}
 		//System.out.println(Arrays.toString(outputs));

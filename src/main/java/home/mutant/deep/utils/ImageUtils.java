@@ -2,9 +2,11 @@ package home.mutant.deep.utils;
 
 import home.mutant.deep.ui.Image;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -329,5 +331,37 @@ public class ImageUtils
 		dest.setPixel(image.imageX-1,image.imageY-1,(byte)Math.sqrt((y1*y1+x1*x1)/2.));
 		
 		return dest;
+	}
+	
+	public static BufferedImage createBufferedImage(Image image)
+	{
+		BufferedImage originalImage = new BufferedImage(image.imageX, image.imageY,BufferedImage.TYPE_INT_RGB);
+		for (int y = 0; y < originalImage.getHeight(); y++) 
+		{
+			for (int x = 0; x < originalImage.getWidth(); x++) 
+			{
+				int pixel = image.getPixel(x, y);
+				if (pixel<0)pixel+=255;
+				originalImage.setRGB(x, y, new Color(pixel, pixel, pixel).getRGB());
+			}
+		}
+		return originalImage;
+	}
+	
+	public static BufferedImage scaleImage(BufferedImage before, double scale)
+	{
+		int w = before.getWidth();
+		int h = before.getHeight();
+		BufferedImage after = new BufferedImage((int)(w*scale), (int)(h*scale), BufferedImage.TYPE_INT_RGB);
+		AffineTransform at = new AffineTransform();
+		at.scale(scale, scale);
+		AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+		after = scaleOp.filter(before, after);
+		return after;
+	}
+	
+	public static Image scaleImage(Image image, double scale)
+	{
+		return new Image(scaleImage(createBufferedImage(image), scale));
 	}
 }

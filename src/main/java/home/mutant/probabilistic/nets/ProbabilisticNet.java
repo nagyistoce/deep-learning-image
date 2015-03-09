@@ -51,7 +51,7 @@ public class ProbabilisticNet implements Serializable
 		}
 		while (neuron==null)
 		{
-			neuron = neurons.get((int)(Math.random()*X*28));
+			neuron = neurons.get((int)(Math.random()*X*X));
 		}
 		while(count++<10000)
 		{

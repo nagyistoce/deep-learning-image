@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class ProbabilisticNeuron implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	public int X;
 	public int Y;
 	public List<ProbabilisticNeuron> links = new ArrayList<ProbabilisticNeuron>();
@@ -32,7 +33,7 @@ public class ProbabilisticNeuron implements Serializable
 			size--;
 		}
 		if (size==0) return null;
-		int index = (int) (Math.random()*10*size);
+		int index = (int) (Math.random()*20*size);
 		if (index>=size) return null;
 		return links.get(index);
 	}
