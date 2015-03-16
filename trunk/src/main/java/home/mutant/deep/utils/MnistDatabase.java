@@ -25,6 +25,16 @@ public class MnistDatabase
 	{
 		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style=Style.GREY);
 	}
+	
+	public static void loadImagesCrop(int newImageSize) throws IOException
+	{
+		trainLabels.addAll(ImageUtils.readMinstLabels("/mnist/train-labels.idx1-ubyte"));
+		testLabels.addAll(ImageUtils.readMinstLabels("/mnist/t10k-labels.idx1-ubyte"));
+		trainImages.addAll(ImageUtils.readMnistAsImage("/mnist/train-images.idx3-ubyte", newImageSize));
+		testImages.addAll(ImageUtils.readMnistAsImage("/mnist/t10k-images.idx3-ubyte", newImageSize));			
+		
+	}
+	
 	public static void loadGradientImages() throws IOException
 	{
 		MnistDatabase.loadImages();

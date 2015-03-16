@@ -6,6 +6,8 @@ import home.mutant.deep.networks.TwoFullConnectedLayers;
 import home.mutant.liquid.cells.NeuronCell;
 import home.mutant.liquid.networks.FeedForward;
 import home.mutant.liquid.networks.SimpleNet;
+import home.mutant.logistic.LogisticNet;
+import home.mutant.logistic.LogisticNeuron;
 
 import java.util.HashMap;
 import java.util.List;
@@ -230,6 +232,13 @@ public class ResultFrame extends JFrame
 		repaint();
 	}
 	
+	public void showLogisticNeuron(LogisticNeuron neuron, float scale)
+	{
+		showLogisticNeuron(neuron, 0,0, scale);
+	}
+	
+
+	
 	public void showNetworkWeightsBW(SimpleNet net, int noNeuronsPerLine)
 	{
 		drawingPanel.empty();
@@ -263,6 +272,46 @@ public class ResultFrame extends JFrame
 	public void showNetworkWeights(SimpleNet net, int noNeuronsPerLine)
 	{
 		showNetworkWeights(net, noNeuronsPerLine, 0);
+	}
+	
+	public void showLogisticNeuron(LogisticNeuron neuron, int xOffset, int yOffset, float scale)
+	{
+		drawingPanel.empty();
+		putLogisticNeuron(neuron, xOffset, yOffset, scale);
+		repaint();
+	}
+	
+	public void putLogisticNeuron(LogisticNeuron neuron, int xOffset, int yOffset, float scale)
+	{
+		int length = (int) Math.sqrt(neuron.weights.length);
+		int offset = 0;
+		for (int x=0;x<length;x++)
+		{
+			for (int y=0;y<length;y++)
+			{
+				drawingPanel.setPixel(yOffset+y,xOffset+x,(byte)(neuron.weights[offset++]/scale+128));
+			}
+		}
+	}
+	
+	public void showLogisticNet(LogisticNet net, int noNeuronsPerLine, float scale)
+	{
+		drawingPanel.empty();
+		int layer =0;
+		int indexNeuronX=0;
+		for (int indexNeuron=0;indexNeuron<net.neurons.length;indexNeuron++)
+		{
+			LogisticNeuron neuron = net.neurons[indexNeuron];
+			int sizeX = (int) Math.sqrt(neuron.weights.length);
+			if (indexNeuronX==noNeuronsPerLine)
+			{
+				indexNeuronX=0;
+				layer++;
+			}
+			putLogisticNeuron(neuron, indexNeuronX * sizeX, layer * sizeX, scale);
+			indexNeuronX++;
+		}
+		repaint();
 	}
 	public void showNetworkWeights(SimpleNet net, int noNeuronsPerLine, int interImagesBorderSize)
 	{
