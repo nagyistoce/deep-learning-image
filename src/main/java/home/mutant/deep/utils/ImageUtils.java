@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -77,7 +78,12 @@ public class ImageUtils
 	
 	public static List<Image> readMnistAsImage(String imageResourcePath)
 	{
-		List<byte[][]> bytes = readMnist(imageResourcePath);
+		return readMnistAsImage(imageResourcePath, 28);
+	}
+
+	public static List<Image> readMnistAsImage(String imageResourcePath, int newImageSize)
+	{
+		List<byte[][]> bytes = readMnist(imageResourcePath, newImageSize);
 		List<Image> images = new ArrayList<Image>();
 		for (byte[][] bs : bytes) 
 		{
@@ -96,8 +102,12 @@ public class ImageUtils
 		}
 		return images;
 	}
-	
+
 	public static List<byte[][]> readMnist(String imageResourcePath)
+	{
+		return readMnist(imageResourcePath, 28);
+	}
+	public static List<byte[][]> readMnist(String imageResourcePath, int size)
 	{
 		List<byte[][]> images = new ArrayList<byte[][]>();
 		InputStream stream = ImageUtils.class.getResourceAsStream(imageResourcePath);
@@ -111,9 +121,10 @@ public class ImageUtils
 			e1.printStackTrace();
 		}
 		
+		int crop = (28 - size)/2;
 		while(true)
 		{
-			byte[][] image = new byte[28][28];
+			byte[][] image = new byte[size][size];
 			
 			try
 			{
@@ -128,13 +139,12 @@ public class ImageUtils
 				e.printStackTrace();
 				break;
 			}
-			int offsetRead = 0;
-			for (int i = 0;i<28;i++)
+			for (int i = 0;i<size;i++)
 			{
-				for (int j = 0;j<28;j++)
+				for (int j = 0;j<size;j++)
 				{
-					image[i][j] = bRead[offsetRead++];
-				}				
+					image[j][i] = bRead[(j+crop)*28+i+crop];
+				}
 			}
 			images.add(image);
 		}
