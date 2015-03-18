@@ -3,11 +3,12 @@ package home.mutant.logistic;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.weka.Arff;
+import java.io.IOException;
 
 public class RunLogisticNeuron {
 
 	private static final int TRAIN_SAMPLES = 60000;
-	private static final int OUPUT_SAMPLES = 60000;
+	private static final int OUTPUT_SAMPLES = 70000;
 	private static final int NO_NEURONS = 400;
 
 	public static void main(String[] args) throws Exception 
@@ -26,27 +27,41 @@ public class RunLogisticNeuron {
 			net.neurons[(int) (Math.random()*NO_NEURONS)].learn(MnistDatabase.trainImages.get(i).getDataOneDimensional());
 			net.neurons[(int) (Math.random()*NO_NEURONS)].unlearn(MnistDatabase.trainImages.get(i).getDataOneDimensional());
 		}
-		Arff featuresArff = new Arff("LevelLogistic", NO_NEURONS, 10, OUPUT_SAMPLES);
-		double[] features = new double[NO_NEURONS];
-		for (int i=0;i<OUPUT_SAMPLES;i++)
-		{
-			for (int n=0;n<NO_NEURONS;n++)
-			{
-				features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.trainImages.get(i).getDataOneDimensional()));
-			}
-			featuresArff.addInstance(features, MnistDatabase.trainLabels.get(i));
-		}
-		
-		featuresArff.saveToArff();
+		createArffFromFeatures("LevelLogistic", net);
 		for (int i=0;i<NO_NEURONS;i++)
 		{
 			for (int image=0;image<12;image++)
 			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(image).getDataOneDimensional())+" "+net.neurons[i].outputSigmoid(MnistDatabase.trainImages.get(image).getDataOneDimensional()));
-
 			System.out.println();
 		}
 		ResultFrame frame = new ResultFrame(1300, 700);
 		frame.showLogisticNet(net, 30, 1);
 	}
+
+    private static void createArffFromFeatures(String name, LogisticNet net) throws IOException {
+        Arff featuresArff = new Arff(name, NO_NEURONS, 10, OUTPUT_SAMPLES);
+        double[] features = new double[NO_NEURONS];
+        int noSamples = 6*OUTPUT_SAMPLES/7;
+        for (int i=0;i<noSamples;i++)
+        {
+            for (int n=0;n<NO_NEURONS;n++)
+            {
+                features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.trainImages.get(i).getDataOneDimensional()));
+            }
+            featuresArff.addInstance(features, MnistDatabase.trainLabels.get(i));
+        }
+        
+        noSamples = OUTPUT_SAMPLES - noSamples;
+        for (int i=0;i<noSamples;i++)
+        {
+            for (int n=0;n<NO_NEURONS;n++)
+            {
+                features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.testImages.get(i).getDataOneDimensional()));
+            }
+            featuresArff.addInstance(features, MnistDatabase.testLabels.get(i));
+        }
+        
+        featuresArff.saveToArff();
+    }
 
 }
