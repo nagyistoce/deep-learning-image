@@ -1,7 +1,6 @@
 package home.mutant.deep.utils;
 
 import home.mutant.deep.ui.Image;
-import home.mutant.deep.utils.ImageUtils;
 import home.mutant.deep.utils.ImageUtils.Style;
 
 import java.io.IOException;
