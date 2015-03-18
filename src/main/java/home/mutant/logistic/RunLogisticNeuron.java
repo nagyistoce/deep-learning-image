@@ -7,8 +7,8 @@ import home.mutant.weka.Arff;
 public class RunLogisticNeuron {
 
 	private static final int TRAIN_SAMPLES = 60000;
-	private static final int OUPUT_SAMPLES = 600;
-	private static final int NO_NEURONS = 40;
+	private static final int OUPUT_SAMPLES = 60000;
+	private static final int NO_NEURONS = 400;
 
 	public static void main(String[] args) throws Exception 
 	{
@@ -32,23 +32,19 @@ public class RunLogisticNeuron {
 		{
 			for (int n=0;n<NO_NEURONS;n++)
 			{
-				features[n] = net.neurons[n].output(MnistDatabase.trainImages.get(i).getDataOneDimensional());
+				features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.trainImages.get(i).getDataOneDimensional()));
 			}
 			featuresArff.addInstance(features, MnistDatabase.trainLabels.get(i));
 		}
 		
 		featuresArff.saveToArff();
-//		for (int i=0;i<100;i++)
-//		{
-//			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(0).getDataOneDimensional()));
-//			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(1).getDataOneDimensional()));
-//			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(2).getDataOneDimensional()));
-//			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(3).getDataOneDimensional()));
-//			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(4).getDataOneDimensional()));
-//			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(5).getDataOneDimensional()));
-//			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(11).getDataOneDimensional()));
-//			System.out.println();
-//		}
+		for (int i=0;i<NO_NEURONS;i++)
+		{
+			for (int image=0;image<12;image++)
+			System.out.println(net.neurons[i].output(MnistDatabase.trainImages.get(image).getDataOneDimensional())+" "+net.neurons[i].outputSigmoid(MnistDatabase.trainImages.get(image).getDataOneDimensional()));
+
+			System.out.println();
+		}
 		ResultFrame frame = new ResultFrame(1300, 700);
 		frame.showLogisticNet(net, 30, 1);
 	}

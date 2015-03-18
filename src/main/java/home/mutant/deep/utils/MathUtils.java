@@ -120,6 +120,16 @@ public class MathUtils
 		return  1./(1+Math.exp(-totalInput));
 	}
 	
+	public static double sigmoidFunctionGamma(double totalInput, double gamma)
+	{
+		return  1./(1+Math.exp(-totalInput*gamma));
+	}
+	
+	public static double sigmoidLikeInverse(double totalInput, double gamma)
+	{
+		return  (totalInput*gamma)/(1+Math.abs(totalInput*gamma)) +1;
+	}
+	
 	public static Double sigmoidBinary(double totalInput, double threshhold)
 	{
 		return (Math.random()<= sigmoidFunction(-totalInput+threshhold))?1.:0;
