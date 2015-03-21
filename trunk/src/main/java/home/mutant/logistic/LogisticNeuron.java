@@ -4,7 +4,7 @@ import home.mutant.deep.utils.MathUtils;
 
 public class LogisticNeuron 
 {
-	public static float MAX_SYNAPSE = (float) 10;
+	public static float MAX_SYNAPSE = (float) 100;
 	public float weights[];
 	
 	public LogisticNeuron(int noSynapse)
@@ -16,6 +16,7 @@ public class LogisticNeuron
 	{
 		for (int i = 0; i < weights.length; i++)
 		{
+			//if (Math.random()>0.9)
 			weights[i] = (float) (Math.random()-0.5)*MAX_SYNAPSE;
 		}
 	}
@@ -27,6 +28,15 @@ public class LogisticNeuron
 			double pixel = pixels[i];
 			if (pixel<0)pixel+=255;
 			weights[i]+=pixel/100;
+		}
+	}
+	public void unlearn(byte[] pixels)
+	{
+		for (int i = 0; i < weights.length; i++)
+		{
+			double pixel = pixels[i];
+			if (pixel<0)pixel+=255;
+			weights[i]-=pixel/100;
 		}
 	}
 	
@@ -60,13 +70,5 @@ public class LogisticNeuron
 		return MathUtils.sigmoidFunctionGamma(output, 0.0005);
 	}
 	
-	public void unlearn(byte[] pixels)
-	{
-		for (int i = 0; i < weights.length; i++)
-		{
-			double pixel = pixels[i];
-			if (pixel<0)pixel+=255;
-			weights[i]-=pixel/100;
-		}
-	}
+
 }

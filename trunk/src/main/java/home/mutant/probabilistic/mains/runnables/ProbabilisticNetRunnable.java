@@ -17,6 +17,58 @@ public class ProbabilisticNetRunnable implements Runnable
 	public void run() 
 	{
 		ProbabilisticNeuron neuron = null;
+		ProbabilisticNeuron nextNeuron = null;
+		while(true)
+		{
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			int indexNeuron = (int) (Math.random()*net.X*net.Y);
+			neuron = net.neurons.get(indexNeuron);
+
+			if (neuron==null || neuron.output==0) 
+			{
+				neuron = null;
+				continue;
+			}
+			
+//			int indexNextNeuron = (int) (Math.random()*net.X*net.Y);
+//			nextNeuron = net.neurons.get(indexNextNeuron);
+//			
+//			if (nextNeuron!=null && nextNeuron.output>0) 
+//			{
+//				//neuron.links.add(nextNeuron);
+//				//nextNeuron.links.add(neuron);
+//			}
+			
+			neuron.output-=60;
+			if (neuron.output<0)neuron.output=0;
+//			if (indexNeuron>RunProbabilisticNet.IMAGE_SIZE*RunProbabilisticNet.IMAGE_SIZE)
+//				continue;
+			ProbabilisticNeuron neuronPicked = neuron.pickLink();
+			if (neuronPicked != null)
+			{
+				//System.out.println("PICKED" + neuron);
+				neuronPicked.output+=60;
+				//System.out.println(neuron.output);
+				if (neuronPicked.output>255)
+					neuronPicked.output=255;
+			}
+			neuronPicked = neuron.pickNonLink();
+			if (neuronPicked != null)
+			{
+				neuronPicked.output-=60;
+				if (neuronPicked.output<0)neuronPicked.output=0;
+			}
+			
+		}
+	}
+
+	public void run2() 
+	{
+		ProbabilisticNeuron neuron = null;
 		ProbabilisticNeuron lastNeuron = null;
 		while(true)
 		{
@@ -48,7 +100,7 @@ public class ProbabilisticNetRunnable implements Runnable
 							int x= neuron.X-lastNeuron.X;
 							int y= neuron.Y-lastNeuron.Y;
 							double radius = Math.sqrt(x*x+y*y);
-							if (radius<2)//RunProbabilisticNet.IMAGE_SIZE)
+							if (radius<10)//RunProbabilisticNet.IMAGE_SIZE)
 								lastNeuron.links.add(neuron);
 						}
 					}
@@ -58,7 +110,7 @@ public class ProbabilisticNetRunnable implements Runnable
 				
 				lastNeuron = neuron;
 			}
-			neuron.output-=80;
+			neuron.output-=90;
 			if (neuron.output<0)neuron.output=0;
 			neuron = neuron.pickLink();
 			if (neuron == null) continue;
@@ -70,4 +122,5 @@ public class ProbabilisticNetRunnable implements Runnable
 		}
 	}
 
+	
 }
