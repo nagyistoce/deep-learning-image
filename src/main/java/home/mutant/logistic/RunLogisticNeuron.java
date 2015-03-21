@@ -8,7 +8,7 @@ import java.io.IOException;
 public class RunLogisticNeuron {
 
 	private static final int TRAIN_SAMPLES = 60000;
-	private static final int OUTPUT_SAMPLES = 70000;
+	private static final int OUTPUT_SAMPLES = 7000;
 	private static final int NO_NEURONS = 400;
 
 	public static void main(String[] args) throws Exception 
@@ -46,7 +46,7 @@ public class RunLogisticNeuron {
         {
             for (int n=0;n<NO_NEURONS;n++)
             {
-                features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.trainImages.get(i).getDataOneDimensional()));
+            	features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.trainImages.get(i).getDataOneDimensional()));
             }
             featuresArff.addInstance(features, MnistDatabase.trainLabels.get(i));
         }
@@ -56,7 +56,7 @@ public class RunLogisticNeuron {
         {
             for (int n=0;n<NO_NEURONS;n++)
             {
-                features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.testImages.get(i).getDataOneDimensional()));
+            	features[n] = (int) (255*net.neurons[n].outputSigmoid(MnistDatabase.testImages.get(i).getDataOneDimensional()));
             }
             featuresArff.addInstance(features, MnistDatabase.testLabels.get(i));
         }

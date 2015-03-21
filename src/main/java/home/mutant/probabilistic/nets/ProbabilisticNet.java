@@ -59,6 +59,7 @@ public class ProbabilisticNet implements Serializable
 			if (neuronPicked!=null) 
 			{
 				neuronPicked.output=255;
+				//count++;
 			}
 		}
 		return generateImage();

@@ -12,6 +12,7 @@ public class ProbabilisticNeuron implements Serializable
 	public int X;
 	public int Y;
 	public List<ProbabilisticNeuron> links = new ArrayList<ProbabilisticNeuron>();
+	public List<ProbabilisticNeuron> nonLinks = new ArrayList<ProbabilisticNeuron>();
 	public Map<ProbabilisticNeuron, Integer> correlations = new HashMap<ProbabilisticNeuron,Integer>();
 	List<Integer> occurences = new ArrayList<Integer>();
 	int totalSamples = 0;
@@ -33,8 +34,29 @@ public class ProbabilisticNeuron implements Serializable
 			size--;
 		}
 		if (size==0) return null;
-		int index = (int) (Math.random()*20*size);
+		int index = (int) (Math.random()*1*size);
 		if (index>=size) return null;
-		return links.get(index);
+		ProbabilisticNeuron ret =  links.get(index);
+//		if (ret.output>0)
+//			links.remove(ret);
+		return ret;
 	}
+	
+	public ProbabilisticNeuron pickNonLink()
+	{
+		int size = nonLinks.size();
+		if (size>1000000)
+		{
+			nonLinks.remove(0);
+			size--;
+		}
+		if (size==0) return null;
+		int index = (int) (Math.random()*1*size);
+		if (index>=size) return null;
+		ProbabilisticNeuron ret =  nonLinks.get(index);
+//		if (ret.output>0)
+//			links.remove(ret);
+		return ret;
+	}
+	
 }

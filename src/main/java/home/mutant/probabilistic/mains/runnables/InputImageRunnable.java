@@ -27,7 +27,7 @@ public class InputImageRunnable implements Runnable
 			int indexNeuron = (int) (Math.random()*pixels.length);
 			double pixel = pixels[indexNeuron];
 			if (pixel<0)pixel+=255;
-			if(pixel>150)//pixel*pixel*pixel*pixel>Math.random()*255*255*255*255)
+			if(pixel>150)//Math.random()*255)
 			{
 				ProbabilisticNeuron neuron = net.neurons.get(indexNeuron);
 				if (neuron == null)
