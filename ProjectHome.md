@@ -1,0 +1,1 @@
+Try several algorithms - unsupervised learning - in order to get good learning rates for images.Mninst database as input.
